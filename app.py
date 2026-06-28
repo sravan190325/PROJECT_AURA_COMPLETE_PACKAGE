@@ -12,10 +12,18 @@ from dotenv import load_dotenv
 from routes.upload_routes import upload_bp
 from routes.project_routes import project_bp
 from routes.workbook_routes import workbook_bp
-from config import Config
 
 # Load environment variables
 load_dotenv()
+
+# Determine which config to use
+flask_env = os.environ.get('FLASK_ENV', 'development')
+if flask_env == 'production':
+    from config import ProductionConfig as Config
+elif flask_env == 'testing':
+    from config import TestingConfig as Config
+else:
+    from config import DevelopmentConfig as Config
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -72,11 +80,13 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
-    # Development server
+    # Configuration based on environment
+    is_production = os.environ.get('FLASK_ENV') == 'production'
     port = int(os.environ.get('PORT', 5000))
+
     app.run(
         host='0.0.0.0',
         port=port,
-        debug=True,
-        use_reloader=True
+        debug=not is_production,
+        use_reloader=not is_production
     )

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: project-aura-web
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_ENV: development
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      DATABASE_URL: postgresql://project_aura:password@postgres:5432/project_aura
+      SECRET_KEY: project-aura-dev-key
+    volumes:
+      - .:/app
+      - uploads:/app/uploads
+      - temp:/app/temp
+      - workbooks:/app/workbooks
+    depends_on:
+      - postgres
+    networks:
+      - project-aura-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: project-aura-db
+    environment:
+      POSTGRES_USER: project_aura
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: project_aura
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - project-aura-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U project_aura"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  uploads:
+  temp:
+  workbooks:
+
+networks:
+  project-aura-network:
+    driver: bridge
