@@ -1,0 +1,266 @@
+{% extends "base_blend.html" %}
+
+{% block title %}Project Aura - Analysis Results{% endblock %}
+
+{% block content %}
+
+<!-- Analysis Progress Section -->
+<section id="analysisProgress" style="display: none; margin-bottom: var(--blend-space-3xl);">
+    <h2 style="text-align: center; margin-bottom: var(--blend-space-xl);">Analyzing Your Document</h2>
+
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div id="progressSteps" style="display: flex; flex-direction: column; gap: var(--blend-space-lg);"></div>
+    </div>
+</section>
+
+<!-- Results Section -->
+<section id="resultsSection" style="display: none;">
+    <h2 style="margin-bottom: var(--blend-space-xl);">Analysis Complete</h2>
+
+    <!-- Project Summary Cards -->
+    <div class="grid grid-2" style="margin-bottom: var(--blend-space-3xl);">
+        <div class="card">
+            <div class="card-title">Project Overview</div>
+            <div style="color: var(--blend-text-secondary); margin-bottom: var(--blend-space-md);">
+                <p style="margin-bottom: var(--blend-space-sm);">
+                    <strong style="color: var(--blend-text-primary);">Project Name:</strong>
+                    <span id="projectName">—</span>
+                </p>
+                <p style="margin-bottom: var(--blend-space-sm);">
+                    <strong style="color: var(--blend-text-primary);">Client:</strong>
+                    <span id="clientName">—</span>
+                </p>
+                <p style="margin-bottom: var(--blend-space-sm);">
+                    <strong style="color: var(--blend-text-primary);">Project Type:</strong>
+                    <span id="projectType">—</span>
+                </p>
+                <p>
+                    <strong style="color: var(--blend-text-primary);">Duration:</strong>
+                    <span id="duration">—</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Key Metrics</div>
+            <div class="grid grid-2" style="gap: var(--blend-space-md);">
+                <div class="kpi-card" style="padding: var(--blend-space-lg);">
+                    <div class="kpi-label">Team Size</div>
+                    <div class="kpi-value" id="teamSize">0</div>
+                </div>
+                <div class="kpi-card" style="padding: var(--blend-space-lg);">
+                    <div class="kpi-label">Deliverables</div>
+                    <div class="kpi-value" id="deliverableCount">0</div>
+                </div>
+                <div class="kpi-card" style="padding: var(--blend-space-lg);">
+                    <div class="kpi-label">Risks</div>
+                    <div class="kpi-value" id="riskCount">0</div>
+                </div>
+                <div class="kpi-card" style="padding: var(--blend-space-lg);">
+                    <div class="kpi-label">Dependencies</div>
+                    <div class="kpi-value" id="depCount">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Results Tabs -->
+    <div class="card">
+        <div class="tabs">
+            <button class="tab-button active" data-tab="deliverables">
+                <i class="fas fa-tasks"></i> Deliverables
+            </button>
+            <button class="tab-button" data-tab="team">
+                <i class="fas fa-users"></i> Team
+            </button>
+            <button class="tab-button" data-tab="risks">
+                <i class="fas fa-exclamation-triangle"></i> Risks
+            </button>
+            <button class="tab-button" data-tab="details">
+                <i class="fas fa-info-circle"></i> Details
+            </button>
+        </div>
+
+        <!-- Deliverables Tab -->
+        <div class="tab-content" id="tab-deliverables">
+            <div id="deliverablesList" style="display: flex; flex-direction: column; gap: var(--blend-space-md);"></div>
+        </div>
+
+        <!-- Team Tab -->
+        <div class="tab-content" id="tab-team" style="display: none;">
+            <div id="teamList" style="display: flex; flex-direction: column; gap: var(--blend-space-md);"></div>
+        </div>
+
+        <!-- Risks Tab -->
+        <div class="tab-content" id="tab-risks" style="display: none;">
+            <div id="risksList" style="display: flex; flex-direction: column; gap: var(--blend-space-md);"></div>
+        </div>
+
+        <!-- Project Details Tab -->
+        <div class="tab-content" id="tab-details" style="display: none;">
+            <div style="color: var(--blend-text-secondary);">
+                <p style="margin-bottom: var(--blend-space-md);">
+                    <strong style="color: var(--blend-text-primary);">Scope:</strong>
+                    <span id="projectScope" style="display: block; margin-top: var(--blend-space-sm);">—</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: var(--blend-space-lg); margin-top: var(--blend-space-2xl); justify-content: center;">
+        <a href="/api/project/{{ project_id }}/summary" id="continueBtn" class="btn btn-primary btn-lg" style="display: none;">
+            <i class="fas fa-arrow-right"></i> Continue to Project Setup
+        </a>
+        <button type="button" id="downloadBtn" class="btn btn-secondary btn-lg" style="display: none;">
+            <i class="fas fa-download"></i> Download Results
+        </button>
+    </div>
+</section>
+
+<script>
+// Show analysis progress
+document.getElementById('analysisProgress').style.display = 'block';
+
+const progressSteps = [
+    'Extracting scope from document',
+    'Identifying deliverables and milestones',
+    'Estimating timeline and duration',
+    'Analyzing team requirements',
+    'Identifying risks and dependencies',
+    'Building work breakdown structure',
+    'Preparing PMO workbook'
+];
+
+const progressContainer = document.getElementById('progressSteps');
+
+function createProgressStep(text, isActive = false) {
+    const div = document.createElement('div');
+    div.style.cssText = 'display: flex; align-items: center; gap: var(--blend-space-md);';
+
+    const circle = document.createElement('div');
+    circle.style.cssText = `
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: ${isActive ? 'var(--blend-neon-turquoise)' : 'var(--blend-off-white)'};
+        color: ${isActive ? 'var(--blend-washed-blue)' : 'var(--blend-text-muted)'};
+        font-weight: 400;
+        flex-shrink: 0;
+    `;
+    circle.innerHTML = isActive ? '<i class="fas fa-spinner fa-spin"></i>' : '<i class="fas fa-check"></i>';
+
+    const label = document.createElement('span');
+    label.textContent = text;
+    label.style.color = isActive ? 'var(--blend-text-primary)' : 'var(--blend-text-secondary)';
+
+    div.appendChild(circle);
+    div.appendChild(label);
+    return div;
+}
+
+progressSteps.forEach((step, idx) => {
+    progressContainer.appendChild(createProgressStep(step, idx === 0));
+});
+
+// Simulate progress animation
+let currentStep = 0;
+const progressInterval = setInterval(() => {
+    const steps = progressContainer.querySelectorAll('div');
+    if (currentStep < steps.length - 1) {
+        const currentCircle = steps[currentStep].querySelector('div');
+        currentCircle.innerHTML = '<i class="fas fa-check"></i>';
+        currentCircle.style.backgroundColor = 'var(--blend-off-white)';
+        currentCircle.style.color = 'var(--blend-text-muted)';
+
+        currentStep++;
+        const nextCircle = steps[currentStep].querySelector('div');
+        nextCircle.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        nextCircle.style.backgroundColor = 'var(--blend-neon-turquoise)';
+        nextCircle.style.color = 'var(--blend-washed-blue)';
+    } else {
+        clearInterval(progressInterval);
+        showResults();
+    }
+}, 800);
+
+function showResults() {
+    document.getElementById('analysisProgress').style.display = 'none';
+    document.getElementById('resultsSection').style.display = 'block';
+
+    // Populate data from the page (these would come from Flask template context)
+    const data = window.projectData || {};
+
+    document.getElementById('projectName').textContent = data.project_name || 'Sample Project';
+    document.getElementById('clientName').textContent = data.client_name || 'Sample Client';
+    document.getElementById('projectType').textContent = data.project_type || 'Project Type';
+    document.getElementById('duration').textContent = data.duration_weeks ? `${data.duration_weeks} weeks` : 'TBD';
+    document.getElementById('teamSize').textContent = data.team_size || '0';
+
+    const deliverables = data.deliverables || [];
+    document.getElementById('deliverableCount').textContent = deliverables.length;
+    document.getElementById('deliverablesList').innerHTML = deliverables.map((d, i) => `
+        <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border: 1px solid var(--blend-border-color); border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <p style="margin: 0; font-weight: 400; color: var(--blend-text-primary);">${d.name || `Deliverable ${i+1}`}</p>
+                ${d.description ? `<p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">${d.description}</p>` : ''}
+            </div>
+            <span class="status-badge status-planned">Planned</span>
+        </div>
+    `).join('');
+
+    const team = data.team_members || [];
+    document.getElementById('teamList').innerHTML = team.map(t => `
+        <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border: 1px solid var(--blend-border-color); border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <p style="margin: 0; font-weight: 400; color: var(--blend-text-primary);">${t.role || 'Team Member'}</p>
+                <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">${t.count || 1} person(s)</p>
+            </div>
+        </div>
+    `).join('');
+
+    const risks = data.risks || [];
+    document.getElementById('riskCount').textContent = risks.length;
+    document.getElementById('risksList').innerHTML = risks.map((r, i) => `
+        <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border: 1px solid var(--blend-border-color); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 6px;">
+            <p style="margin: 0; font-weight: 400; color: var(--blend-text-primary);">${r.risk_description || `Risk ${i+1}`}</p>
+            <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Mitigation: ${r.mitigation || 'Monitor'}</p>
+        </div>
+    `).join('');
+
+    document.getElementById('projectScope').textContent = data.scope || 'Project scope details will be populated here.';
+    document.getElementById('depCount').textContent = data.dependencies ? data.dependencies.length : 0;
+
+    // Show action buttons
+    if (window.projectId) {
+        document.getElementById('continueBtn').style.display = 'inline-flex';
+        document.getElementById('continueBtn').href = `/api/project/${window.projectId}/summary`;
+    }
+    document.getElementById('downloadBtn').style.display = 'inline-flex';
+}
+
+// Tab functionality
+document.querySelectorAll('.tab-button').forEach(button => {
+    button.addEventListener('click', () => {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+        // Remove active class from all buttons
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+        // Show selected tab
+        const tabName = button.getAttribute('data-tab');
+        document.getElementById(`tab-${tabName}`).style.display = 'block';
+        button.classList.add('active');
+    });
+});
+
+// Download results
+document.getElementById('downloadBtn').addEventListener('click', () => {
+    alert('Download functionality to be implemented. Results will be included in the generated Excel workbook.');
+});
+</script>
+
+{% endblock %}

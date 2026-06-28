@@ -1,0 +1,33 @@
+Project Statement of Work
+
+Project Name: Mobile App Development
+Client: Acme Corporation
+Scope: Build a cross-platform mobile application for iOS and Android
+Duration: 6 months
+Team Size: 8 developers
+
+Key Deliverables:
+1. Mobile app MVP for iOS
+2. Mobile app MVP for Android
+3. Backend API documentation
+4. User testing report
+5. Security audit
+
+Project Timeline:
+Phase 1 (Weeks 1-2): Requirements and Design
+Phase 2 (Weeks 3-8): Development
+Phase 3 (Weeks 9-10): Testing and QA
+Phase 4 (Weeks 11-12): Deployment and Launch
+
+Team:
+- 2 iOS Developers
+- 2 Android Developers
+- 1 Backend Engineer
+- 1 QA Engineer
+- 1 Product Manager
+- 1 Designer
+
+Risks:
+- Third-party API integration complexity
+- Resource availability constraints
+- Scope creep from client requirements

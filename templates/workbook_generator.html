@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+
+{% block title %}Project Aura - Generate Workbook{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 offset-lg-1">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="display-6 fw-bold text-primary">
+                    <i class="fas fa-file-excel"></i> Generate Excel Workbook
+                </h1>
+                <p class="text-muted">Create your professional project planning workbook</p>
+            </div>
+            <a href="/" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+
+        <!-- Project Overview Card -->
+        <div class="card shadow-lg border-primary mb-4">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-briefcase"></i> Project Overview
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block">Project Name</small>
+                        <h5 id="projectName" class="mb-0">Loading...</h5>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <small class="text-muted d-block">Project Type</small>
+                        <h5 id="projectType" class="mb-0">Loading...</h5>
+                    </div>
+                    <div class="col-md-6 mb-0">
+                        <small class="text-muted d-block">Client Name</small>
+                        <h5 id="clientName" class="mb-0">Loading...</h5>
+                    </div>
+                    <div class="col-md-6 mb-0">
+                        <small class="text-muted d-block">Start Date</small>
+                        <h5 id="startDate" class="mb-0">Loading...</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workbook Contents -->
+        <div class="card shadow-lg mb-4">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-list"></i> Workbook Contents (14 Sheets)
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Project Planning Sheets:</h6>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Project Details</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Project Charter</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Assumptions</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Staffing Plan</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Project Plan</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> WBS</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Milestones</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Management & Tracking Sheets:</h6>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Dependencies</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Risk Register</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> RACI Matrix</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Leave Planner</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Project Tracker</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Holiday Calendar</li>
+                            <li class="list-group-item"><i class="fas fa-check text-success"></i> Dashboard</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert alert-info mt-4 mb-0">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Features:</strong> Professional formatting, color-coded sheets, auto-sized columns, 
+                    frozen headers, pre-filled data from your project information, and ready-to-use templates.
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Card -->
+        <div class="card shadow-lg border-secondary mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar"></i> Project Statistics
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <h3 id="teamCount" class="text-primary mb-0">0</h3>
+                        <small class="text-muted">Team Members</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h3 id="riskCount" class="text-danger mb-0">0</h3>
+                        <small class="text-muted">Identified Risks</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h3 id="deliverableCount" class="text-success mb-0">0</h3>
+                        <small class="text-muted">Deliverables</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h3 id="docCount" class="text-info mb-0">0</h3>
+                        <small class="text-muted">Uploaded Documents</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Section -->
+        <div class="card shadow-lg border-success">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-download"></i> Generate Workbook
+            </div>
+            <div class="card-body">
+                <p class="lead mb-3">
+                    Ready to create your comprehensive project planning workbook?
+                </p>
+                <p class="text-muted mb-4">
+                    Your workbook will include all project information, staffing plans, risk assessment, 
+                    timeline, and professional formatting ready for stakeholder distribution.
+                </p>
+
+                <!-- Generate Button Section -->
+                <div id="generateSection">
+                    <button type="button" class="btn btn-success btn-lg" id="generateBtn">
+                        <i class="fas fa-cogs"></i> Generate Workbook Now
+                    </button>
+                    <p class="text-muted small mt-3">
+                        Generating typically takes 10-30 seconds depending on project complexity.
+                    </p>
+                </div>
+
+                <!-- Loading Section (hidden) -->
+                <div id="loadingSection" style="display: none;">
+                    <div class="text-center p-5">
+                        <div class="spinner-border text-success mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h5>Generating Your Workbook...</h5>
+                        <p class="text-muted">Creating 14 professional sheets with your project data</p>
+                        <div class="progress mt-3" style="height: 25px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                                 id="progressBar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Section (hidden) -->
+                <div id="successSection" style="display: none;">
+                    <div class="alert alert-success mb-3">
+                        <i class="fas fa-check-circle"></i>
+                        <strong>Success!</strong> Your workbook has been generated.
+                    </div>
+                    <div class="btn-group d-flex gap-2">
+                        <a href="#" id="downloadBtn" class="btn btn-success btn-lg flex-grow-1">
+                            <i class="fas fa-download"></i> Download Workbook
+                        </a>
+                        <button type="button" class="btn btn-outline-primary btn-lg" id="previewBtn">
+                            <i class="fas fa-eye"></i> Preview Contents
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error Section (hidden) -->
+                <div id="errorSection" style="display: none;">
+                    <div class="alert alert-danger" id="errorMessage"></div>
+                    <button type="button" class="btn btn-primary btn-lg" id="retryBtn">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Panel -->
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-file-excel fa-3x text-success mb-3"></i>
+                        <h6 class="card-title">Professional Format</h6>
+                        <p class="card-text small">Color-coded sheets, professional styling, ready for distribution</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                        <h6 class="card-title">Complete Planning</h6>
+                        <p class="card-text small">14 sheets covering all aspects of project management</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-bolt fa-3x text-warning mb-3"></i>
+                        <h6 class="card-title">AI-Powered Data</h6>
+                        <p class="card-text small">Pre-filled with your extracted project information</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Workbook Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="previewContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" id="downloadFromModal" class="btn btn-success">
+                    <i class="fas fa-download"></i> Download
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const projectId = new URLSearchParams(window.location.search).get('project_id') || 
+                      sessionStorage.getItem('projectId');
+
+    // Load project preview
+    async function loadProjectPreview() {
+        try {
+            const response = await fetch(`/api/workbook/preview/${projectId}`);
+            const data = await response.json();
+
+            if (data.success) {
+                document.getElementById('projectName').textContent = data.project_name;
+                document.getElementById('projectType').textContent = data.project_type;
+                document.getElementById('clientName').textContent = data.client_name;
+                document.getElementById('startDate').textContent = 'From Database';
+                
+                document.getElementById('teamCount').textContent = data.stats.team_members;
+                document.getElementById('riskCount').textContent = data.stats.risks;
+                document.getElementById('deliverableCount').textContent = data.stats.deliverables;
+                document.getElementById('docCount').textContent = 0; // From docs if available
+            }
+        } catch (error) {
+            console.error('Error loading preview:', error);
+        }
+    }
+
+    // Generate workbook
+    document.getElementById('generateBtn').addEventListener('click', async function() {
+        const generateSection = document.getElementById('generateSection');
+        const loadingSection = document.getElementById('loadingSection');
+        
+        generateSection.style.display = 'none';
+        loadingSection.style.display = 'block';
+
+        try {
+            // Simulate progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress > 90) progress = 90;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }, 500);
+
+            const response = await fetch(`/api/workbook/generate/${projectId}`, {
+                method: 'POST'
+            });
+
+            clearInterval(progressInterval);
+            document.getElementById('progressBar').style.width = '100%';
+
+            const data = await response.json();
+            loadingSection.style.display = 'none';
+
+            if (data.success) {
+                // Show success section
+                document.getElementById('successSection').style.display = 'block';
+                document.getElementById('downloadBtn').href = data.download_url;
+                document.getElementById('downloadFromModal').href = data.download_url;
+            } else {
+                // Show error
+                document.getElementById('errorSection').style.display = 'block';
+                document.getElementById('errorMessage').innerHTML = 
+                    `<i class="fas fa-times-circle"></i> ${data.error}`;
+                generateSection.style.display = 'block';
+            }
+        } catch (error) {
+            loadingSection.style.display = 'none';
+            generateSection.style.display = 'block';
+            document.getElementById('errorSection').style.display = 'block';
+            document.getElementById('errorMessage').innerHTML = 
+                `<i class="fas fa-times-circle"></i> Error: ${error.message}`;
+        }
+    });
+
+    // Preview button
+    document.getElementById('previewBtn').addEventListener('click', function() {
+        const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
+        const previewContent = document.getElementById('previewContent');
+        
+        // Build sheet list
+        let html = '<h6>Workbook Sheets (14 Total):</h6><ul class="list-group">';
+        const sheets = [
+            '01 - Project Details',
+            '02 - Project Charter', 
+            '03 - Assumptions',
+            '04 - Staffing Plan',
+            '05 - Project Plan',
+            '06 - Work Breakdown Structure',
+            '07 - Milestones',
+            '08 - Dependencies',
+            '09 - Risk Register',
+            '10 - RACI Matrix',
+            '11 - Leave Planner',
+            '12 - Project Tracker',
+            '13 - Holiday Calendar',
+            '14 - Dashboard'
+        ];
+        
+        sheets.forEach(sheet => {
+            html += `<li class="list-group-item"><i class="fas fa-file-excel text-success"></i> ${sheet}</li>`;
+        });
+        html += '</ul>';
+        
+        previewContent.innerHTML = html;
+        previewModal.show();
+    });
+
+    // Retry button
+    document.getElementById('retryBtn').addEventListener('click', function() {
+        document.getElementById('errorSection').style.display = 'none';
+        document.getElementById('generateSection').style.display = 'block';
+    });
+
+    // Load on page load
+    document.addEventListener('DOMContentLoaded', loadProjectPreview);
+</script>
+{% endblock %}

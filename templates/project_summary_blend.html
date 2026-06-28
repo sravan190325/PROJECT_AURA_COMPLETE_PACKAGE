@@ -1,0 +1,245 @@
+{% extends "base_blend.html" %}
+
+{% block title %}Project Aura - Project Summary{% endblock %}
+
+{% block content %}
+
+<!-- Executive Snapshot -->
+<section style="margin-bottom: var(--blend-space-3xl);">
+    <h2 style="margin-bottom: var(--blend-space-xl);">Executive Snapshot</h2>
+
+    <div class="grid grid-2" style="margin-bottom: var(--blend-space-2xl);">
+        <!-- Project Health Indicator -->
+        <div class="card">
+            <div class="card-title">Project Health</div>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary); font-size: var(--blend-text-caption);">Overall Status</p>
+                    <div style="font-size: 2.5rem; font-weight: 400; color: var(--blend-washed-blue); margin-bottom: var(--blend-space-md);" id="healthScore">85%</div>
+                    <div style="display: flex; gap: var(--blend-space-lg);">
+                        <div>
+                            <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Scope</p>
+                            <span class="status-badge status-on-track">On Track</span>
+                        </div>
+                        <div>
+                            <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Schedule</p>
+                            <span class="status-badge status-on-track">On Track</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health Gauge -->
+                <div style="position: relative; width: 120px; height: 120px;">
+                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                        <!-- Background circle -->
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--blend-off-white)" stroke-width="8"/>
+                        <!-- Health arc -->
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--blend-neon-turquoise)" stroke-width="8"
+                                style="stroke-dasharray: 238, 282.7; stroke-dashoffset: 0; transform: rotate(-90deg); transform-origin: 50% 50%;" />
+                    </svg>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 400; color: var(--blend-washed-blue);">85</div>
+                        <div style="font-size: var(--blend-text-caption); color: var(--blend-text-muted);">/ 100</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Timeline -->
+        <div class="card">
+            <div class="card-title">Project Timeline</div>
+            <div style="display: flex; flex-direction: column; gap: var(--blend-space-md);">
+                <div>
+                    <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Start Date</p>
+                    <p style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="startDate">January 15, 2025</p>
+                </div>
+                <div>
+                    <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">End Date</p>
+                    <p style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="endDate">June 30, 2025</p>
+                </div>
+                <div>
+                    <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Duration</p>
+                    <p style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="duration">6 Months</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI Cards Grid -->
+    <div class="grid grid-4" style="gap: var(--blend-space-lg);">
+        <div class="kpi-card">
+            <div class="kpi-label">Total Budget</div>
+            <div class="kpi-value" id="budget">$500K</div>
+            <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Allocated</p>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-label">Team Size</div>
+            <div class="kpi-value" id="teamSize">12</div>
+            <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Resources</p>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-label">Deliverables</div>
+            <div class="kpi-value" id="deliverables">24</div>
+            <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Planned</p>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-label">Completion</div>
+            <div class="kpi-value" id="completion">45%</div>
+            <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Overall</p>
+        </div>
+    </div>
+</section>
+
+<!-- AI Recommendations Section -->
+<section style="margin-bottom: var(--blend-space-3xl);">
+    <h2 style="margin-bottom: var(--blend-space-xl);">AI Recommendations</h2>
+
+    <div style="display: flex; flex-direction: column; gap: var(--blend-space-lg);">
+        <!-- Recommendation 1 -->
+        <div class="card">
+            <div style="display: flex; gap: var(--blend-space-lg);">
+                <div style="flex-shrink: 0;">
+                    <div style="width: 48px; height: 48px; background-color: var(--blend-off-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blend-neon-turquoise);">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                </div>
+                <div style="flex-grow: 1;">
+                    <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Optimize Resource Allocation</h3>
+                    <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary);">Current team distribution shows 30% capacity utilization on QA phases. Consider redistributing frontend developers to backend work in phases 2-3 to improve throughput.</p>
+                    <div style="display: flex; gap: var(--blend-space-sm);">
+                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Priority: High</span>
+                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Impact: Medium</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendation 2 -->
+        <div class="card">
+            <div style="display: flex; gap: var(--blend-space-lg);">
+                <div style="flex-shrink: 0;">
+                    <div style="width: 48px; height: 48px; background-color: var(--blend-off-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blend-neon-turquoise);">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                </div>
+                <div style="flex-grow: 1;">
+                    <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Mitigate Schedule Risk</h3>
+                    <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary);">Three identified risks could delay Phase 3 completion by 2-3 weeks. Recommend establishing contingency buffer in sprint planning and early stakeholder alignment on trade-offs.</p>
+                    <div style="display: flex; gap: var(--blend-space-sm);">
+                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Priority: High</span>
+                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Impact: High</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendation 3 -->
+        <div class="card">
+            <div style="display: flex; gap: var(--blend-space-lg);">
+                <div style="flex-shrink: 0;">
+                    <div style="width: 48px; height: 48px; background-color: var(--blend-off-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blend-neon-turquoise);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div style="flex-grow: 1;">
+                    <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Enhance Governance Cadence</h3>
+                    <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary);">Recommend bi-weekly executive steering meetings to maintain visibility and enable rapid decision-making. Current monthly cadence may miss early warning signals.</p>
+                    <div style="display: flex; gap: var(--blend-space-sm);">
+                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Priority: Medium</span>
+                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Impact: Medium</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Risk & Opportunity Summary -->
+<section style="margin-bottom: var(--blend-space-3xl);">
+    <h2 style="margin-bottom: var(--blend-space-xl);">Risk & Opportunity Summary</h2>
+
+    <div class="grid grid-2">
+        <!-- Risks -->
+        <div class="card">
+            <div style="display: flex; align-items: center; gap: var(--blend-space-md); margin-bottom: var(--blend-space-lg);">
+                <i class="fas fa-exclamation-triangle" style="color: var(--blend-neon-turquoise); font-size: 1.5rem;"></i>
+                <h3 style="margin: 0; color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Key Risks</h3>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: var(--blend-space-md);">
+                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
+                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Scope Creep</p>
+                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Client requests may exceed planned capacity</p>
+                </div>
+
+                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
+                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Resource Availability</p>
+                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Key subject matter experts may be unavailable</p>
+                </div>
+
+                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
+                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Integration Complexity</p>
+                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Third-party system integration may face delays</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Opportunities -->
+        <div class="card">
+            <div style="display: flex; align-items: center; gap: var(--blend-space-md); margin-bottom: var(--blend-space-lg);">
+                <i class="fas fa-star" style="color: var(--blend-neon-turquoise); font-size: 1.5rem;"></i>
+                <h3 style="margin: 0; color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Opportunities</h3>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: var(--blend-space-md);">
+                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
+                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Early Delivery</p>
+                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Potential for 1-2 week acceleration through parallel streams</p>
+                </div>
+
+                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
+                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Scope Enhancements</p>
+                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Additional features can be added without timeline impact</p>
+                </div>
+
+                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
+                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Cost Optimization</p>
+                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Potential 5-10% budget reduction through automation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Action Buttons -->
+<div style="display: flex; gap: var(--blend-space-lg); margin-top: var(--blend-space-2xl); justify-content: center;">
+    <a href="/api/project/{{ project_id }}/clarification" class="btn btn-primary btn-lg">
+        <i class="fas fa-arrow-right"></i> Continue to Project Setup
+    </a>
+    <a href="/api/workbook/generate?project_id={{ project_id }}" class="btn btn-secondary btn-lg">
+        <i class="fas fa-download"></i> Generate Workbook
+    </a>
+</div>
+
+<script>
+// Populate with project data if available
+function initializePage() {
+    const data = window.projectData || {};
+
+    document.getElementById('startDate').textContent = data.start_date || 'January 15, 2025';
+    document.getElementById('endDate').textContent = data.end_date || 'June 30, 2025';
+    document.getElementById('duration').textContent = data.duration_text || '6 Months';
+    document.getElementById('budget').textContent = data.budget ? `$${data.budget}K` : '$500K';
+    document.getElementById('teamSize').textContent = data.team_size || '12';
+    document.getElementById('deliverables').textContent = data.deliverable_count || '24';
+    document.getElementById('completion').textContent = data.completion_percentage || '45%';
+    document.getElementById('healthScore').textContent = (data.health_score || 85) + '%';
+}
+
+initializePage();
+</script>
+
+{% endblock %}

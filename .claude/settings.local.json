@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Process python -ErrorAction SilentlyContinue | Where-Object {$_.ProcessName -eq \"python\"} | Stop-Process -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 2)",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__navigate",
+      "Bash(curl -s http://localhost:5000/api/project/clarify)",
+      "Bash(bash)",
+      "Bash(curl -s -X POST http://localhost:5000/api/workbook/generate/1)",
+      "Bash(python -m json.tool)"
+    ]
+  }
+}

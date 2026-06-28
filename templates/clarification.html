@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Project Aura - Clarify Project Information{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <h1 class="display-6 fw-bold text-primary">
+                <i class="fas fa-clipboard-check"></i> Complete Project Information
+            </h1>
+            <p class="lead text-muted">
+                Please provide the missing mandatory fields to complete your project setup.
+            </p>
+        </div>
+
+        <!-- Analysis Summary Card -->
+        <div class="card shadow-lg border-success mb-4">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-check-circle"></i> Project Analysis Summary
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <small class="text-muted d-block">Detected Project Type</small>
+                        <h5 class="mb-0" id="projectType">Loading...</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="text-muted d-block">Client Name</small>
+                        <h5 class="mb-0" id="clientName">Loading...</h5>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <small class="text-muted d-block">Project Scope</small>
+                    <p id="scope" class="mb-0">Loading...</p>
+                </div>
+                <div class="mb-0">
+                    <small class="text-muted d-block mb-2">Key Deliverables</small>
+                    <div id="deliverables" class="mb-0">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Missing Information Alert -->
+        <div class="alert alert-info mb-4">
+            <i class="fas fa-info-circle"></i>
+            <strong>4 mandatory fields required:</strong> Please fill in the details below to complete your project setup.
+        </div>
+
+        <!-- Clarification Form -->
+        <div class="card shadow-lg">
+            <div class="card-body p-5">
+                <form id="clarificationForm">
+                    <!-- Start Date -->
+                    <div class="mb-4">
+                        <label for="startDate" class="form-label">
+                            <strong>Project Start Date</strong>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="date" class="form-control form-control-lg" id="startDate" 
+                               name="start_date" required>
+                        <small class="form-text text-muted">When will the project begin?</small>
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="mb-4">
+                        <label for="duration" class="form-label">
+                            <strong>Project Duration</strong>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-lg">
+                            <input type="number" class="form-control" id="duration" 
+                                   name="duration" min="1" max="260" required placeholder="12">
+                            <span class="input-group-text">weeks</span>
+                        </div>
+                        <small class="form-text text-muted">How many weeks will the project run?</small>
+                    </div>
+
+                    <!-- Team Size -->
+                    <div class="mb-4">
+                        <label for="teamSize" class="form-label">
+                            <strong>Team Size</strong>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group input-group-lg">
+                            <input type="number" class="form-control" id="teamSize" 
+                                   name="team_size" min="1" max="100" required placeholder="8">
+                            <span class="input-group-text">people</span>
+                        </div>
+                        <small class="form-text text-muted">Total project team size?</small>
+                    </div>
+
+                    <!-- Delivery Model -->
+                    <div class="mb-4">
+                        <label for="deliveryModel" class="form-label">
+                            <strong>Delivery Model</strong>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select form-select-lg" id="deliveryModel" 
+                                name="delivery_model" required>
+                            <option value="">-- Select Delivery Model --</option>
+                            <option value="Fixed">Fixed Price</option>
+                            <option value="Time & Material">Time & Material</option>
+                            <option value="Hybrid">Hybrid (T&M with Cap)</option>
+                            <option value="Internal">Internal (Non-billable)</option>
+                        </select>
+                        <small class="form-text text-muted">How will the project be delivered?</small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-success btn-lg w-100">
+                        <i class="fas fa-arrow-right"></i> Create Project & Continue
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="mt-5">
+            <div class="card border-secondary">
+                <div class="card-header">
+                    <i class="fas fa-lightbulb"></i> Next Steps
+                </div>
+                <div class="card-body">
+                    <p>After providing this information, Project Aura will:</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-check text-success"></i> Create your project in the database
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check text-success"></i> Estimate detailed staffing breakdown
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check text-success"></i> Generate project-specific risks
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check text-success"></i> Define project phases and timeline
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check text-success"></i> Ready for Phase 3: Workbook Generation
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="processingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p><strong>Creating project...</strong></p>
+                <p class="text-muted small">Please wait while we set up your project with AI-powered analysis...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Populate form with analysis data
+    function populateForm() {
+        try {
+            const analysis = JSON.parse(sessionStorage.getItem('projectAnalysis') || '{}');
+            
+            document.getElementById('projectType').textContent = analysis.project_type || 'Unknown';
+            document.getElementById('clientName').textContent = analysis.client_name || 'Not identified';
+            document.getElementById('scope').textContent = analysis.scope || 'Not identified';
+            
+            const deliverables = analysis.deliverables || [];
+            const deliverablesList = deliverables.length > 0
+                ? deliverables.map(d => `<span class="badge bg-primary me-2 mb-2">${d}</span>`).join('')
+                : '<span class="text-muted">None identified</span>';
+            document.getElementById('deliverables').innerHTML = deliverablesList;
+        } catch (error) {
+            console.error('Error populating form:', error);
+        }
+    }
+
+    // Handle form submission
+    document.getElementById('clarificationForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const startDate = document.getElementById('startDate').value;
+        const duration = document.getElementById('duration').value;
+        const teamSize = document.getElementById('teamSize').value;
+        const deliveryModel = document.getElementById('deliveryModel').value;
+
+        if (!startDate || !duration || !teamSize || !deliveryModel) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        // Show processing modal
+        const processingModal = new bootstrap.Modal(document.getElementById('processingModal'));
+        processingModal.show();
+
+        try {
+            const response = await fetch('/api/project/clarify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    start_date: startDate,
+                    duration: parseInt(duration),
+                    team_size: parseInt(teamSize),
+                    delivery_model: deliveryModel
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Store project info in session storage
+                sessionStorage.setItem('projectInfo', JSON.stringify(data.project_info));
+                sessionStorage.setItem('projectId', data.project_id);
+                sessionStorage.setItem('staffing', JSON.stringify(data.staffing));
+                sessionStorage.setItem('risks', JSON.stringify(data.risks));
+                
+                // Redirect to project summary
+                setTimeout(() => {
+                    window.location.href = `/api/project/${data.project_id}/summary`;
+                }, 2000);
+            } else {
+                processingModal.hide();
+                alert('Error: ' + (data.error || 'Unknown error occurred'));
+            }
+        } catch (error) {
+            processingModal.hide();
+            console.error('Error:', error);
+            alert('An error occurred while creating the project.');
+        }
+    });
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        populateForm();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,246 @@
+{% extends "base_blend.html" %}
+
+{% block title %}Project Aura - Transform SOWs into PMO-Ready Project Plans{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1 class="hero-title">Transform SOWs into PMO-Ready Project Plans</h1>
+    <p class="hero-subtitle">AI-powered project planning in minutes, not weeks</p>
+    <p class="hero-description">
+        Upload your Statement of Work and let Project Aura automatically generate comprehensive project management artifacts—executive dashboards, detailed plans, resource allocation, and more.
+    </p>
+</section>
+
+<!-- Feature Cards -->
+<section class="mb-5">
+    <div class="grid grid-4" style="margin-bottom: var(--blend-space-3xl);">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <h3 class="feature-title">Project Planning</h3>
+            <p class="feature-description">AI-generated roadmaps and detailed task breakdowns</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3 class="feature-title">Resource Planning</h3>
+            <p class="feature-description">Automatic team allocation and capacity analysis</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="feature-title">RAID Management</h3>
+            <p class="feature-description">Unified risk, assumption, issue, and dependency tracking</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-file-excel"></i>
+            </div>
+            <h3 class="feature-title">Executive Reporting</h3>
+            <p class="feature-description">Professional KPI dashboards and health indicators</p>
+        </div>
+    </div>
+</section>
+
+<!-- Upload Section -->
+<section class="mb-5">
+    <div class="card" style="max-width: 900px; margin: 0 auto;">
+        <h2 style="text-align: center; margin-bottom: var(--blend-space-xl);">Get Started</h2>
+
+        <!-- Error Display -->
+        {% if error %}
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i>
+            <div>
+                <strong>Error:</strong> {{ error }}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Supported Formats Info -->
+        <div class="alert alert-info" style="margin-bottom: var(--blend-space-xl);">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Supported Formats:</strong> PDF, DOCX, PPTX |
+                <strong>Max Size:</strong> 10MB per file |
+                <strong>Multiple Files:</strong> Supported
+            </div>
+        </div>
+
+        <!-- Upload Form -->
+        <form id="uploadForm">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p style="margin-bottom: var(--blend-space-sm);">
+                    <strong>Drag and drop your Statement of Work here</strong>
+                </p>
+                <p style="color: var(--blend-text-muted); margin: 0;">or click to browse your files</p>
+                <input type="file" id="fileInput" name="files" multiple hidden accept=".pdf,.docx,.pptx,.doc">
+            </div>
+
+            <!-- Selected Files List -->
+            <div id="filesList" style="display: none; margin-top: var(--blend-space-lg);">
+                <p style="font-weight: 400; margin-bottom: var(--blend-space-md); color: var(--blend-text-secondary);">
+                    Selected Files:
+                </p>
+                <div id="filesContainer"></div>
+            </div>
+
+            <!-- Upload Progress -->
+            <div id="uploadProgress" style="display: none; margin-top: var(--blend-space-xl);">
+                <div class="progress-bar" style="height: 4px; background-color: var(--blend-neon-turquoise); border-radius: 2px; margin-bottom: var(--blend-space-lg); overflow: hidden;">
+                    <div id="progressBar" style="width: 0%; height: 100%; background-color: var(--blend-neon-turquoise); transition: width 300ms ease-out;"></div>
+                </div>
+                <p id="uploadStatus" style="text-align: center; color: var(--blend-text-secondary); margin: 0;">
+                    <i class="fas fa-spinner fa-spin"></i> Extracting content from your document...
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: var(--blend-space-md); margin-top: var(--blend-space-xl);">
+                <button type="button" id="uploadBtn" class="btn btn-primary btn-lg flex-grow" style="display: none;">
+                    <i class="fas fa-arrow-right"></i> Continue to Analysis
+                </button>
+                <button type="button" id="clearBtn" class="btn btn-secondary" style="display: none;">
+                    <i class="fas fa-times"></i> Clear
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Success Section (Hidden by default) -->
+<div id="successSection" style="display: none; max-width: 900px; margin: 0 auto;">
+    <div class="alert alert-success" style="margin-bottom: var(--blend-space-xl);">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <strong>Upload successful!</strong> Your document has been analyzed by AI.
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <h2 style="margin-bottom: var(--blend-space-lg);">Ready for the next step?</h2>
+        <div style="display: flex; gap: var(--blend-space-md); justify-content: center;">
+            <a href="/api/results" class="btn btn-primary btn-lg">
+                <i class="fas fa-arrow-right"></i> View Analysis & Continue
+            </a>
+            <button type="button" id="uploadMoreBtn" class="btn btn-secondary btn-lg">
+                <i class="fas fa-plus"></i> Upload Another
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+const uploadArea = document.getElementById('uploadArea');
+const fileInput = document.getElementById('fileInput');
+const uploadBtn = document.getElementById('uploadBtn');
+const clearBtn = document.getElementById('clearBtn');
+const filesList = document.getElementById('filesList');
+const filesContainer = document.getElementById('filesContainer');
+const uploadProgress = document.getElementById('uploadProgress');
+const progressBar = document.getElementById('progressBar');
+const uploadStatus = document.getElementById('uploadStatus');
+const uploadForm = document.getElementById('uploadForm');
+const uploadMoreBtn = document.getElementById('uploadMoreBtn');
+const successSection = document.getElementById('successSection');
+
+let selectedFiles = [];
+
+// Drag and drop
+uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('active');
+});
+
+uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('active');
+});
+
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('active');
+    handleFiles(e.dataTransfer.files);
+});
+
+// Click to select
+uploadArea.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+function handleFiles(files) {
+    selectedFiles = Array.from(files);
+    displayFiles();
+}
+
+function displayFiles() {
+    filesContainer.innerHTML = selectedFiles.map((file, idx) => `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--blend-space-sm); background-color: var(--blend-white); border-radius: 4px; border: 1px solid var(--blend-border-color); margin-bottom: var(--blend-space-sm);">
+            <div style="display: flex; align-items: center; gap: var(--blend-space-sm);">
+                <i class="fas fa-file-pdf" style="color: var(--blend-neon-turquoise);"></i>
+                <span style="color: var(--blend-text-secondary);">${file.name}</span>
+                <span style="color: var(--blend-text-muted); font-size: var(--blend-text-caption);">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+            </div>
+            <button type="button" class="btn btn-outline" style="padding: var(--blend-space-sm) var(--blend-space-md);" onclick="removeFile(${idx})">
+                <i class="fas fa-trash"></i> Remove
+            </button>
+        </div>
+    `).join('');
+
+    filesList.style.display = selectedFiles.length > 0 ? 'block' : 'none';
+    uploadBtn.style.display = selectedFiles.length > 0 ? 'flex' : 'none';
+    clearBtn.style.display = selectedFiles.length > 0 ? 'inline-block' : 'none';
+}
+
+function removeFile(idx) {
+    selectedFiles.splice(idx, 1);
+    displayFiles();
+}
+
+clearBtn.addEventListener('click', () => {
+    selectedFiles = [];
+    fileInput.value = '';
+    displayFiles();
+});
+
+uploadMoreBtn.addEventListener('click', () => {
+    selectedFiles = [];
+    fileInput.value = '';
+    uploadForm.style.display = 'block';
+    successSection.style.display = 'none';
+    displayFiles();
+});
+
+uploadBtn.addEventListener('click', async () => {
+    if (selectedFiles.length === 0) return;
+
+    uploadForm.style.display = 'none';
+    uploadProgress.style.display = 'block';
+
+    const formData = new FormData();
+    selectedFiles.forEach(file => formData.append('files', file));
+
+    try {
+        const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            uploadProgress.style.display = 'none';
+            successSection.style.display = 'block';
+        } else {
+            uploadStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Upload failed. Please try again.';
+        }
+    } catch (error) {
+        uploadStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error: ' + error.message;
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends "base_blend.html" %}
+
+{% block title %}Project Aura - Project Clarification{% endblock %}
+
+{% block content %}
+
+<section style="margin-bottom: var(--blend-space-3xl);">
+    <h2 style="text-align: center; margin-bottom: var(--blend-space-lg);">Project Clarification</h2>
+    <p style="text-align: center; color: var(--blend-text-secondary); max-width: 600px; margin: 0 auto var(--blend-space-3xl);">
+        Help us refine the project details by answering a few questions. This information will be used to generate your comprehensive PMO-ready project plan.
+    </p>
+
+    <div class="card" style="max-width: 700px; margin: 0 auto;">
+        <form id="clarificationForm">
+            <!-- Project Type Summary -->
+            <div style="padding: var(--blend-space-lg); background-color: var(--blend-off-white); border-radius: 6px; margin-bottom: var(--blend-space-2xl);">
+                <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Detected Project Type</p>
+                <h3 style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="projectType">Project Type</h3>
+            </div>
+
+            <!-- Start Date -->
+            <div style="margin-bottom: var(--blend-space-2xl);">
+                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">
+                    When should the project start?
+                </label>
+                <input type="date" name="start_date" id="startDate" style="
+                    width: 100%;
+                    padding: var(--blend-space-md);
+                    border: 1px solid var(--blend-border-color);
+                    border-radius: 6px;
+                    font-family: var(--blend-font);
+                    font-size: var(--blend-text-body);
+                    color: var(--blend-text-primary);
+                " required>
+                <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">
+                    Select the intended start date for this project
+                </p>
+            </div>
+
+            <!-- Duration -->
+            <div style="margin-bottom: var(--blend-space-2xl);">
+                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">
+                    How long is the project duration?
+                </label>
+                <div style="display: flex; gap: var(--blend-space-md);">
+                    <input type="number" name="duration" id="duration" min="1" max="120" value="12" style="
+                        flex-grow: 1;
+                        padding: var(--blend-space-md);
+                        border: 1px solid var(--blend-border-color);
+                        border-radius: 6px;
+                        font-family: var(--blend-font);
+                        font-size: var(--blend-text-body);
+                        color: var(--blend-text-primary);
+                    " required>
+                    <span style="
+                        padding: var(--blend-space-md);
+                        background-color: var(--blend-off-white);
+                        border: 1px solid var(--blend-border-color);
+                        border-radius: 6px;
+                        display: flex;
+                        align-items: center;
+                        color: var(--blend-text-secondary);
+                    ">weeks</span>
+                </div>
+                <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">
+                    Estimated project duration in weeks
+                </p>
+            </div>
+
+            <!-- Team Size -->
+            <div style="margin-bottom: var(--blend-space-2xl);">
+                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">
+                    What is the planned team size?
+                </label>
+                <div style="display: flex; gap: var(--blend-space-md);">
+                    <input type="number" name="team_size" id="teamSize" min="1" max="100" value="5" style="
+                        flex-grow: 1;
+                        padding: var(--blend-space-md);
+                        border: 1px solid var(--blend-border-color);
+                        border-radius: 6px;
+                        font-family: var(--blend-font);
+                        font-size: var(--blend-text-body);
+                        color: var(--blend-text-primary);
+                    " required>
+                    <span style="
+                        padding: var(--blend-space-md);
+                        background-color: var(--blend-off-white);
+                        border: 1px solid var(--blend-border-color);
+                        border-radius: 6px;
+                        display: flex;
+                        align-items: center;
+                        color: var(--blend-text-secondary);
+                    ">people</span>
+                </div>
+                <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">
+                    Total number of team members
+                </p>
+            </div>
+
+            <!-- Delivery Model -->
+            <div style="margin-bottom: var(--blend-space-2xl);">
+                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">
+                    What is the delivery model?
+                </label>
+                <div style="display: flex; flex-direction: column; gap: var(--blend-space-md);">
+                    <label style="display: flex; align-items: center; gap: var(--blend-space-md); cursor: pointer;">
+                        <input type="radio" name="delivery_model" value="Fixed" checked style="cursor: pointer;">
+                        <span style="color: var(--blend-text-secondary);">Fixed Price</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: var(--blend-space-md); cursor: pointer;">
+                        <input type="radio" name="delivery_model" value="Time & Material" style="cursor: pointer;">
+                        <span style="color: var(--blend-text-secondary);">Time & Material</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: var(--blend-space-md); cursor: pointer;">
+                        <input type="radio" name="delivery_model" value="Hybrid" style="cursor: pointer;">
+                        <span style="color: var(--blend-text-secondary);">Hybrid</span>
+                    </label>
+                </div>
+                <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">
+                    Choose the engagement model that best fits your project
+                </p>
+            </div>
+
+            <!-- Progress Indicator -->
+            <div id="submitProgress" style="display: none; margin-bottom: var(--blend-space-2xl);">
+                <div class="progress-bar" style="height: 4px; background-color: var(--blend-neon-turquoise); border-radius: 2px; margin-bottom: var(--blend-space-lg); overflow: hidden;">
+                    <div id="progressBar" style="width: 0%; height: 100%; background-color: var(--blend-neon-turquoise); transition: width 300ms ease-out;"></div>
+                </div>
+                <p id="submitStatus" style="text-align: center; color: var(--blend-text-secondary); margin: 0;">
+                    <i class="fas fa-spinner fa-spin"></i> Processing your project information...
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: var(--blend-space-md); margin-top: var(--blend-space-2xl);">
+                <button type="submit" id="submitBtn" class="btn btn-primary btn-lg flex-grow">
+                    <i class="fas fa-arrow-right"></i> Continue to Summary
+                </button>
+                <a href="/" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+// Populate project type from session/data
+function initializePage() {
+    const analysis = window.projectAnalysis || {};
+    const projectType = analysis.project_type || 'Professional Services';
+    document.getElementById('projectType').textContent = projectType;
+
+    // Set today's date as default start date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('startDate').value = today;
+}
+
+initializePage();
+
+// Form submission
+document.getElementById('clarificationForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = {
+        start_date: document.getElementById('startDate').value,
+        duration: parseInt(document.getElementById('duration').value),
+        team_size: parseInt(document.getElementById('teamSize').value),
+        delivery_model: document.querySelector('input[name="delivery_model"]:checked').value
+    };
+
+    // Show progress
+    document.getElementById('submitProgress').style.display = 'block';
+    document.getElementById('submitBtn').disabled = true;
+
+    try {
+        const response = await fetch('/api/project/clarify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Store project ID and redirect to summary
+            window.projectId = data.project_id;
+            setTimeout(() => {
+                window.location.href = `/api/project/${data.project_id}/summary`;
+            }, 1000);
+        } else {
+            document.getElementById('submitStatus').innerHTML = `
+                <i class="fas fa-exclamation-circle"></i> Error: ${data.error}
+            `;
+            document.getElementById('submitBtn').disabled = false;
+        }
+    } catch (error) {
+        document.getElementById('submitStatus').innerHTML = `
+            <i class="fas fa-exclamation-circle"></i> Error: ${error.message}
+        `;
+        document.getElementById('submitBtn').disabled = false;
+    }
+});
+</script>
+
+{% endblock %}
