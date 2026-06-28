@@ -109,7 +109,7 @@
 
     <!-- Action Buttons -->
     <div style="display: flex; gap: var(--blend-space-lg); margin-top: var(--blend-space-2xl); justify-content: center;">
-        <a href="/api/project/{{ project_id }}/summary" id="continueBtn" class="btn btn-primary btn-lg" style="display: none;">
+        <a href="/api/project/clarify" id="continueBtn" class="btn btn-primary btn-lg" style="display: none;">
             <i class="fas fa-arrow-right"></i> Continue to Project Setup
         </a>
         <button type="button" id="downloadBtn" class="btn btn-secondary btn-lg" style="display: none;">
@@ -236,9 +236,11 @@ function showResults() {
     document.getElementById('depCount').textContent = data.dependencies ? data.dependencies.length : 0;
 
     // Show action buttons
+    document.getElementById('continueBtn').style.display = 'inline-flex';
     if (window.projectId) {
-        document.getElementById('continueBtn').style.display = 'inline-flex';
         document.getElementById('continueBtn').href = `/api/project/${window.projectId}/summary`;
+    } else {
+        document.getElementById('continueBtn').href = `/api/project/clarify`;
     }
     document.getElementById('downloadBtn').style.display = 'inline-flex';
 }
