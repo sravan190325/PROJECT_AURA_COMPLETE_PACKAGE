@@ -136,6 +136,7 @@ const progressContainer = document.getElementById('progressSteps');
 
 function createProgressStep(text, isActive = false) {
     const div = document.createElement('div');
+    div.className = 'progress-step';
     div.style.cssText = 'display: flex; align-items: center; gap: var(--blend-space-md);';
 
     const circle = document.createElement('div');
@@ -169,7 +170,7 @@ progressSteps.forEach((step, idx) => {
 // Simulate progress animation
 let currentStep = 0;
 const progressInterval = setInterval(() => {
-    const steps = progressContainer.querySelectorAll('div');
+    const steps = progressContainer.querySelectorAll('.progress-step');
     if (currentStep < steps.length - 1) {
         const currentCircle = steps[currentStep].querySelector('div');
         currentCircle.innerHTML = '<i class="fas fa-check"></i>';
