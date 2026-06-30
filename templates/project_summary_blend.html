@@ -97,63 +97,8 @@
 <section style="margin-bottom: var(--blend-space-3xl);">
     <h2 style="margin-bottom: var(--blend-space-xl);">AI Recommendations</h2>
 
-    <div style="display: flex; flex-direction: column; gap: var(--blend-space-lg);">
-        <!-- Recommendation 1 -->
-        <div class="card">
-            <div style="display: flex; gap: var(--blend-space-lg);">
-                <div style="flex-shrink: 0;">
-                    <div style="width: 48px; height: 48px; background-color: var(--blend-off-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blend-neon-turquoise);">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                </div>
-                <div style="flex-grow: 1;">
-                    <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Optimize Resource Allocation</h3>
-                    <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary);">Current team distribution shows 30% capacity utilization on QA phases. Consider redistributing frontend developers to backend work in phases 2-3 to improve throughput.</p>
-                    <div style="display: flex; gap: var(--blend-space-sm);">
-                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Priority: High</span>
-                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Impact: Medium</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recommendation 2 -->
-        <div class="card">
-            <div style="display: flex; gap: var(--blend-space-lg);">
-                <div style="flex-shrink: 0;">
-                    <div style="width: 48px; height: 48px; background-color: var(--blend-off-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blend-neon-turquoise);">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                </div>
-                <div style="flex-grow: 1;">
-                    <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Mitigate Schedule Risk</h3>
-                    <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary);">Three identified risks could delay Phase 3 completion by 2-3 weeks. Recommend establishing contingency buffer in sprint planning and early stakeholder alignment on trade-offs.</p>
-                    <div style="display: flex; gap: var(--blend-space-sm);">
-                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Priority: High</span>
-                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Impact: High</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recommendation 3 -->
-        <div class="card">
-            <div style="display: flex; gap: var(--blend-space-lg);">
-                <div style="flex-shrink: 0;">
-                    <div style="width: 48px; height: 48px; background-color: var(--blend-off-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blend-neon-turquoise);">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                </div>
-                <div style="flex-grow: 1;">
-                    <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Enhance Governance Cadence</h3>
-                    <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary);">Recommend bi-weekly executive steering meetings to maintain visibility and enable rapid decision-making. Current monthly cadence may miss early warning signals.</p>
-                    <div style="display: flex; gap: var(--blend-space-sm);">
-                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Priority: Medium</span>
-                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Impact: Medium</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="recommendationsContainer" style="display: flex; flex-direction: column; gap: var(--blend-space-lg);">
+        <!-- Recommendations will be populated by JavaScript -->
     </div>
 </section>
 
@@ -169,21 +114,8 @@
                 <h3 style="margin: 0; color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Key Risks</h3>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: var(--blend-space-md);">
-                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
-                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Scope Creep</p>
-                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Client requests may exceed planned capacity</p>
-                </div>
-
-                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
-                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Resource Availability</p>
-                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Key subject matter experts may be unavailable</p>
-                </div>
-
-                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
-                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Integration Complexity</p>
-                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Third-party system integration may face delays</p>
-                </div>
+            <div id="risksContainer" style="display: flex; flex-direction: column; gap: var(--blend-space-md);">
+                <!-- Risks will be populated by JavaScript -->
             </div>
         </div>
 
@@ -194,21 +126,8 @@
                 <h3 style="margin: 0; color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">Opportunities</h3>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: var(--blend-space-md);">
-                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
-                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Early Delivery</p>
-                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Potential for 1-2 week acceleration through parallel streams</p>
-                </div>
-
-                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
-                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Scope Enhancements</p>
-                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Additional features can be added without timeline impact</p>
-                </div>
-
-                <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
-                    <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">Cost Optimization</p>
-                    <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Potential 5-10% budget reduction through automation</p>
-                </div>
+            <div id="opportunitiesContainer" style="display: flex; flex-direction: column; gap: var(--blend-space-md);">
+                <!-- Opportunities will be populated by JavaScript -->
             </div>
         </div>
     </div>
@@ -240,9 +159,114 @@ window.projectData = {
     project_name: "{{ project.get('project_name', 'Project') }}",
     client_name: "{{ project.get('client_name', 'Client') }}"
 };
+
+// Populate risks and recommendations based on project data
+populateRecommendations();
+populateRisks();
 {% else %}
 window.projectData = {};
 {% endif %}
+
+function populateRecommendations() {
+    const recommendations = [
+        {
+            title: 'Resource Optimization for ' + (window.projectData.team_size || 'Team'),
+            description: 'With a team size of ' + (window.projectData.team_size || '12') + ', optimize capacity utilization across phases. Consider load balancing to ensure all team members are effectively utilized.',
+            icon: 'fa-lightbulb',
+            priority: 'High',
+            impact: 'Medium'
+        },
+        {
+            title: 'Schedule Risk Mitigation',
+            description: 'For a ' + (window.projectData.duration_weeks || '26') + '-week project, establish contingency buffers. Build in 10-15% buffer for unforeseen challenges and dependencies.',
+            icon: 'fa-shield-alt',
+            priority: 'High',
+            impact: 'High'
+        },
+        {
+            title: 'Budget Management',
+            description: 'With a budget of $' + (window.projectData.budget || '500') + 'K, implement strict change management and cost tracking throughout the project lifecycle.',
+            icon: 'fa-chart-line',
+            priority: 'Medium',
+            impact: 'Medium'
+        }
+    ];
+
+    const container = document.getElementById('recommendationsContainer');
+    if (!container) return;
+
+    container.innerHTML = recommendations.map(rec => `
+        <div class="card">
+            <div style="display: flex; gap: var(--blend-space-lg);">
+                <div style="flex-shrink: 0;">
+                    <div style="width: 48px; height: 48px; background-color: var(--blend-off-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blend-neon-turquoise);">
+                        <i class="fas ${rec.icon}"></i>
+                    </div>
+                </div>
+                <div style="flex-grow: 1;">
+                    <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">${rec.title}</h3>
+                    <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary);">${rec.description}</p>
+                    <div style="display: flex; gap: var(--blend-space-sm);">
+                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Priority: ${rec.priority}</span>
+                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Impact: ${rec.impact}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function populateRisks() {
+    const risks = [
+        {
+            title: 'Scope Creep',
+            description: 'Client requests may exceed planned capacity. Implement strict change management and scope control processes.'
+        },
+        {
+            title: 'Resource Availability',
+            description: 'Key subject matter experts may become unavailable. Cross-train team members and maintain backup resources.'
+        },
+        {
+            title: 'Timeline Pressure',
+            description: 'With ' + (window.projectData.duration_weeks || '26') + '-week timeline, delays in early phases cascade. Monitor critical path closely.'
+        }
+    ];
+
+    const opportunities = [
+        {
+            title: 'Early Delivery',
+            description: 'Potential for 1-2 week acceleration through parallel streams and efficient task execution.'
+        },
+        {
+            title: 'Scope Enhancements',
+            description: 'Additional features can be added without timeline impact if buffered time is available.'
+        },
+        {
+            title: 'Cost Optimization',
+            description: 'Potential 5-10% budget reduction through process automation and efficient resource allocation.'
+        }
+    ];
+
+    const risksContainer = document.getElementById('risksContainer');
+    if (risksContainer) {
+        risksContainer.innerHTML = risks.map(risk => `
+            <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
+                <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">${risk.title}</p>
+                <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">${risk.description}</p>
+            </div>
+        `).join('');
+    }
+
+    const opportunitiesContainer = document.getElementById('opportunitiesContainer');
+    if (opportunitiesContainer) {
+        opportunitiesContainer.innerHTML = opportunities.map(opp => `
+            <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
+                <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">${opp.title}</p>
+                <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">${opp.description}</p>
+            </div>
+        `).join('');
+    }
+}
 
 // Populate with project data if available
 function initializePage() {
