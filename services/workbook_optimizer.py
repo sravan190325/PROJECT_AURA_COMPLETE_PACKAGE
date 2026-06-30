@@ -11,7 +11,7 @@ from openpyxl.utils import get_column_letter
 
 from services.excel_formatter import ExcelFormatter
 from services.project_plan_engine import ProjectPlanEngine
-from services.advanced_gantt_generator import AdvancedGanttGenerator
+from services.beautiful_gantt_generator import BeautifulGanttGenerator
 
 logger = logging.getLogger(__name__)
 
@@ -709,19 +709,19 @@ Key characteristics:
 
     @staticmethod
     def create_gantt_chart(workbook, project_info: Dict, db_summary: Dict = None):
-        """Create advanced Gantt chart with task hierarchy, dependencies, and critical path."""
+        """Create beautiful, professional Gantt chart with full visual enhancements."""
         try:
             if db_summary is None:
                 db_summary = {}
 
-            # Use advanced Gantt generator
-            gantt_generator = AdvancedGanttGenerator(project_info, db_summary)
+            # Use beautiful Gantt generator for professional visualization
+            gantt_generator = BeautifulGanttGenerator(project_info, db_summary)
             gantt_generator.generate_gantt_sheet(workbook)
-            logger.info("Advanced Gantt chart created successfully")
+            logger.info("Beautiful Gantt chart created successfully")
 
         except Exception as e:
-            logger.error(f"Error creating advanced Gantt chart, falling back to basic: {str(e)}")
-            # Fallback to basic Gantt if advanced fails
+            logger.error(f"Error creating beautiful Gantt chart, falling back to basic: {str(e)}")
+            # Fallback to basic Gantt if beautiful generator fails
             PMOWorkbookOptimizer._create_basic_gantt_chart(workbook, project_info)
 
     @staticmethod
