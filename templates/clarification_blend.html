@@ -14,8 +14,17 @@
         <form id="clarificationForm">
             <!-- Project Type Summary -->
             <div style="padding: var(--blend-space-lg); background-color: var(--blend-off-white); border-radius: 6px; margin-bottom: var(--blend-space-2xl);">
-                <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Detected Project Type</p>
-                <h3 style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="projectType">Project Type</h3>
+                <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Detected Information</p>
+                <div style="display: flex; gap: var(--blend-space-2xl);">
+                    <div>
+                        <p style="margin: 0 0 var(--blend-space-xs); font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Project Type</p>
+                        <h3 style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="projectType">Loading...</h3>
+                    </div>
+                    <div>
+                        <p style="margin: 0 0 var(--blend-space-xs); font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Client Name</p>
+                        <h3 style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="clientName">Loading...</h3>
+                    </div>
+                </div>
             </div>
 
             <!-- Start Date -->
@@ -145,11 +154,28 @@
 </section>
 
 <script>
-// Populate project type from session/data
+// Set analysis data from Flask template context
+{% if analysis %}
+window.projectAnalysis = {
+    project_type: "{{ analysis.get('project_type', 'Professional Services') }}",
+    client_name: "{{ analysis.get('client_name', 'Unknown Client') }}",
+    scope: "{{ analysis.get('scope', '') }}",
+    deliverables: {{ analysis.get('deliverables', []) | tojson }},
+    budget: {{ analysis.get('budget', 0) }},
+    risks: {{ analysis.get('risks', []) | tojson }}
+};
+{% else %}
+window.projectAnalysis = {};
+{% endif %}
+
+// Populate project type and client name from session/data
 function initializePage() {
     const analysis = window.projectAnalysis || {};
     const projectType = analysis.project_type || 'Professional Services';
+    const clientName = analysis.client_name || 'Unknown Client';
+
     document.getElementById('projectType').textContent = projectType;
+    document.getElementById('clientName').textContent = clientName;
 
     // Set today's date as default start date
     const today = new Date().toISOString().split('T')[0];
