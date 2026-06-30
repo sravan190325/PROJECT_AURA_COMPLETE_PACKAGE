@@ -68,16 +68,25 @@ LIGHT_BORDER = Border(
 
 
 class BeautifulGanttGenerator:
-    """Professional, visually stunning Gantt chart generator."""
+    """Professional, visually stunning Gantt chart generator with daily granularity and arrow visualization."""
 
-    def __init__(self, project_info: Dict, db_summary: Dict):
-        """Initialize beautiful Gantt chart generator."""
+    def __init__(self, project_info: Dict, db_summary: Dict, granularity: str = 'daily'):
+        """
+        Initialize beautiful Gantt chart generator.
+
+        Args:
+            project_info: Project metadata
+            db_summary: Database summary
+            granularity: 'daily' or 'weekly' (default: 'daily')
+        """
         self.project_info = project_info
         self.db_summary = db_summary
         self.tasks = []
         self.start_date = None
         self.end_date = None
         self.num_weeks = 0
+        self.num_days = 0
+        self.granularity = granularity  # 'daily' or 'weekly'
 
     def generate_gantt_sheet(self, workbook: Workbook) -> Worksheet:
         """Generate beautiful, professional Gantt chart sheet."""
@@ -119,7 +128,7 @@ class BeautifulGanttGenerator:
             raise
 
     def _initialize_timeline(self):
-        """Initialize project timeline in weeks."""
+        """Initialize project timeline in weeks and days."""
         try:
             start_str = str(self.project_info.get('start_date', '2025-01-01'))
 
@@ -135,30 +144,35 @@ class BeautifulGanttGenerator:
                 self.start_date = datetime.now()
 
             duration_weeks = int(self.project_info.get('duration_weeks', 26))
-            self.end_date = self.start_date + timedelta(weeks=duration_weeks)
             self.num_weeks = duration_weeks
+            self.num_days = duration_weeks * 7
+            self.end_date = self.start_date + timedelta(days=self.num_days)
 
-            logger.info(f"Timeline: {self.start_date.date()} to {self.end_date.date()} ({self.num_weeks} weeks)")
+            logger.info(f"Timeline: {self.start_date.date()} to {self.end_date.date()} ({self.num_weeks} weeks / {self.num_days} days)")
 
         except Exception as e:
             logger.error(f"Error initializing timeline: {str(e)}")
             self.start_date = datetime.now()
             self.num_weeks = 26
-            self.end_date = self.start_date + timedelta(weeks=self.num_weeks)
+            self.num_days = 182
+            self.end_date = self.start_date + timedelta(days=self.num_days)
 
     def _build_task_hierarchy(self):
-        """Build professional task hierarchy."""
+        """Build professional task hierarchy with daily granularity."""
         self.tasks = []
         task_id = 0
 
-        # Milestones
+        # Convert to days for calculations
+        days_per_week = 7
+
+        # Milestones (converted to days)
         milestones = [
-            {'name': '🚀 Project Kickoff', 'start_week': 0, 'color': BLEND_COLORS['primary']},
-            {'name': '✓ Requirements Review', 'start_week': 2, 'color': BLEND_COLORS['primary']},
-            {'name': '✓ Design Approval', 'start_week': 5, 'color': BLEND_COLORS['primary']},
-            {'name': '✓ Development Complete', 'start_week': self.num_weeks - 7, 'color': BLEND_COLORS['primary']},
-            {'name': '✓ Testing Complete', 'start_week': self.num_weeks - 4, 'color': BLEND_COLORS['primary']},
-            {'name': '🎯 Go-Live', 'start_week': self.num_weeks - 1, 'color': BLEND_COLORS['accent']},
+            {'name': '🚀 Project Kickoff', 'start_day': 0, 'color': BLEND_COLORS['primary']},
+            {'name': '✓ Requirements Review', 'start_day': 14, 'color': BLEND_COLORS['primary']},
+            {'name': '✓ Design Approval', 'start_day': 35, 'color': BLEND_COLORS['primary']},
+            {'name': '✓ Development Complete', 'start_day': (self.num_weeks - 7) * days_per_week, 'color': BLEND_COLORS['primary']},
+            {'name': '✓ Testing Complete', 'start_day': (self.num_weeks - 4) * days_per_week, 'color': BLEND_COLORS['primary']},
+            {'name': '🎯 Go-Live', 'start_day': (self.num_weeks - 1) * days_per_week, 'color': BLEND_COLORS['accent']},
         ]
 
         for milestone in milestones:
@@ -168,8 +182,8 @@ class BeautifulGanttGenerator:
                 'name': milestone['name'],
                 'level': 1,
                 'parent_id': None,
-                'start_week': milestone['start_week'],
-                'duration_weeks': 1,
+                'start_day': milestone['start_day'],
+                'duration_days': 1,
                 'type': 'milestone',
                 'status': 'Planned',
                 'progress': 0,
@@ -177,15 +191,15 @@ class BeautifulGanttGenerator:
                 'children': []
             })
 
-        # Phases with deliverables and tasks
+        # Phases with deliverables and tasks (in days)
         phases = [
-            {'name': 'Initiation Phase', 'start_week': 0, 'duration': 3},
-            {'name': 'Planning Phase', 'start_week': 3, 'duration': 3},
-            {'name': 'Design Phase', 'start_week': 6, 'duration': 4},
-            {'name': 'Development Phase', 'start_week': 10, 'duration': 8},
-            {'name': 'Testing Phase', 'start_week': 18, 'duration': 4},
-            {'name': 'Deployment Phase', 'start_week': 22, 'duration': 2},
-            {'name': 'Closure Phase', 'start_week': 24, 'duration': 2},
+            {'name': 'Initiation Phase', 'start_day': 0, 'duration_days': 21},
+            {'name': 'Planning Phase', 'start_day': 21, 'duration_days': 21},
+            {'name': 'Design Phase', 'start_day': 42, 'duration_days': 28},
+            {'name': 'Development Phase', 'start_day': 70, 'duration_days': 56},
+            {'name': 'Testing Phase', 'start_day': 126, 'duration_days': 28},
+            {'name': 'Deployment Phase', 'start_day': 154, 'duration_days': 14},
+            {'name': 'Closure Phase', 'start_day': 168, 'duration_days': 14},
         ]
 
         phase_deliverables = {
@@ -207,8 +221,8 @@ class BeautifulGanttGenerator:
                 'name': phase['name'],
                 'level': 2,
                 'parent_id': None,
-                'start_week': phase['start_week'],
-                'duration_weeks': phase['duration'],
+                'start_day': phase['start_day'],
+                'duration_days': phase['duration_days'],
                 'type': 'phase',
                 'status': 'Planned',
                 'progress': 0,
@@ -218,7 +232,7 @@ class BeautifulGanttGenerator:
 
             # Add deliverables
             deliverables = phase_deliverables.get(phase['name'], ['Deliverable 1', 'Deliverable 2'])
-            deliv_duration = max(1, phase['duration'] // max(1, len(deliverables)))
+            deliv_duration = max(1, phase['duration_days'] // max(1, len(deliverables)))
 
             for deliv_idx, deliverable in enumerate(deliverables):
                 task_id += 1
@@ -229,8 +243,8 @@ class BeautifulGanttGenerator:
                     'name': deliverable,
                     'level': 3,
                     'parent_id': phase_id,
-                    'start_week': phase['start_week'] + (deliv_idx * deliv_duration),
-                    'duration_weeks': deliv_duration,
+                    'start_day': phase['start_day'] + (deliv_idx * deliv_duration),
+                    'duration_days': deliv_duration,
                     'type': 'deliverable',
                     'status': 'Planned',
                     'progress': 0,
@@ -239,7 +253,7 @@ class BeautifulGanttGenerator:
                 })
 
                 # Add tasks
-                num_tasks = max(2, deliv_duration // 2)
+                num_tasks = max(2, deliv_duration // 3)
                 task_duration = max(1, deliv_duration // num_tasks)
 
                 for task_idx in range(num_tasks):
@@ -249,8 +263,8 @@ class BeautifulGanttGenerator:
                         'name': f"Task {task_idx + 1}: {deliverable[:15]}",
                         'level': 4,
                         'parent_id': deliv_id,
-                        'start_week': phase['start_week'] + (deliv_idx * deliv_duration) + (task_idx * task_duration),
-                        'duration_weeks': task_duration,
+                        'start_day': phase['start_day'] + (deliv_idx * deliv_duration) + (task_idx * task_duration),
+                        'duration_days': task_duration,
                         'type': 'task',
                         'status': 'Planned',
                         'progress': 0,
@@ -258,14 +272,21 @@ class BeautifulGanttGenerator:
                         'children': []
                     })
 
-        logger.info(f"Built task hierarchy with {len(self.tasks)} tasks")
+        logger.info(f"Built task hierarchy with {len(self.tasks)} tasks (daily granularity)")
 
     def _setup_sheet(self, ws: Worksheet):
-        """Set up worksheet dimensions."""
+        """Set up worksheet dimensions for daily granularity."""
         ws.column_dimensions['A'].width = 40
-        for week_idx in range(self.num_weeks):
-            col_letter = get_column_letter(week_idx + 2)
-            ws.column_dimensions[col_letter].width = 2.5
+
+        # For daily view, use narrower columns (2 per day)
+        if self.granularity == 'daily':
+            for day_idx in range(self.num_days):
+                col_letter = get_column_letter(day_idx + 2)
+                ws.column_dimensions[col_letter].width = 1.8
+        else:
+            for week_idx in range(self.num_weeks):
+                col_letter = get_column_letter(week_idx + 2)
+                ws.column_dimensions[col_letter].width = 2.5
 
     def _create_beautiful_header(self, ws: Worksheet):
         """Create beautiful, professional header."""
@@ -292,8 +313,8 @@ class BeautifulGanttGenerator:
         ws.row_dimensions[2].height = 22
 
     def _create_beautiful_timeline_headers(self, ws: Worksheet):
-        """Create beautiful timeline headers with month grouping."""
-        # Week headers row
+        """Create beautiful timeline headers with daily or weekly granularity."""
+        # Headers row
         row = 3
         ws.row_dimensions[row].height = 25
 
@@ -306,18 +327,32 @@ class BeautifulGanttGenerator:
         task_header.alignment = Alignment(horizontal='center', vertical='center')
         task_header.border = THIN_BORDER
 
-        # Week headers with better styling
-        for week_idx in range(self.num_weeks):
-            col = week_idx + 2
-            cell = ws.cell(row=row, column=col)
-            cell.value = f"W{week_idx + 1}"
-            cell.font = Font(bold=True, size=8, color=BLEND_COLORS['white'], name='Calibri')
-            cell.fill = PatternFill(start_color=BLEND_COLORS['primary'],
-                                   end_color=BLEND_COLORS['primary'], fill_type='solid')
-            cell.alignment = Alignment(horizontal='center', vertical='center')
-            cell.border = THIN_BORDER
+        if self.granularity == 'daily':
+            # Day headers
+            for day_idx in range(self.num_days):
+                col = day_idx + 2
+                cell = ws.cell(row=row, column=col)
+                day_num = day_idx + 1
+                # Show day number (1-182)
+                cell.value = f"{day_num % 7 if day_num % 7 != 0 else 7}"  # Day of week
+                cell.font = Font(bold=True, size=7, color=BLEND_COLORS['white'], name='Calibri')
+                cell.fill = PatternFill(start_color=BLEND_COLORS['primary'],
+                                       end_color=BLEND_COLORS['primary'], fill_type='solid')
+                cell.alignment = Alignment(horizontal='center', vertical='center')
+                cell.border = THIN_BORDER
+        else:
+            # Week headers
+            for week_idx in range(self.num_weeks):
+                col = week_idx + 2
+                cell = ws.cell(row=row, column=col)
+                cell.value = f"W{week_idx + 1}"
+                cell.font = Font(bold=True, size=8, color=BLEND_COLORS['white'], name='Calibri')
+                cell.fill = PatternFill(start_color=BLEND_COLORS['primary'],
+                                       end_color=BLEND_COLORS['primary'], fill_type='solid')
+                cell.alignment = Alignment(horizontal='center', vertical='center')
+                cell.border = THIN_BORDER
 
-        # Month divider row
+        # Month/Week divider row
         row = 4
         ws.row_dimensions[row].height = 18
         ws.merge_cells('A4:A4')
@@ -328,31 +363,56 @@ class BeautifulGanttGenerator:
                                          end_color=BLEND_COLORS['gray_600'], fill_type='solid')
         timeline_label.alignment = Alignment(horizontal='center', vertical='center')
 
-        current_month = None
-        month_start_col = 2
+        if self.granularity == 'daily':
+            # Show actual dates for daily view
+            current_month = None
+            month_start_col = 2
 
-        for week_idx in range(self.num_weeks):
-            week_date = self.start_date + timedelta(weeks=week_idx)
-            month_key = (week_date.year, week_date.month)
+            for day_idx in range(self.num_days):
+                current_date = self.start_date + timedelta(days=day_idx)
+                month_key = (current_date.year, current_date.month)
 
-            if current_month is None:
-                current_month = month_key
-            elif current_month != month_key:
-                # Fill month header for previous month
-                if month_start_col < week_idx + 2:
-                    month_cell = ws.cell(row=4, column=month_start_col)
-                    month_date = self.start_date + timedelta(weeks=month_start_col - 2)
-                    month_cell.value = month_date.strftime('%b %Y')
-                    month_cell.font = Font(bold=True, size=9, color=BLEND_COLORS['white'], name='Calibri')
-                    month_cell.fill = PatternFill(start_color=BLEND_COLORS['gray_400'],
-                                                 end_color=BLEND_COLORS['gray_400'], fill_type='solid')
-                    month_cell.alignment = Alignment(horizontal='center', vertical='center')
+                if current_month is None:
+                    current_month = month_key
+                elif current_month != month_key:
+                    # Show previous month label
+                    if month_start_col < day_idx + 2:
+                        month_cell = ws.cell(row=4, column=month_start_col)
+                        month_date = self.start_date + timedelta(days=month_start_col - 2)
+                        month_cell.value = month_date.strftime('%b %Y')
+                        month_cell.font = Font(bold=True, size=8, color=BLEND_COLORS['white'], name='Calibri')
+                        month_cell.fill = PatternFill(start_color=BLEND_COLORS['gray_400'],
+                                                     end_color=BLEND_COLORS['gray_400'], fill_type='solid')
+                        month_cell.alignment = Alignment(horizontal='center', vertical='center')
 
-                current_month = month_key
-                month_start_col = week_idx + 2
+                    current_month = month_key
+                    month_start_col = day_idx + 2
+        else:
+            # Show weeks for weekly view
+            current_month = None
+            month_start_col = 2
+
+            for week_idx in range(self.num_weeks):
+                week_date = self.start_date + timedelta(weeks=week_idx)
+                month_key = (week_date.year, week_date.month)
+
+                if current_month is None:
+                    current_month = month_key
+                elif current_month != month_key:
+                    if month_start_col < week_idx + 2:
+                        month_cell = ws.cell(row=4, column=month_start_col)
+                        month_date = self.start_date + timedelta(weeks=month_start_col - 2)
+                        month_cell.value = month_date.strftime('%b %Y')
+                        month_cell.font = Font(bold=True, size=9, color=BLEND_COLORS['white'], name='Calibri')
+                        month_cell.fill = PatternFill(start_color=BLEND_COLORS['gray_400'],
+                                                     end_color=BLEND_COLORS['gray_400'], fill_type='solid')
+                        month_cell.alignment = Alignment(horizontal='center', vertical='center')
+
+                    current_month = month_key
+                    month_start_col = week_idx + 2
 
     def _create_beautiful_task_rows(self, ws: Worksheet):
-        """Create beautiful task rows with professional styling."""
+        """Create beautiful task rows with arrow visualization and daily granularity."""
         row = 5
         indent_levels = {1: '', 2: '  ', 3: '    ', 4: '      '}
 
@@ -384,36 +444,81 @@ class BeautifulGanttGenerator:
             name_cell.alignment = Alignment(horizontal='left', vertical='center')
             name_cell.border = THIN_BORDER
 
-            # Draw task bars in timeline
-            for week_idx in range(self.num_weeks):
-                col = week_idx + 2
-                cell = ws.cell(row=row, column=col)
+            # Draw task visualization in timeline
+            if self.granularity == 'daily':
+                # Daily granularity with arrows
+                for day_idx in range(self.num_days):
+                    col = day_idx + 2
+                    cell = ws.cell(row=row, column=col)
 
-                # Check if this week is in task's duration
-                if task['start_week'] <= week_idx < task['start_week'] + task['duration_weeks']:
-                    if task['type'] == 'milestone':
-                        # Milestone diamond marker
-                        cell.value = '◆'
-                        cell.font = Font(size=14, color=task['color'], bold=True, name='Calibri')
-                        cell.alignment = Alignment(horizontal='center', vertical='center')
-                        cell.fill = PatternFill(start_color=BLEND_COLORS['white'],
-                                               end_color=BLEND_COLORS['white'], fill_type='solid')
+                    # Check if this day is in task's duration
+                    if task['start_day'] <= day_idx < task['start_day'] + task['duration_days']:
+                        if task['type'] == 'milestone':
+                            # Milestone diamond marker
+                            cell.value = '◆'
+                            cell.font = Font(size=12, color=task['color'], bold=True, name='Calibri')
+                            cell.alignment = Alignment(horizontal='center', vertical='center')
+                            cell.fill = PatternFill(start_color=BLEND_COLORS['white'],
+                                                   end_color=BLEND_COLORS['white'], fill_type='solid')
+                        else:
+                            # Arrow visualization for task progression
+                            if day_idx == task['start_day']:
+                                # Start of task - arrow head
+                                cell.value = '→'
+                                cell.font = Font(size=9, bold=True, color=BLEND_COLORS['white'], name='Calibri')
+                            elif day_idx == task['start_day'] + task['duration_days'] - 1:
+                                # End of task - arrow tail
+                                cell.value = '→'
+                                cell.font = Font(size=9, bold=True, color=BLEND_COLORS['white'], name='Calibri')
+                            else:
+                                # Middle of task - arrow line
+                                cell.value = '▬'
+                                cell.font = Font(size=8, bold=True, color=BLEND_COLORS['white'], name='Calibri')
+
+                            cell.fill = PatternFill(start_color=task['color'],
+                                                   end_color=task['color'], fill_type='solid')
+                            cell.alignment = Alignment(horizontal='center', vertical='center')
+
+                        cell.border = THIN_BORDER
+
                     else:
-                        # Task bar
-                        cell.fill = PatternFill(start_color=task['color'],
-                                               end_color=task['color'], fill_type='solid')
-                        cell.font = Font(size=10, bold=True, color=BLEND_COLORS['white'], name='Calibri')
-                        cell.alignment = Alignment(horizontal='center', vertical='center')
-                        cell.value = '█'
+                        # Empty timeline cell with light background
+                        if (row - 5) % 2 == 0:
+                            cell.fill = PatternFill(start_color=BLEND_COLORS['gray_50'],
+                                                   end_color=BLEND_COLORS['gray_50'], fill_type='solid')
+                        cell.border = LIGHT_BORDER
+            else:
+                # Weekly granularity with boxes (legacy)
+                for week_idx in range(self.num_weeks):
+                    col = week_idx + 2
+                    cell = ws.cell(row=row, column=col)
 
-                    cell.border = THIN_BORDER
+                    # Convert weeks to days for comparison
+                    week_start_day = week_idx * 7
+                    week_end_day = (week_idx + 1) * 7
 
-                else:
-                    # Empty timeline cell with light background
-                    if (row - 5) % 2 == 0:
-                        cell.fill = PatternFill(start_color=BLEND_COLORS['gray_50'],
-                                               end_color=BLEND_COLORS['gray_50'], fill_type='solid')
-                    cell.border = LIGHT_BORDER
+                    # Check if this week overlaps with task
+                    if task['start_day'] < week_end_day and task['start_day'] + task['duration_days'] > week_start_day:
+                        if task['type'] == 'milestone':
+                            cell.value = '◆'
+                            cell.font = Font(size=14, color=task['color'], bold=True, name='Calibri')
+                            cell.alignment = Alignment(horizontal='center', vertical='center')
+                            cell.fill = PatternFill(start_color=BLEND_COLORS['white'],
+                                                   end_color=BLEND_COLORS['white'], fill_type='solid')
+                        else:
+                            cell.fill = PatternFill(start_color=task['color'],
+                                                   end_color=task['color'], fill_type='solid')
+                            cell.font = Font(size=10, bold=True, color=BLEND_COLORS['white'], name='Calibri')
+                            cell.alignment = Alignment(horizontal='center', vertical='center')
+                            cell.value = '█'
+
+                        cell.border = THIN_BORDER
+
+                    else:
+                        if (row - 5) % 2 == 0:
+                            cell.fill = PatternFill(start_color=BLEND_COLORS['gray_50'],
+                                                   end_color=BLEND_COLORS['gray_50'], fill_type='solid')
+                        cell.border = LIGHT_BORDER
 
             row += 1
 
