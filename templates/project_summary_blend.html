@@ -225,6 +225,23 @@
 </div>
 
 <script>
+// Set project data from Flask template context
+{% if project %}
+window.projectData = {
+    start_date: "{{ project.get('start_date', 'January 15, 2025') }}",
+    end_date: "{{ project.get('end_date', 'June 30, 2025') }}",
+    duration_text: "{{ project.get('duration_text', '6 Months') }}",
+    duration_weeks: {{ project.get('duration_weeks', 26) }},
+    budget: {{ project.get('budget', 500) }},
+    team_size: {{ project.get('team_size', 12) }},
+    deliverable_count: {{ project.get('deliverable_count', 24) }},
+    completion_percentage: "{{ project.get('completion_percentage', '45%') }}",
+    health_score: {{ project.get('health_score', 85) }}
+};
+{% else %}
+window.projectData = {};
+{% endif %}
+
 // Populate with project data if available
 function initializePage() {
     const data = window.projectData || {};
