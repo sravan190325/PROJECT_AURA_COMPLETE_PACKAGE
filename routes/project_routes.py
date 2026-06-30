@@ -340,10 +340,31 @@ def get_project_summary_view(project_id):
     try:
         project_summary = db_service.get_project_summary(project_id)
 
-        if not project_summary:
+        if not project_summary or not project_summary.get('project'):
             return render_template('project_summary_blend.html', error='Project not found'), 404
 
-        return render_template('project_summary_blend.html', project=project_summary, project_id=project_id), 200
+        # Extract the actual project data from nested structure
+        project_data = project_summary.get('project', {})
+
+        # Calculate end date from start date and duration
+        from datetime import datetime, timedelta
+        if project_data.get('start_date') and project_data.get('duration_weeks'):
+            try:
+                start = datetime.strptime(project_data['start_date'], '%m-%d-%Y')
+                end = start + timedelta(weeks=project_data['duration_weeks'])
+                project_data['end_date'] = end.strftime('%m-%d-%Y')
+                # Format for display
+                project_data['start_date_display'] = start.strftime('%B %d, %Y')
+                project_data['end_date_display'] = end.strftime('%B %d, %Y')
+            except:
+                pass
+
+        # Add additional summary fields
+        project_data['deliverable_count'] = len(project_summary.get('deliverables', []))
+        project_data['team_count'] = sum([t.get('count', 1) for t in project_summary.get('team_members', [])])
+        project_data['risk_count'] = len(project_summary.get('risks', []))
+
+        return render_template('project_summary_blend.html', project=project_data, project_id=project_id), 200
 
     except Exception as e:
         error_msg = f"Error loading project summary: {str(e)}"
