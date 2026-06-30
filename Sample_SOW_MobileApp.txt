@@ -1,0 +1,299 @@
+STATEMENT OF WORK (SOW)
+Mobile Banking Application Development
+
+PROJECT OVERVIEW
+================
+
+Client: Acme Financial Services Inc.
+Project Name: Mobile Banking Platform - Phase 1
+Project Manager: Sarah Johnson (Acme)
+Technical Lead: Michael Chen (Development Team)
+Start Date: August 1, 2026
+Target Completion: February 28, 2027
+Project Duration: 6 months
+
+EXECUTIVE SUMMARY
+=================
+
+Acme Financial Services requires a modern, user-friendly mobile banking application for iOS and Android platforms. The application will enable customers to manage accounts, transfer funds, pay bills, and access financial planning tools from their smartphones.
+
+The primary objective is to deliver a production-ready mobile application that enhances customer engagement and reduces operational costs through digital self-service capabilities.
+
+PROJECT SCOPE
+=============
+
+DELIVERABLES (In Scope):
+------------------------
+1. iOS Mobile Application (Native Swift)
+   - Account management dashboard
+   - Fund transfer functionality
+   - Bill payment system
+   - Transaction history and statements
+   - Mobile wallet integration
+   - Push notifications
+   - Biometric authentication (Face ID, Touch ID)
+
+2. Android Mobile Application (Native Kotlin)
+   - Feature parity with iOS application
+   - Material Design implementation
+   - Offline functionality for basic features
+   - Integration with Google Pay
+   - Push notifications
+   - Biometric authentication
+
+3. Backend APIs
+   - Account services API
+   - Transaction processing API
+   - Bill payment API
+   - User authentication & security API
+   - Analytics and logging API
+   - Cloud infrastructure setup (AWS)
+
+4. Security & Compliance
+   - PCI DSS compliance certification
+   - HIPAA compliance for personal data
+   - Encryption protocols (TLS 1.3 minimum)
+   - Multi-factor authentication
+   - Session management security
+
+5. Quality Assurance
+   - Functional testing (iOS and Android)
+   - Security testing and penetration testing
+   - Performance testing and optimization
+   - User acceptance testing (UAT)
+   - Compliance validation
+
+6. Documentation & Support
+   - Technical architecture documentation
+   - API documentation
+   - User guides and help documentation
+   - Deployment and maintenance guide
+   - Knowledge transfer sessions
+
+OUT OF SCOPE:
+-------------
+- Web portal (planned for Phase 2)
+- Advanced financial advisory features
+- International payment capabilities
+- AR/VR features
+- Cryptocurrency integration
+
+TECHNICAL REQUIREMENTS
+======================
+
+FUNCTIONAL REQUIREMENTS:
+------------------------
+1. User Authentication
+   - Login with username/password
+   - Biometric authentication (fingerprint, face recognition)
+   - Two-factor authentication (SMS, email)
+   - Session timeout after 15 minutes of inactivity
+   - Secure password reset functionality
+
+2. Account Management
+   - View all linked accounts
+   - Account balance and details
+   - Account transaction history (12 months)
+   - Download account statements (PDF format)
+   - Set account alerts and notifications
+
+3. Fund Transfers
+   - Transfer between own accounts
+   - Transfer to other registered users
+   - Transfer to external bank accounts
+   - Schedule recurring transfers
+   - Transfer cancellation (if pending)
+   - Transaction confirmation and receipts
+
+4. Bill Payment
+   - Add and manage billers
+   - Schedule bill payments
+   - Recurring payment setup
+   - Payment status tracking
+   - Payment history
+
+5. Mobile Wallet
+   - Add debit/credit cards to wallet
+   - In-app payment capability
+   - Contactless payment support
+   - Card management (add, delete, lock/unlock)
+
+6. Notifications
+   - Push notifications for transactions
+   - Email alerts for login attempts
+   - SMS alerts for high-value transactions
+   - Customizable notification preferences
+
+NON-FUNCTIONAL REQUIREMENTS:
+---------------------------
+1. Performance
+   - App launch time: < 2 seconds
+   - Screen load time: < 1.5 seconds
+   - API response time: < 500ms (95th percentile)
+   - Battery consumption: < 5% per hour of usage
+
+2. Security
+   - End-to-end encryption for sensitive data
+   - Secure storage of credentials in device keychain
+   - Certificate pinning for API communication
+   - Protection against common vulnerabilities (OWASP Top 10)
+   - Compliance with banking security standards
+
+3. Reliability
+   - System availability: 99.9% uptime SLA
+   - Data backup and disaster recovery
+   - Graceful degradation during API failures
+   - Offline mode support for read-only features
+
+4. Scalability
+   - Support for 1 million concurrent users
+   - Horizontal scaling architecture
+   - Database optimization for high transaction volumes
+   - CDN integration for static assets
+
+5. User Experience
+   - Support for iOS 13+ and Android 9+
+   - Multiple screen size support (responsive design)
+   - Accessibility compliance (WCAG 2.1 AA)
+   - Multi-language support (English, Spanish, French)
+   - Dark mode support
+
+TEAM COMPOSITION
+================
+
+Development Team:
+- Tech Lead / Architect: 1 FTE
+- iOS Developers: 2 FTE
+- Android Developers: 2 FTE
+- Backend Developers: 3 FTE
+- QA Engineers: 2 FTE
+- DevOps Engineer: 1 FTE
+- UI/UX Designer: 1 FTE
+- Business Analyst: 1 FTE
+- Project Manager: 1 FTE
+
+Total: 14 FTE (Full-Time Equivalents)
+
+KEY ASSUMPTIONS
+===============
+1. Client will provide timely feedback and approvals
+2. Third-party API integrations (payment gateways) will be available
+3. Client will conduct user acceptance testing within agreed timeframe
+4. No major scope changes after requirements sign-off
+5. Client infrastructure meets minimum security requirements
+6. Team members will be available full-time throughout project duration
+
+CONSTRAINTS & RISKS
+===================
+
+CONSTRAINTS:
+- Budget: $1.2 million
+- Timeline: 6 months fixed
+- Technology stack: Swift (iOS), Kotlin (Android), Node.js (Backend)
+- Compliance: Must meet PCI DSS Level 1
+
+KEY RISKS:
+1. Integration with legacy banking systems - Mitigation: Early integration testing
+2. Security compliance delays - Mitigation: Early security reviews
+3. Resource availability - Mitigation: Documented backup resources
+4. Third-party API delays - Mitigation: Mock API development in parallel
+5. Scope creep - Mitigation: Strict change control process
+
+DELIVERABLES TIMELINE
+=====================
+
+Phase 1: Requirements & Design (Weeks 1-4)
+- Requirements finalization
+- Technical architecture design
+- UI/UX design mockups
+- Security assessment
+
+Phase 2: Development - Part 1 (Weeks 5-12)
+- Backend API development
+- iOS app development (basic features)
+- Android app development (basic features)
+- Database design and setup
+
+Phase 3: Development - Part 2 (Weeks 13-18)
+- Advanced features development
+- Security implementation
+- Performance optimization
+- Integration testing
+
+Phase 4: Testing & QA (Weeks 19-22)
+- Functional testing
+- Security testing (penetration test)
+- Performance testing
+- User acceptance testing
+
+Phase 5: Deployment & Support (Weeks 23-26)
+- App store submission and approval
+- Production deployment
+- Knowledge transfer
+- 2-week post-launch support
+
+ACCEPTANCE CRITERIA
+===================
+1. All functional requirements completed and tested
+2. Security compliance certification received
+3. Performance benchmarks met
+4. User acceptance testing passed
+5. Documentation complete and delivered
+6. Zero critical defects at production release
+7. All requirements traced and verified
+
+ASSUMPTIONS & DEPENDENCIES
+==========================
+
+ACME'S RESPONSIBILITIES:
+- Provide timely business requirements and feedback
+- Assign business stakeholder for decision-making
+- Provide test environment and data
+- Approval of deliverables within 5 business days
+- Conduct UAT within agreed schedule
+
+DEVELOPMENT TEAM'S RESPONSIBILITIES:
+- Deliver quality code with 80%+ code coverage
+- Maintain project documentation
+- Provide daily standups and weekly status reports
+- Support UAT and bug fixes
+- Perform post-launch support (2 weeks)
+
+EXCLUSIONS
+==========
+This SOW does not include:
+- Support beyond 2 weeks post-launch
+- Custom compliance certifications beyond PCI DSS
+- Integration with systems not specified in requirements
+- Training beyond knowledge transfer
+- Ongoing maintenance and support contracts
+
+PAYMENT TERMS
+=============
+Total Project Cost: $1,200,000 USD
+
+Payment Schedule:
+- Initial payment (20%): $240,000 upon contract signing
+- Milestone 1 (25%): $300,000 upon Phase 2 completion
+- Milestone 2 (25%): $300,000 upon Phase 4 completion
+- Final payment (30%): $360,000 upon production release
+
+All payments due within 30 days of invoice date.
+
+SIGNATURES
+==========
+
+For Acme Financial Services:
+
+Name: ________________________
+Title: ________________________
+Date: ________________________
+
+
+For Development Team:
+
+Name: ________________________
+Title: ________________________
+Date: ________________________
+
+---END OF STATEMENT OF WORK---

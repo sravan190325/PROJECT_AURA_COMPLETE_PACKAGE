@@ -5,11 +5,12 @@ Handles project management endpoints.
 
 import os
 import logging
-from flask import Blueprint, request, render_template, jsonify, session
+from flask import Blueprint, request, render_template, jsonify, session, redirect, url_for
 from dotenv import load_dotenv
 from services.claude_service import ClaudeService
 from services.project_detector import ProjectDetector
 from services.database_service import DatabaseService
+from demo_mode import is_demo_mode, get_demo_project, get_demo_analysis
 
 logger = logging.getLogger(__name__)
 
@@ -23,16 +24,36 @@ api_key = os.environ.get('ANTHROPIC_API_KEY')
 claude_service = ClaudeService(api_key) if api_key else None
 db_service = DatabaseService()
 
+# Check for demo mode
+DEMO_MODE = is_demo_mode()
+
 
 @project_bp.route('/analyze', methods=['POST'])
 def analyze_documents():
     """
     Analyze uploaded documents with Claude AI to detect project type and extract information.
-    
+
     Returns:
         JSON response with analysis results
     """
     try:
+        # Demo mode - return mock data
+        if DEMO_MODE:
+            demo_data = get_demo_analysis()
+            session['project_analysis'] = demo_data
+            session.modified = True
+
+            return jsonify({
+                'success': True,
+                'analysis': demo_data,
+                'validation': {'completeness': 95, 'confidence': 92},
+                'risks': demo_data.get('risks', [])[:5],
+                'config': {
+                    'staffing_template': ['Tech Lead', 'Developers', 'QA', 'DevOps'],
+                    'phases': ['Requirements', 'Design', 'Development', 'Testing', 'Deployment']
+                }
+            }), 200
+
         # Check if Claude API is configured
         if not claude_service:
             return jsonify({
@@ -42,7 +63,7 @@ def analyze_documents():
 
         # Get processed documents from session
         documents = session.get('processed_documents', [])
-        
+
         if not documents:
             return jsonify({
                 'success': False,
@@ -115,9 +136,13 @@ def clarify_project():
         # Get analysis from session
         analysis = session.get('project_analysis', {})
 
-        if not analysis:
-            return render_template('index_blend.html',
-                                 error='No analysis found. Please upload and analyze documents first.')
+        # If no analysis, redirect to home
+        if not analysis or analysis == {}:
+            logger.info("No analysis in session, redirecting to home")
+            response = redirect('/')
+            response.cache_control.no_cache = True
+            response.cache_control.no_store = True
+            return response
 
         return render_template('clarification_blend.html', analysis=analysis)
 
@@ -130,10 +155,29 @@ def clarify_project():
             'team_size': request.json.get('team_size'),
             'delivery_model': request.json.get('delivery_model')
         }
-        
+
+        # Demo mode - return mock project
+        if DEMO_MODE:
+            demo_project = get_demo_project()
+            demo_project.update({
+                'start_date': user_input.get('start_date', demo_project['start_date']),
+                'duration_weeks': int(user_input.get('duration', 26)),
+                'team_size': int(user_input.get('team_size', 14)),
+                'delivery_model': user_input.get('delivery_model', 'Fixed'),
+            })
+
+            project_id = db_service.create_project(demo_project)
+
+            return jsonify({
+                'success': True,
+                'project_id': project_id,
+                'project_name': demo_project['project_name'],
+                'redirect': f'/api/project/{project_id}/summary'
+            }), 200
+
         # Get analysis from session
         analysis = session.get('project_analysis', {})
-        
+
         if not analysis:
             return jsonify({
                 'success': False,

@@ -7,7 +7,8 @@
       "Bash(curl -s http://localhost:5000/api/project/clarify)",
       "Bash(bash)",
       "Bash(curl -s -X POST http://localhost:5000/api/workbook/generate/1)",
-      "Bash(python -m json.tool)"
+      "Bash(python -m json.tool)",
+      "Bash(curl -s https://project-aura-xadb.onrender.com/)"
     ]
   }
 }
