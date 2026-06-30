@@ -69,7 +69,7 @@ class PMOWorkbookGenerator:
             PMOWorkbookOptimizer.create_detailed_project_plan(self.workbook, self.project_info, self.db_summary)
 
             logger.info("Creating Gantt Chart...")
-            PMOWorkbookOptimizer.create_gantt_chart(self.workbook, self.project_info)
+            PMOWorkbookOptimizer.create_gantt_chart(self.workbook, self.project_info, self.db_summary)
 
             logger.info("Creating Milestone Tracker...")
             PMOWorkbookOptimizer.create_milestone_tracker(self.workbook, self.project_info, self.db_summary)
