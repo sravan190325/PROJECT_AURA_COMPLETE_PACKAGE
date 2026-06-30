@@ -18,23 +18,23 @@
   --blend-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --blend-font-mono: 'Fira Code', 'Courier New', monospace;
 
-  /* Scale (Light Mode) */
-  --blend-text-display: 3rem;
-  --blend-text-h1: 2rem;
-  --blend-text-h2: 1.5rem;
-  --blend-text-h3: 1.125rem;
-  --blend-text-body: 1rem;
-  --blend-text-caption: 0.875rem;
-  --blend-text-micro: 0.75rem;
+  /* Scale (Light Mode) - Optimized for screen fit */
+  --blend-text-display: 2.2rem;
+  --blend-text-h1: 1.6rem;
+  --blend-text-h2: 1.3rem;
+  --blend-text-h3: 1rem;
+  --blend-text-body: 0.95rem;
+  --blend-text-caption: 0.8rem;
+  --blend-text-micro: 0.7rem;
 
-  /* Spacing Scale */
-  --blend-space-xs: 0.25rem;
-  --blend-space-sm: 0.5rem;
-  --blend-space-md: 1rem;
-  --blend-space-lg: 1.5rem;
-  --blend-space-xl: 2rem;
-  --blend-space-2xl: 3rem;
-  --blend-space-3xl: 4rem;
+  /* Spacing Scale - Compact for better fit */
+  --blend-space-xs: 0.2rem;
+  --blend-space-sm: 0.4rem;
+  --blend-space-md: 0.8rem;
+  --blend-space-lg: 1.2rem;
+  --blend-space-xl: 1.6rem;
+  --blend-space-2xl: 2.4rem;
+  --blend-space-3xl: 3.2rem;
 
   /* Shadows */
   --blend-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -304,7 +304,7 @@ footer {
 }
 
 .kpi-value {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: var(--blend-accent-color);
   font-weight: 400;
 }
@@ -325,7 +325,7 @@ footer {
 }
 
 .feature-icon {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: var(--blend-neon-turquoise);
   margin-bottom: var(--blend-space-md);
 }
@@ -344,9 +344,9 @@ footer {
 /* Hero Section */
 .hero {
   background-color: var(--blend-bg-primary);
-  padding: var(--blend-space-3xl) var(--blend-space-xl);
+  padding: var(--blend-space-2xl) var(--blend-space-lg);
   text-align: center;
-  margin-bottom: var(--blend-space-3xl);
+  margin-bottom: var(--blend-space-2xl);
 }
 
 .hero-title {
@@ -376,7 +376,7 @@ footer {
 .upload-area {
   border: 2px dashed var(--blend-border-color);
   border-radius: 8px;
-  padding: var(--blend-space-3xl) var(--blend-space-xl);
+  padding: var(--blend-space-2xl) var(--blend-space-lg);
   text-align: center;
   cursor: pointer;
   transition: all 200ms ease-out;
@@ -394,7 +394,7 @@ footer {
 }
 
 .upload-area i {
-  font-size: 3rem;
+  font-size: 2.2rem;
   color: var(--blend-neon-turquoise);
   margin-bottom: var(--blend-space-lg);
   display: block;
