@@ -526,7 +526,7 @@ class BeautifulGanttGenerator:
         self._add_summary_info(ws, row)
 
     def _add_summary_info(self, ws: Worksheet, start_row: int):
-        """Add project summary information."""
+        """Add project summary information with calculated dates."""
         row = start_row + 2
 
         # Project Summary Section
@@ -538,14 +538,21 @@ class BeautifulGanttGenerator:
                                         end_color=BLEND_COLORS['primary_dark'], fill_type='solid')
         summary_title.alignment = Alignment(horizontal='center', vertical='center')
 
-        # Project details
+        # Verify end_date is calculated from start_date + duration_weeks
+        if not self.end_date or self.end_date == self.start_date:
+            logger.warning("End date not properly calculated, recalculating...")
+            duration_weeks = int(self.project_info.get('duration_weeks', 26))
+            self.end_date = self.start_date + timedelta(weeks=duration_weeks)
+
+        # Project details - all calculated from inputs
         row += 1
         details = [
             ('Project Name', self.project_info.get('project_name', 'N/A')),
             ('Client', self.project_info.get('client_name', 'N/A')),
             ('Start Date', self.start_date.strftime('%B %d, %Y')),
-            ('End Date', self.end_date.strftime('%B %d, %Y')),
-            ('Duration', f"{self.num_weeks} weeks"),
+            ('Duration (weeks)', str(self.num_weeks)),
+            ('End Date (calculated)', f"{self.end_date.strftime('%B %d, %Y')} (Start + {self.num_weeks}w)"),
+            ('Total Days', str(self.num_days)),
             ('Team Size', f"{self.project_info.get('team_size', 'N/A')} people"),
         ]
 
@@ -553,20 +560,34 @@ class BeautifulGanttGenerator:
             # Label
             label_cell = ws.cell(row=row, column=1)
             label_cell.value = label
-            label_cell.font = Font(bold=True, size=10, color=BLEND_COLORS['primary_dark'], name='Calibri')
+            label_cell.font = Font(bold=True, size=9, color=BLEND_COLORS['primary_dark'], name='Calibri')
             label_cell.fill = PatternFill(start_color=BLEND_COLORS['gray_100'],
                                          end_color=BLEND_COLORS['gray_100'], fill_type='solid')
-            label_cell.alignment = Alignment(horizontal='left', vertical='center')
+            label_cell.alignment = Alignment(horizontal='left', vertical='center', wrap_text=True)
 
             # Value
             value_cell = ws.cell(row=row, column=2)
             value_cell.value = str(value)
-            value_cell.font = Font(size=10, color=BLEND_COLORS['gray_800'], name='Calibri')
+            value_cell.font = Font(size=9, color=BLEND_COLORS['gray_800'], name='Calibri')
             value_cell.fill = PatternFill(start_color=BLEND_COLORS['white'],
                                          end_color=BLEND_COLORS['white'], fill_type='solid')
-            value_cell.alignment = Alignment(horizontal='left', vertical='center')
+            value_cell.alignment = Alignment(horizontal='left', vertical='center', wrap_text=True)
+
+            # Make row taller for wrapped text
+            ws.row_dimensions[row].height = 20
 
             row += 1
+
+        # Add calculation formula explanation
+        row += 1
+        ws.merge_cells(f'A{row}:D{row}')
+        note_cell = ws.cell(row=row, column=1)
+        note_cell.value = f"📊 Project End Date Calculation: {self.start_date.strftime('%B %d, %Y')} + {self.num_weeks} weeks = {self.end_date.strftime('%B %d, %Y')}"
+        note_cell.font = Font(size=8, color=BLEND_COLORS['primary_dark'], italic=True, name='Calibri')
+        note_cell.fill = PatternFill(start_color=BLEND_COLORS['gray_50'],
+                                    end_color=BLEND_COLORS['gray_50'], fill_type='solid')
+        note_cell.alignment = Alignment(horizontal='left', vertical='center', wrap_text=True)
+        ws.row_dimensions[row].height = 18
 
     def _add_legend(self, ws: Worksheet):
         """Add visual legend at bottom."""
