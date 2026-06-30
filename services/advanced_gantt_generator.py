@@ -332,7 +332,7 @@ class AdvancedGanttGenerator:
             cell.font = Font(bold=True, size=8, color=BLEND_COLORS['white'])
             cell.fill = PatternFill(start_color=BLEND_COLORS['primary'],
                                    end_color=BLEND_COLORS['primary'], fill_type='solid')
-            cell.alignment = Alignment(horizontal='center', vertical='center', rotation=90)
+            cell.alignment = Alignment(horizontal='center', vertical='center', text_rotation=90)
 
         # Month divider row
         row = 4
