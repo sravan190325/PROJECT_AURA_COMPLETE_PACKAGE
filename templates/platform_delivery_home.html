@@ -1,0 +1,248 @@
+{% extends "base_blend.html" %}
+
+{% block title %}Platform Delivery - Project Aura{% endblock %}
+
+{% block content %}
+
+<section style="margin-bottom: var(--blend-space-3xl);">
+    <div style="text-align: center; margin-bottom: var(--blend-space-3xl);">
+        <h1 style="color: var(--blend-primary-dark); margin-bottom: var(--blend-space-md);">
+            🚀 Multi-Platform Project Delivery
+        </h1>
+        <p style="color: var(--blend-text-secondary); font-size: var(--blend-text-lg); max-width: 700px; margin: 0 auto;">
+            Deploy your AI-generated project plan to Excel, SmartSheet, or Jira Cloud instantly.
+            No manual work required—everything is created automatically.
+        </p>
+    </div>
+
+    <!-- Two Options -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: var(--blend-space-3xl); max-width: 900px; margin: 0 auto;">
+
+        <!-- Option 1: Try Demo -->
+        <div class="card" style="background: linear-gradient(135deg, #f0f7ff 0%, #e0f2ff 100%); border-left: 4px solid var(--blend-primary);">
+            <div style="font-size: 2rem; margin-bottom: var(--blend-space-lg);">🎬</div>
+            <h2 style="color: var(--blend-primary-dark); margin-top: 0;">Try Demo Now</h2>
+            <p style="color: var(--blend-text-secondary); margin-bottom: var(--blend-space-lg);">
+                See how platform delivery works with a sample project. No credentials needed!
+            </p>
+
+            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: white; border-radius: 8px; border: 1px solid var(--blend-border-color);">
+                <p style="margin: 0 0 var(--blend-space-sm); font-size: 0.875rem; color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
+                    ✨ What You'll See
+                </p>
+                <ul style="margin: 0; padding-left: var(--blend-space-lg); color: var(--blend-text-primary); line-height: 1.8;">
+                    <li>Sample project with deliverables</li>
+                    <li>Complete task breakdown</li>
+                    <li>Team assignments</li>
+                    <li>Risk register</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: #fffacd; border-radius: 8px; border-left: 3px solid #ffc107;">
+                <p style="margin: 0; font-size: 0.875rem; color: var(--blend-text-primary);">
+                    <strong>💡 Demo Token:</strong> Use <code style="background: white; padding: 2px 6px; border-radius: 4px; font-family: monospace;">demo</code> for SmartSheet & Jira
+                </p>
+            </div>
+
+            <a href="/platform-delivery/demo" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-play-circle"></i> Start Demo
+            </a>
+        </div>
+
+        <!-- Option 2: Your Projects -->
+        <div class="card" style="background: linear-gradient(135deg, #f5f5f5 0%, #efefef 100%); border-left: 4px solid var(--blend-primary-dark);">
+            <div style="font-size: 2rem; margin-bottom: var(--blend-space-lg);">📊</div>
+            <h2 style="color: var(--blend-primary-dark); margin-top: 0;">Your Projects</h2>
+            <p style="color: var(--blend-text-secondary); margin-bottom: var(--blend-space-lg);">
+                Deploy any of your existing Project Aura analyses to a platform of your choice.
+            </p>
+
+            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: white; border-radius: 8px; border: 1px solid var(--blend-border-color);">
+                <p style="margin: 0 0 var(--blend-space-sm); font-size: 0.875rem; color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
+                    📝 Steps
+                </p>
+                <ol style="margin: 0; padding-left: var(--blend-space-lg); color: var(--blend-text-primary); line-height: 1.8;">
+                    <li>Upload a Statement of Work</li>
+                    <li>Let AI analyze it</li>
+                    <li>Choose your platform</li>
+                    <li>Project created instantly!</li>
+                </ol>
+            </div>
+
+            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: #e8f5e9; border-radius: 8px; border-left: 3px solid #4caf50;">
+                <p style="margin: 0; font-size: 0.875rem; color: var(--blend-text-primary);">
+                    <strong>✓ Ready:</strong> All platforms (Excel, SmartSheet, Jira)
+                </p>
+            </div>
+
+            <a href="/" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-file-upload"></i> Upload Document
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Features Section -->
+    <div style="margin-top: var(--blend-space-3xl); padding: var(--blend-space-3xl); background: var(--blend-off-white); border-radius: 12px;">
+        <h2 style="text-align: center; color: var(--blend-primary-dark); margin-top: 0;">Platform Capabilities</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--blend-space-2xl); margin-top: var(--blend-space-2xl);">
+
+            <!-- Excel -->
+            <div>
+                <h3 style="color: var(--blend-primary); display: flex; align-items: center; gap: var(--blend-space-sm);">
+                    <span style="font-size: 1.5rem;">📊</span> Excel
+                </h3>
+                <ul style="margin: var(--blend-space-sm) 0; padding-left: var(--blend-space-lg); color: var(--blend-text-secondary); line-height: 1.8;">
+                    <li>Professional workbook</li>
+                    <li>Multiple sheets</li>
+                    <li>Gantt charts</li>
+                    <li>Dashboards</li>
+                    <li>Instant download</li>
+                </ul>
+            </div>
+
+            <!-- SmartSheet -->
+            <div>
+                <h3 style="color: var(--blend-primary); display: flex; align-items: center; gap: var(--blend-space-sm);">
+                    <span style="font-size: 1.5rem;">📈</span> SmartSheet
+                </h3>
+                <ul style="margin: var(--blend-space-sm) 0; padding-left: var(--blend-space-lg); color: var(--blend-text-secondary); line-height: 1.8;">
+                    <li>Collaborative sheets</li>
+                    <li>14-column structure</li>
+                    <li>Gantt views</li>
+                    <li>Real-time updates</li>
+                    <li>Team sharing</li>
+                </ul>
+            </div>
+
+            <!-- Jira -->
+            <div>
+                <h3 style="color: var(--blend-primary); display: flex; align-items: center; gap: var(--blend-space-sm);">
+                    <span style="font-size: 1.5rem;">🎯</span> Jira Cloud
+                </h3>
+                <ul style="margin: var(--blend-space-sm) 0; padding-left: var(--blend-space-lg); color: var(--blend-text-secondary); line-height: 1.8;">
+                    <li>Scrum boards</li>
+                    <li>Epics & stories</li>
+                    <li>Sprint planning</li>
+                    <li>Team workflows</li>
+                    <li>Backlog mgmt</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div style="margin-top: var(--blend-space-3xl);">
+        <h2 style="text-align: center; color: var(--blend-primary-dark);">How It Works</h2>
+
+        <div style="max-width: 800px; margin: var(--blend-space-2xl) auto 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--blend-space-xl);">
+
+            <div style="text-align: center;">
+                <div style="width: 50px; height: 50px; background: var(--blend-primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto var(--blend-space-md);">
+                    1
+                </div>
+                <h4 style="color: var(--blend-primary-dark); margin-top: 0;">Upload SOW</h4>
+                <p style="font-size: 0.875rem; color: var(--blend-text-secondary);">
+                    Upload your Statement of Work document
+                </p>
+            </div>
+
+            <div style="text-align: center;">
+                <div style="width: 50px; height: 50px; background: var(--blend-primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto var(--blend-space-md);">
+                    2
+                </div>
+                <h4 style="color: var(--blend-primary-dark); margin-top: 0;">AI Analysis</h4>
+                <p style="font-size: 0.875rem; color: var(--blend-text-secondary);">
+                    AI extracts project plan details
+                </p>
+            </div>
+
+            <div style="text-align: center;">
+                <div style="width: 50px; height: 50px; background: var(--blend-primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto var(--blend-space-md);">
+                    3
+                </div>
+                <h4 style="color: var(--blend-primary-dark); margin-top: 0;">Choose Platform</h4>
+                <p style="font-size: 0.875rem; color: var(--blend-text-secondary);">
+                    Select Excel, SmartSheet, or Jira
+                </p>
+            </div>
+
+            <div style="text-align: center;">
+                <div style="width: 50px; height: 50px; background: var(--blend-primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto var(--blend-space-md);">
+                    4
+                </div>
+                <h4 style="color: var(--blend-primary-dark); margin-top: 0;">Auto-Create</h4>
+                <p style="font-size: 0.875rem; color: var(--blend-text-secondary);">
+                    Project created instantly!
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div style="margin-top: var(--blend-space-3xl); padding: var(--blend-space-3xl); background: var(--blend-off-white); border-radius: 12px;">
+        <h2 style="text-align: center; color: var(--blend-primary-dark); margin-top: 0;">Frequently Asked Questions</h2>
+
+        <div style="max-width: 700px; margin: var(--blend-space-2xl) auto 0;">
+
+            <details style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 8px;">
+                <summary style="cursor: pointer; color: var(--blend-primary-dark); font-weight: 500;">
+                    Do I need API credentials to try the demo?
+                </summary>
+                <p style="margin-top: var(--blend-space-md); color: var(--blend-text-secondary);">
+                    No! The demo uses a special token (<code style="background: white; padding: 2px 6px; border-radius: 3px;">demo</code>) that works without any account setup. Perfect for exploring the feature.
+                </p>
+            </details>
+
+            <details style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 8px;">
+                <summary style="cursor: pointer; color: var(--blend-primary-dark); font-weight: 500;">
+                    What happens when I use real credentials?
+                </summary>
+                <p style="margin-top: var(--blend-space-md); color: var(--blend-text-secondary);">
+                    Real projects are created on your actual SmartSheet or Jira accounts. Excel files are generated and downloaded to your computer. Everything is automated—no manual setup required.
+                </p>
+            </details>
+
+            <details style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 8px;">
+                <summary style="cursor: pointer; color: var(--blend-primary-dark); font-weight: 500;">
+                    Can I create projects on multiple platforms?
+                </summary>
+                <p style="margin-top: var(--blend-space-md); color: var(--blend-text-secondary);">
+                    Currently, you can select one platform per deployment. You can run the process multiple times to create the same project on different platforms if needed.
+                </p>
+            </details>
+
+            <details style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 8px;">
+                <summary style="cursor: pointer; color: var(--blend-primary-dark); font-weight: 500;">
+                    How long does it take to create a project?
+                </summary>
+                <p style="margin-top: var(--blend-space-md); color: var(--blend-text-secondary);">
+                    Excel: &lt;5 seconds | SmartSheet: 15-30 seconds | Jira: 30-60 seconds. Times vary based on project complexity and network speed.
+                </p>
+            </details>
+
+        </div>
+    </div>
+
+</section>
+
+<style>
+    details summary::-webkit-details-marker {
+        display: none;
+    }
+
+    details summary::before {
+        content: "▶ ";
+        margin-right: var(--blend-space-sm);
+        transition: transform 0.3s ease;
+    }
+
+    details[open] summary::before {
+        transform: rotate(90deg);
+    }
+</style>
+
+{% endblock %}

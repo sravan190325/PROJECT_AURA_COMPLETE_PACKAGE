@@ -133,6 +133,89 @@
     </div>
 </section>
 
+<!-- Multi-Platform Project Delivery Section -->
+<section class="mb-5" style="background: linear-gradient(135deg, #f0f7ff 0%, #e0f2ff 100%); padding: var(--blend-space-3xl); border-radius: 12px; border-left: 4px solid var(--blend-primary); margin-bottom: var(--blend-space-3xl);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <div style="display: flex; align-items: center; gap: var(--blend-space-lg); margin-bottom: var(--blend-space-xl);">
+            <div style="font-size: 2.5rem;">🚀</div>
+            <div>
+                <h2 style="margin: 0; color: var(--blend-primary-dark);">Deploy this project plan to Excel, SmartSheet, or Jira Cloud instantly</h2>
+            </div>
+        </div>
+
+        <p style="margin-bottom: var(--blend-space-lg); color: var(--blend-text-primary);">
+            Create a fully populated project plan on your preferred platform with a single click. No manual setup required.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--blend-space-lg);">
+            <!-- Excel Card -->
+            <div id="excelCard" style="background: white; padding: var(--blend-space-lg); border-radius: 8px; border: 2px solid var(--blend-border-color); text-align: center; cursor: pointer; transition: all 0.3s ease;"
+                 onmouseover="this.style.borderColor='var(--blend-primary)'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.1)'; this.style.transform='translateY(-2px)'"
+                 onmouseout="this.style.borderColor='var(--blend-border-color)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                <div style="font-size: 2rem; margin-bottom: var(--blend-space-md);">📊</div>
+                <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-primary-dark);">Excel</h3>
+                <p style="font-size: 0.875rem; color: var(--blend-text-muted); margin: 0;">PMO workbooks with dashboards & Gantt</p>
+                <button onclick="deployToExcel()" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-md); background: var(--blend-neon-turquoise); color: var(--blend-primary-dark); border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                    Select
+                </button>
+            </div>
+
+            <!-- SmartSheet Card -->
+            <div id="smartsheetCard" style="background: white; padding: var(--blend-space-lg); border-radius: 8px; border: 2px solid var(--blend-border-color); text-align: center; cursor: pointer; transition: all 0.3s ease;"
+                 onmouseover="this.style.borderColor='var(--blend-primary)'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.1)'; this.style.transform='translateY(-2px)'"
+                 onmouseout="this.style.borderColor='var(--blend-border-color)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                <div style="font-size: 2rem; margin-bottom: var(--blend-space-md);">📈</div>
+                <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-primary-dark);">SmartSheet</h3>
+                <p style="font-size: 0.875rem; color: var(--blend-text-muted); margin: 0;">Professional collaborative sheets</p>
+                <button onclick="showCredentialsModal('smartsheet')" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-md); background: var(--blend-neon-turquoise); color: var(--blend-primary-dark); border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                    Select
+                </button>
+            </div>
+
+            <!-- Jira Card -->
+            <div id="jiraCard" style="background: white; padding: var(--blend-space-lg); border-radius: 8px; border: 2px solid var(--blend-border-color); text-align: center; cursor: pointer; transition: all 0.3s ease;"
+                 onmouseover="this.style.borderColor='var(--blend-primary)'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.1)'; this.style.transform='translateY(-2px)'"
+                 onmouseout="this.style.borderColor='var(--blend-border-color)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                <div style="font-size: 2rem; margin-bottom: var(--blend-space-md);">🎯</div>
+                <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-primary-dark);">Jira Cloud</h3>
+                <p style="font-size: 0.875rem; color: var(--blend-text-muted); margin: 0;">Scrum boards with epics & sprints</p>
+                <button onclick="showCredentialsModal('jira')" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-md); background: var(--blend-neon-turquoise); color: var(--blend-primary-dark); border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                    Select
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Credentials Modal -->
+<div id="credentialsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: var(--blend-space-3xl); border-radius: 12px; max-width: 500px; width: 90%;">
+        <h2 id="modalTitle" style="margin-top: 0; color: var(--blend-primary-dark);">Enter Credentials</h2>
+
+        <div id="smartsheetFields" style="display: none;">
+            <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary);">SmartSheet API Token</label>
+            <input type="password" id="smartsheetToken" placeholder="Enter your API token" style="width: 100%; padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 6px; margin-bottom: var(--blend-space-lg); box-sizing: border-box;">
+        </div>
+
+        <div id="jiraFields" style="display: none;">
+            <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary);">Jira Instance URL</label>
+            <input type="text" id="jiraUrl" placeholder="https://your-domain.atlassian.net" style="width: 100%; padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 6px; margin-bottom: var(--blend-space-lg); box-sizing: border-box;">
+
+            <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary);">Jira API Token</label>
+            <input type="password" id="jiraToken" placeholder="Enter your API token" style="width: 100%; padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 6px; margin-bottom: var(--blend-space-lg); box-sizing: border-box;">
+        </div>
+
+        <div style="display: flex; gap: var(--blend-space-md);">
+            <button onclick="deployWithCredentials()" class="btn btn-primary" style="flex: 1; padding: var(--blend-space-md);">
+                Deploy
+            </button>
+            <button onclick="closeModal()" class="btn btn-secondary" style="flex: 1; padding: var(--blend-space-md);">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Action Buttons -->
 <div style="display: flex; gap: var(--blend-space-lg); margin-top: var(--blend-space-2xl); justify-content: center;">
     <a href="/api/workbook/download/{{ project_id }}" class="btn btn-primary btn-lg">
@@ -283,6 +366,107 @@ function initializePage() {
 }
 
 initializePage();
+
+// Platform deployment functions
+let selectedPlatform = null;
+const projectId = {{ project_id }};
+
+function deployToExcel() {
+    const modal = document.getElementById('credentialsModal');
+    modal.style.display = 'flex';
+    selectedPlatform = 'excel';
+    document.getElementById('smartsheetFields').style.display = 'none';
+    document.getElementById('jiraFields').style.display = 'none';
+    document.getElementById('modalTitle').textContent = 'Deploy to Excel';
+
+    // For Excel, deploy immediately
+    deployWithCredentials();
+}
+
+function showCredentialsModal(platform) {
+    const modal = document.getElementById('credentialsModal');
+    selectedPlatform = platform;
+
+    // Show/hide appropriate credential fields
+    document.getElementById('smartsheetFields').style.display = platform === 'smartsheet' ? 'block' : 'none';
+    document.getElementById('jiraFields').style.display = platform === 'jira' ? 'block' : 'none';
+
+    // Update modal title
+    const titles = {
+        'smartsheet': 'Connect SmartSheet Account',
+        'jira': 'Connect Jira Cloud Account'
+    };
+    document.getElementById('modalTitle').textContent = titles[platform];
+
+    modal.style.display = 'flex';
+}
+
+function deployWithCredentials() {
+    const modal = document.getElementById('credentialsModal');
+    const deployButton = modal.querySelector('button:first-of-type');
+
+    // Disable button and show loading
+    deployButton.disabled = true;
+    const originalText = deployButton.textContent;
+    deployButton.textContent = '⏳ Deploying...';
+
+    let credentials = { platform: selectedPlatform };
+
+    if (selectedPlatform === 'smartsheet') {
+        credentials.token = document.getElementById('smartsheetToken').value || 'demo';
+    } else if (selectedPlatform === 'jira') {
+        credentials.url = document.getElementById('jiraUrl').value || '';
+        credentials.token = document.getElementById('jiraToken').value || 'demo';
+    }
+
+    // Make API call to create project
+    fetch('/api/project/create-platform', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            project_id: projectId,
+            platform: selectedPlatform,
+            credentials: credentials
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`✅ ${selectedPlatform.toUpperCase()} project created successfully!`);
+            closeModal();
+            // Reload page to show updated status
+            setTimeout(() => window.location.reload(), 1000);
+        } else {
+            alert(`❌ Error: ${data.error || 'Failed to create project'}`);
+            deployButton.disabled = false;
+            deployButton.textContent = originalText;
+        }
+    })
+    .catch(error => {
+        alert(`❌ Error: ${error.message}`);
+        deployButton.disabled = false;
+        deployButton.textContent = originalText;
+    });
+}
+
+function closeModal() {
+    const modal = document.getElementById('credentialsModal');
+    modal.style.display = 'none';
+    selectedPlatform = null;
+
+    // Reset form
+    document.getElementById('smartsheetToken').value = '';
+    document.getElementById('jiraUrl').value = '';
+    document.getElementById('jiraToken').value = '';
+}
+
+// Close modal when clicking outside of it
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('credentialsModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+});
 </script>
 
 {% endblock %}

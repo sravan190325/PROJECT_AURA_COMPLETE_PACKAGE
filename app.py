@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from routes.upload_routes import upload_bp
 from routes.project_routes import project_bp
 from routes.workbook_routes import workbook_bp
+from routes.platform_delivery_routes import platform_bp, project_bp as project_delivery_bp
 
 # Load environment variables
 load_dotenv()
@@ -26,8 +27,11 @@ else:
     from config import DevelopmentConfig as Config
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config.from_object(Config)
+# Disable template caching in development
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.jinja_env.cache = None
 
 # Ensure upload directory exists
 os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
@@ -38,6 +42,8 @@ os.makedirs('workbooks', exist_ok=True)
 app.register_blueprint(upload_bp)
 app.register_blueprint(project_bp)
 app.register_blueprint(workbook_bp)
+app.register_blueprint(platform_bp)
+app.register_blueprint(project_delivery_bp)
 
 
 @app.route('/')

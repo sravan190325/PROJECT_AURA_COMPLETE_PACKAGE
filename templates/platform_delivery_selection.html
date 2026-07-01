@@ -1,0 +1,417 @@
+{% extends "base_blend.html" %}
+
+{% block title %}Project Aura - Delivery Platform Selection{% endblock %}
+
+{% block content %}
+
+<section style="margin-bottom: var(--blend-space-3xl);">
+    <div style="text-align: center; margin-bottom: var(--blend-space-3xl);">
+        <h1 style="color: var(--blend-primary-dark); margin-bottom: var(--blend-space-md);">
+            🎯 Select Your Delivery Platform
+        </h1>
+        <p style="color: var(--blend-text-secondary); font-size: var(--blend-text-lg); max-width: 600px; margin: 0 auto;">
+            Choose where you'd like your project plan to be created. Your complete work breakdown structure,
+            timeline, and team assignments will be automatically organized.
+        </p>
+    </div>
+
+    <!-- Project Summary Card -->
+    <div class="card" style="background: linear-gradient(135deg, #f0f7ff 0%, #e0f2ff 100%); border-left: 4px solid var(--blend-primary); margin-bottom: var(--blend-space-2xl);">
+        <div style="display: flex; gap: var(--blend-space-lg); align-items: flex-start;">
+            <div style="flex: 1;">
+                <p style="margin: 0; color: var(--blend-text-muted); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                    📋 Project Details
+                </p>
+                <h2 style="margin: var(--blend-space-sm) 0 0; color: var(--blend-primary-dark);">
+                    <span id="projectName">{{ project_name }}</span>
+                </h2>
+            </div>
+            <div style="text-align: right;">
+                <div style="color: var(--blend-text-secondary); font-size: 0.875rem; margin-bottom: var(--blend-space-sm);">
+                    <strong>Duration:</strong> <span id="projectDuration">{{ duration_weeks }} weeks</span>
+                </div>
+                <div style="color: var(--blend-text-secondary); font-size: 0.875rem;">
+                    <strong>Team Size:</strong> <span id="projectTeam">{{ team_size }} people</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Selection Form -->
+    <form id="platformSelectionForm" style="max-width: 900px; margin: 0 auto;">
+
+        <!-- Platform Options Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--blend-space-2xl); margin-bottom: var(--blend-space-3xl);">
+
+            <!-- Excel Option -->
+            <div class="platform-card" style="cursor: pointer; padding: var(--blend-space-lg); border: 2px solid var(--blend-border-color); border-radius: 8px; transition: all 0.3s ease; background: var(--blend-white);">
+                <input type="radio" id="excel" name="platform" value="excel" style="display: none;">
+                <label for="excel" style="cursor: pointer; display: block;">
+                    <div style="text-align: center; margin-bottom: var(--blend-space-lg);">
+                        <div style="font-size: 3rem; margin-bottom: var(--blend-space-md);">📊</div>
+                        <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-primary-dark);">Excel Workbook</h3>
+                    </div>
+                    <div style="color: var(--blend-text-secondary); font-size: 0.875rem; text-align: left;">
+                        <ul style="margin: 0; padding-left: var(--blend-space-lg); line-height: 1.8;">
+                            <li>✓ 12-sheet PMO workbook</li>
+                            <li>✓ Dashboard & Gantt chart</li>
+                            <li>✓ RAID register</li>
+                            <li>✓ Instant download</li>
+                            <li>✓ No authentication needed</li>
+                        </ul>
+                    </div>
+                </label>
+            </div>
+
+            <!-- SmartSheet Option -->
+            <div class="platform-card" style="cursor: pointer; padding: var(--blend-space-lg); border: 2px solid var(--blend-border-color); border-radius: 8px; transition: all 0.3s ease; background: var(--blend-white);">
+                <input type="radio" id="smartsheet" name="platform" value="smartsheet" style="display: none;">
+                <label for="smartsheet" style="cursor: pointer; display: block;">
+                    <div style="text-align: center; margin-bottom: var(--blend-space-lg);">
+                        <div style="font-size: 3rem; margin-bottom: var(--blend-space-md);">📈</div>
+                        <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-primary-dark);">SmartSheet</h3>
+                    </div>
+                    <div style="color: var(--blend-text-secondary); font-size: 0.875rem; text-align: left;">
+                        <ul style="margin: 0; padding-left: var(--blend-space-lg); line-height: 1.8;">
+                            <li>✓ Professional project sheet</li>
+                            <li>✓ Gantt chart visualization</li>
+                            <li>✓ Collaborative real-time</li>
+                            <li>✓ Dependencies & hierarchy</li>
+                            <li>✓ Team sharing enabled</li>
+                        </ul>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Jira Option -->
+            <div class="platform-card" style="cursor: pointer; padding: var(--blend-space-lg); border: 2px solid var(--blend-border-color); border-radius: 8px; transition: all 0.3s ease; background: var(--blend-white);">
+                <input type="radio" id="jira" name="platform" value="jira" style="display: none;">
+                <label for="jira" style="cursor: pointer; display: block;">
+                    <div style="text-align: center; margin-bottom: var(--blend-space-lg);">
+                        <div style="font-size: 3rem; margin-bottom: var(--blend-space-md);">🚀</div>
+                        <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-primary-dark);">Jira Scrum Board</h3>
+                    </div>
+                    <div style="color: var(--blend-text-secondary); font-size: 0.875rem; text-align: left;">
+                        <ul style="margin: 0; padding-left: var(--blend-space-lg); line-height: 1.8;">
+                            <li>✓ Full Scrum setup</li>
+                            <li>✓ Epics & user stories</li>
+                            <li>✓ Sprint planning</li>
+                            <li>✓ Backlog management</li>
+                            <li>✓ Team collaboration</li>
+                        </ul>
+                    </div>
+                </label>
+            </div>
+
+        </div>
+
+        <!-- Credentials Section (for SmartSheet & Jira) -->
+        <div id="credentialsSection" style="display: none; margin-bottom: var(--blend-space-3xl); padding: var(--blend-space-2xl); background-color: var(--blend-off-white); border-radius: 8px; border: 1px solid var(--blend-border-color);">
+
+            <h3 style="color: var(--blend-primary-dark); margin-top: 0;">🔐 Platform Authentication</h3>
+
+            <!-- SmartSheet Credentials -->
+            <div id="smartsheetCreds" style="display: none;">
+                <div style="margin-bottom: var(--blend-space-lg);">
+                    <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 500;">
+                        SmartSheet API Token
+                    </label>
+                    <input type="password" id="smartsheetToken" placeholder="Enter your SmartSheet API token"
+                           style="width: 100%; padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 6px; font-family: monospace;">
+                    <p style="margin: var(--blend-space-sm) 0 0; font-size: 0.75rem; color: var(--blend-text-muted);">
+                        📍 Get token from: SmartSheet Account > Personal Settings > API Access
+                    </p>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="testSmartSheetConnection()" style="width: 100%; margin-bottom: var(--blend-space-md);">
+                    Test Connection
+                </button>
+                <div id="smartsheetStatus" style="display: none; padding: var(--blend-space-md); border-radius: 6px; margin-bottom: var(--blend-space-md); font-size: 0.875rem;"></div>
+            </div>
+
+            <!-- Jira Credentials -->
+            <div id="jiraCreds" style="display: none;">
+                <div style="margin-bottom: var(--blend-space-lg);">
+                    <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 500;">
+                        Jira Instance URL
+                    </label>
+                    <input type="url" id="jiraUrl" placeholder="https://your-domain.atlassian.net"
+                           style="width: 100%; padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 6px;">
+                </div>
+                <div style="margin-bottom: var(--blend-space-lg);">
+                    <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 500;">
+                        Jira API Token
+                    </label>
+                    <input type="password" id="jiraToken" placeholder="Enter your Jira API token"
+                           style="width: 100%; padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 6px; font-family: monospace;">
+                    <p style="margin: var(--blend-space-sm) 0 0; font-size: 0.75rem; color: var(--blend-text-muted);">
+                        📍 Get token from: Jira > Settings > Security > API Tokens
+                    </p>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="testJiraConnection()" style="width: 100%; margin-bottom: var(--blend-space-md);">
+                    Test Connection
+                </button>
+                <div id="jiraStatus" style="display: none; padding: var(--blend-space-md); border-radius: 6px; margin-bottom: var(--blend-space-md); font-size: 0.875rem;"></div>
+            </div>
+
+        </div>
+
+        <!-- Submit Button & Progress -->
+        <div style="text-align: center;">
+            <div id="submitProgress" style="display: none; margin-bottom: var(--blend-space-2xl);">
+                <div class="progress-bar" style="height: 4px; background-color: var(--blend-border-color); border-radius: 2px; margin-bottom: var(--blend-space-lg); overflow: hidden;">
+                    <div id="progressBar" style="width: 0%; height: 100%; background-color: var(--blend-primary); transition: width 300ms ease-out;"></div>
+                </div>
+                <p id="submitStatus" style="text-align: center; color: var(--blend-text-secondary); margin: 0;">
+                    <i class="fas fa-spinner fa-spin"></i> Creating your project plan...
+                </p>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary btn-lg" disabled style="width: 100%; max-width: 400px;">
+                <i class="fas fa-rocket"></i> Create Project Plan
+            </button>
+            <p style="margin: var(--blend-space-md) 0 0; color: var(--blend-text-muted); font-size: 0.875rem;">
+                Select a platform above to continue
+            </p>
+        </div>
+
+    </form>
+
+</section>
+
+<style>
+    .platform-card {
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .platform-card:hover {
+        border-color: var(--blend-primary);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        transform: translateY(-2px);
+    }
+
+    #excel:checked ~ label,
+    #smartsheet:checked ~ label,
+    #jira:checked ~ label {
+        border-color: var(--blend-primary);
+    }
+
+    .platform-card input:checked + label {
+        border-color: var(--blend-primary);
+        background-color: #f0f7ff;
+    }
+
+    .progress-bar {
+        background-color: var(--blend-border-color);
+    }
+
+    .status-success {
+        background-color: #d1fae5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+    }
+
+    .status-error {
+        background-color: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+</style>
+
+<script>
+    // Platform selection handler
+    document.querySelectorAll('input[name="platform"]').forEach(radio => {
+        radio.addEventListener('change', function(e) {
+            const platform = this.value;
+
+            // Show/hide credentials section
+            const credsSection = document.getElementById('credentialsSection');
+            const smartsheetCreds = document.getElementById('smartsheetCreds');
+            const jiraCreds = document.getElementById('jiraCreds');
+
+            if (platform === 'excel') {
+                credsSection.style.display = 'none';
+            } else {
+                credsSection.style.display = 'block';
+                smartsheetCreds.style.display = platform === 'smartsheet' ? 'block' : 'none';
+                jiraCreds.style.display = platform === 'jira' ? 'block' : 'none';
+            }
+
+            // Enable submit button
+            updateSubmitButton();
+        });
+    });
+
+    function updateSubmitButton() {
+        const platform = document.querySelector('input[name="platform"]:checked');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (!platform) {
+            submitBtn.disabled = true;
+            return;
+        }
+
+        if (platform.value === 'excel') {
+            submitBtn.disabled = false;
+        } else if (platform.value === 'smartsheet') {
+            const token = document.getElementById('smartsheetToken').value.trim();
+            submitBtn.disabled = !token;
+        } else if (platform.value === 'jira') {
+            const url = document.getElementById('jiraUrl').value.trim();
+            const token = document.getElementById('jiraToken').value.trim();
+            submitBtn.disabled = !url || !token;
+        }
+    }
+
+    // Update button state when credentials change
+    document.getElementById('smartsheetToken')?.addEventListener('input', updateSubmitButton);
+    document.getElementById('jiraUrl')?.addEventListener('input', updateSubmitButton);
+    document.getElementById('jiraToken')?.addEventListener('input', updateSubmitButton);
+
+    // Test SmartSheet Connection
+    async function testSmartSheetConnection() {
+        const token = document.getElementById('smartsheetToken').value.trim();
+        const statusDiv = document.getElementById('smartsheetStatus');
+
+        if (!token) {
+            showStatus(statusDiv, 'Please enter your SmartSheet token', 'error');
+            return;
+        }
+
+        showStatus(statusDiv, 'Testing connection...', 'loading');
+
+        try {
+            const response = await fetch('/api/platform/test-connection', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    platform: 'smartsheet',
+                    credentials: { token }
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showStatus(statusDiv, `✓ Connection successful! Account: ${data.account_name}`, 'success');
+                updateSubmitButton();
+            } else {
+                showStatus(statusDiv, `✗ Connection failed: ${data.error}`, 'error');
+            }
+        } catch (error) {
+            showStatus(statusDiv, `✗ Error: ${error.message}`, 'error');
+        }
+    }
+
+    // Test Jira Connection
+    async function testJiraConnection() {
+        const url = document.getElementById('jiraUrl').value.trim();
+        const token = document.getElementById('jiraToken').value.trim();
+        const statusDiv = document.getElementById('jiraStatus');
+
+        if (!url || !token) {
+            showStatus(statusDiv, 'Please enter both URL and token', 'error');
+            return;
+        }
+
+        showStatus(statusDiv, 'Testing connection...', 'loading');
+
+        try {
+            const response = await fetch('/api/platform/test-connection', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    platform: 'jira',
+                    credentials: { url, token }
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showStatus(statusDiv, `✓ Connection successful! Account: ${data.account_name}`, 'success');
+                updateSubmitButton();
+            } else {
+                showStatus(statusDiv, `✗ Connection failed: ${data.error}`, 'error');
+            }
+        } catch (error) {
+            showStatus(statusDiv, `✗ Error: ${error.message}`, 'error');
+        }
+    }
+
+    function showStatus(element, message, type) {
+        element.textContent = message;
+        element.style.display = 'block';
+        element.className = type === 'success' ? 'status-success' : type === 'error' ? 'status-error' : '';
+    }
+
+    // Form submission
+    document.getElementById('platformSelectionForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const platform = document.querySelector('input[name="platform"]:checked')?.value;
+        if (!platform) return;
+
+        const submitBtn = document.getElementById('submitBtn');
+        const progressDiv = document.getElementById('submitProgress');
+        const progressBar = document.getElementById('progressBar');
+        const statusText = document.getElementById('submitStatus');
+
+        submitBtn.disabled = true;
+        progressDiv.style.display = 'block';
+        progressBar.style.width = '0%';
+
+        try {
+            const credentials = {};
+            if (platform === 'smartsheet') {
+                credentials.token = document.getElementById('smartsheetToken').value;
+            } else if (platform === 'jira') {
+                credentials.url = document.getElementById('jiraUrl').value;
+                credentials.token = document.getElementById('jiraToken').value;
+            }
+
+            // Simulate progress
+            const progressInterval = setInterval(() => {
+                const current = parseFloat(progressBar.style.width);
+                if (current < 90) {
+                    progressBar.style.width = (current + Math.random() * 30) + '%';
+                }
+            }, 300);
+
+            const response = await fetch('/api/project/create-platform', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    project_id: '{{ project_id }}',
+                    platform,
+                    credentials
+                })
+            });
+
+            clearInterval(progressInterval);
+            progressBar.style.width = '100%';
+
+            const data = await response.json();
+
+            if (data.success) {
+                statusText.innerHTML = '✓ Project plan created successfully!<br>Redirecting...';
+                setTimeout(() => {
+                    window.location.href = data.redirect_url || '/api/project/' + data.project_id + '/summary';
+                }, 2000);
+            } else {
+                progressDiv.style.display = 'none';
+                submitBtn.disabled = false;
+                alert('Error: ' + data.error);
+            }
+        } catch (error) {
+            progressDiv.style.display = 'none';
+            submitBtn.disabled = false;
+            alert('Error: ' + error.message);
+        }
+    });
+
+    // Initialize on page load
+    window.addEventListener('load', updateSubmitButton);
+</script>
+
+{% endblock %}
