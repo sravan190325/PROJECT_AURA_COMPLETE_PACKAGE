@@ -15,7 +15,7 @@
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <div>
                     <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary); font-size: var(--blend-text-caption);">Overall Status</p>
-                    <div style="font-size: 2.5rem; font-weight: 400; color: var(--blend-washed-blue); margin-bottom: var(--blend-space-md);" id="healthScore">85%</div>
+                    <div style="font-size: 2.5rem; font-weight: 400; color: var(--blend-text-primary); margin-bottom: var(--blend-space-md);" id="healthScore">85%</div>
                     <div style="display: flex; gap: var(--blend-space-lg);">
                         <div>
                             <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Scope</p>
@@ -32,13 +32,13 @@
                 <div style="position: relative; width: 120px; height: 120px;">
                     <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
                         <!-- Background circle -->
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--blend-off-white)" stroke-width="8"/>
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--blend-icon-bg)" stroke-width="8"/>
                         <!-- Health arc -->
                         <circle cx="50" cy="50" r="45" fill="none" stroke="var(--blend-neon-turquoise)" stroke-width="8"
                                 style="stroke-dasharray: 238, 282.7; stroke-dashoffset: 0; transform: rotate(-90deg); transform-origin: 50% 50%;" />
                     </svg>
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                        <div style="font-size: 1.5rem; font-weight: 400; color: var(--blend-washed-blue);">85</div>
+                        <div style="font-size: 1.5rem; font-weight: 400; color: var(--blend-text-primary);">85</div>
                         <div style="font-size: var(--blend-text-caption); color: var(--blend-text-muted);">/ 100</div>
                     </div>
                 </div>
@@ -102,6 +102,14 @@
     </div>
 </section>
 
+<!-- Resource Recommendations Section -->
+<section style="margin-bottom: var(--blend-space-3xl);">
+    <h2 style="margin-bottom: var(--blend-space-xl);">Recommended People</h2>
+    <div id="resourceRecommendationsContainer" style="display: flex; flex-direction: column; gap: var(--blend-space-lg);">
+        <!-- Resource recommendations will be populated by JavaScript -->
+    </div>
+</section>
+
 <!-- Risk & Opportunity Summary -->
 <section style="margin-bottom: var(--blend-space-3xl);">
     <h2 style="margin-bottom: var(--blend-space-xl);">Risk & Opportunity Summary</h2>
@@ -134,52 +142,52 @@
 </section>
 
 <!-- Multi-Platform Project Delivery Section -->
-<section class="mb-5" style="background: linear-gradient(135deg, #f0f7ff 0%, #e0f2ff 100%); padding: var(--blend-space-3xl); border-radius: 12px; border-left: 4px solid var(--blend-primary); margin-bottom: var(--blend-space-3xl);">
+<section class="mb-5" style="background: var(--blend-section-bg); padding: var(--blend-space-3xl); border-radius: 16px; border-left: 4px solid var(--blend-section-border); margin-bottom: var(--blend-space-3xl); box-shadow: var(--blend-shadow-lg);">
     <div style="max-width: 900px; margin: 0 auto;">
         <div style="display: flex; align-items: center; gap: var(--blend-space-lg); margin-bottom: var(--blend-space-xl);">
             <div style="font-size: 2.5rem;">🚀</div>
             <div>
-                <h2 style="margin: 0; color: var(--blend-primary-dark);">Deploy this project plan to Excel, SmartSheet, or Jira Cloud instantly</h2>
+                <h2 style="margin: 0; color: var(--blend-text-primary); font-family: var(--blend-font-heading); font-weight: 700;">Deploy this project plan to Excel, SmartSheet, or Jira Cloud instantly</h2>
             </div>
         </div>
 
-        <p style="margin-bottom: var(--blend-space-lg); color: var(--blend-text-primary);">
+        <p style="margin-bottom: var(--blend-space-lg); color: var(--blend-text-secondary);">
             Create a fully populated project plan on your preferred platform with a single click. No manual setup required.
         </p>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--blend-space-lg);">
             <!-- Excel Card -->
-            <div id="excelCard" style="background: white; padding: var(--blend-space-lg); border-radius: 8px; border: 2px solid var(--blend-border-color); text-align: center; cursor: pointer; transition: all 0.3s ease;"
-                 onmouseover="this.style.borderColor='var(--blend-primary)'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.1)'; this.style.transform='translateY(-2px)'"
+            <div id="excelCard" style="background: var(--blend-bg-card); padding: var(--blend-space-lg); border-radius: 12px; border: 1px solid var(--blend-border-color); text-align: center; cursor: pointer; transition: all 0.3s ease;"
+                 onmouseover="this.style.borderColor='var(--blend-neon-turquoise)'; this.style.boxShadow='0 0 15px rgba(29, 244, 244, 0.2)'; this.style.transform='translateY(-2px)'"
                  onmouseout="this.style.borderColor='var(--blend-border-color)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
                 <div style="font-size: 2rem; margin-bottom: var(--blend-space-md);">📊</div>
-                <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-primary-dark);">Excel</h3>
-                <p style="font-size: 0.875rem; color: var(--blend-text-muted); margin: 0;">PMO workbooks with dashboards & Gantt</p>
-                <button onclick="deployToExcel()" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-md); background: var(--blend-neon-turquoise); color: var(--blend-primary-dark); border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary);">Excel</h3>
+                <p style="font-size: 0.82rem; color: var(--blend-text-muted); margin: 0;">PMO workbooks with dashboards & Gantt</p>
+                <button onclick="deployToExcel()" class="btn btn-primary" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-lg); font-size: 0.75rem;">
                     Select
                 </button>
             </div>
 
             <!-- SmartSheet Card -->
-            <div id="smartsheetCard" style="background: white; padding: var(--blend-space-lg); border-radius: 8px; border: 2px solid var(--blend-border-color); text-align: center; cursor: pointer; transition: all 0.3s ease;"
-                 onmouseover="this.style.borderColor='var(--blend-primary)'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.1)'; this.style.transform='translateY(-2px)'"
+            <div id="smartsheetCard" style="background: var(--blend-bg-card); padding: var(--blend-space-lg); border-radius: 12px; border: 1px solid var(--blend-border-color); text-align: center; cursor: pointer; transition: all 0.3s ease;"
+                 onmouseover="this.style.borderColor='var(--blend-neon-turquoise)'; this.style.boxShadow='0 0 15px rgba(29, 244, 244, 0.2)'; this.style.transform='translateY(-2px)'"
                  onmouseout="this.style.borderColor='var(--blend-border-color)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
                 <div style="font-size: 2rem; margin-bottom: var(--blend-space-md);">📈</div>
-                <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-primary-dark);">SmartSheet</h3>
-                <p style="font-size: 0.875rem; color: var(--blend-text-muted); margin: 0;">Professional collaborative sheets</p>
-                <button onclick="showCredentialsModal('smartsheet')" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-md); background: var(--blend-neon-turquoise); color: var(--blend-primary-dark); border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary);">SmartSheet</h3>
+                <p style="font-size: 0.82rem; color: var(--blend-text-muted); margin: 0;">Professional collaborative sheets</p>
+                <button onclick="showCredentialsModal('smartsheet')" class="btn btn-primary" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-lg); font-size: 0.75rem;">
                     Select
                 </button>
             </div>
 
             <!-- Jira Card -->
-            <div id="jiraCard" style="background: white; padding: var(--blend-space-lg); border-radius: 8px; border: 2px solid var(--blend-border-color); text-align: center; cursor: pointer; transition: all 0.3s ease;"
-                 onmouseover="this.style.borderColor='var(--blend-primary)'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.1)'; this.style.transform='translateY(-2px)'"
+            <div id="jiraCard" style="background: var(--blend-bg-card); padding: var(--blend-space-lg); border-radius: 12px; border: 1px solid var(--blend-border-color); text-align: center; cursor: pointer; transition: all 0.3s ease;"
+                 onmouseover="this.style.borderColor='var(--blend-neon-turquoise)'; this.style.boxShadow='0 0 15px rgba(29, 244, 244, 0.2)'; this.style.transform='translateY(-2px)'"
                  onmouseout="this.style.borderColor='var(--blend-border-color)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
                 <div style="font-size: 2rem; margin-bottom: var(--blend-space-md);">🎯</div>
-                <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-primary-dark);">Jira Cloud</h3>
-                <p style="font-size: 0.875rem; color: var(--blend-text-muted); margin: 0;">Scrum boards with epics & sprints</p>
-                <button onclick="showCredentialsModal('jira')" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-md); background: var(--blend-neon-turquoise); color: var(--blend-primary-dark); border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary);">Jira Cloud</h3>
+                <p style="font-size: 0.82rem; color: var(--blend-text-muted); margin: 0;">Scrum boards with epics & sprints</p>
+                <button onclick="showCredentialsModal('jira')" class="btn btn-primary" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-lg); font-size: 0.75rem;">
                     Select
                 </button>
             </div>
@@ -188,28 +196,28 @@
 </section>
 
 <!-- Credentials Modal -->
-<div id="credentialsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-    <div style="background: white; padding: var(--blend-space-3xl); border-radius: 12px; max-width: 500px; width: 90%;">
-        <h2 id="modalTitle" style="margin-top: 0; color: var(--blend-primary-dark);">Enter Credentials</h2>
+<div id="credentialsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div class="card" style="max-width: 500px; width: 90%; padding: var(--blend-space-2xl); border-radius: 16px;">
+        <h2 id="modalTitle" style="margin-top: 0; color: var(--blend-text-primary); margin-bottom: var(--blend-space-xl);">Enter Credentials</h2>
 
-        <div id="smartsheetFields" style="display: none;">
-            <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary);">SmartSheet API Token</label>
-            <input type="password" id="smartsheetToken" placeholder="Enter your API token" style="width: 100%; padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 6px; margin-bottom: var(--blend-space-lg); box-sizing: border-box;">
+        <div id="smartsheetFields" style="display: none; margin-bottom: var(--blend-space-lg);">
+            <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-caption);">SmartSheet API Token</label>
+            <input type="password" id="smartsheetToken" placeholder="Enter your API token (or 'demo')">
         </div>
 
-        <div id="jiraFields" style="display: none;">
-            <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary);">Jira Instance URL</label>
-            <input type="text" id="jiraUrl" placeholder="https://your-domain.atlassian.net" style="width: 100%; padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 6px; margin-bottom: var(--blend-space-lg); box-sizing: border-box;">
+        <div id="jiraFields" style="display: none; margin-bottom: var(--blend-space-lg);">
+            <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-caption);">Jira Instance URL</label>
+            <input type="text" id="jiraUrl" placeholder="https://your-domain.atlassian.net" style="margin-bottom: var(--blend-space-md);">
 
-            <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary);">Jira API Token</label>
-            <input type="password" id="jiraToken" placeholder="Enter your API token" style="width: 100%; padding: var(--blend-space-md); border: 1px solid var(--blend-border-color); border-radius: 6px; margin-bottom: var(--blend-space-lg); box-sizing: border-box;">
+            <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-caption);">Jira API Token</label>
+            <input type="password" id="jiraToken" placeholder="Enter your API token (or 'demo')">
         </div>
 
         <div style="display: flex; gap: var(--blend-space-md);">
-            <button onclick="deployWithCredentials()" class="btn btn-primary" style="flex: 1; padding: var(--blend-space-md);">
+            <button onclick="deployWithCredentials()" class="btn btn-primary" style="flex: 1;">
                 Deploy
             </button>
-            <button onclick="closeModal()" class="btn btn-secondary" style="flex: 1; padding: var(--blend-space-md);">
+            <button onclick="closeModal()" class="btn btn-secondary" style="flex: 1;">
                 Cancel
             </button>
         </div>
@@ -218,9 +226,6 @@
 
 <!-- Action Buttons -->
 <div style="display: flex; gap: var(--blend-space-lg); margin-top: var(--blend-space-2xl); justify-content: center;">
-    <a href="/api/workbook/download/{{ project_id }}" class="btn btn-primary btn-lg">
-        <i class="fas fa-download"></i> Generate Workbook
-    </a>
     <a href="/" class="btn btn-secondary btn-lg">
         <i class="fas fa-home"></i> Back to Home
     </a>
@@ -240,11 +245,14 @@ window.projectData = {
     completion_percentage: "{{ project.get('completion_percentage', '0%') }}",
     health_score: {{ project.get('health_score', 85) }},
     project_name: "{{ project.get('project_name', 'Project') }}",
-    client_name: "{{ project.get('client_name', 'Client') }}"
+    client_name: "{{ project.get('client_name', 'Client') }}",
+    team_requirements: {{ team_requirements | default({}) | tojson }},
+    resource_recommendations: {{ resource_recommendations | default({}) | tojson }}
 };
 
 // Populate risks and recommendations based on project data
 populateRecommendations();
+populateResourceRecommendations();
 populateRisks();
 {% else %}
 window.projectData = {};
@@ -282,21 +290,79 @@ function populateRecommendations() {
         <div class="card">
             <div style="display: flex; gap: var(--blend-space-lg);">
                 <div style="flex-shrink: 0;">
-                    <div style="width: 48px; height: 48px; background-color: var(--blend-off-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blend-neon-turquoise);">
+                    <div style="width: 48px; height: 48px; background-color: var(--blend-icon-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blend-neon-turquoise);">
                         <i class="fas ${rec.icon}"></i>
                     </div>
                 </div>
                 <div style="flex-grow: 1;">
-                    <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 400;">${rec.title}</h3>
+                    <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 600;">${rec.title}</h3>
                     <p style="margin: 0 0 var(--blend-space-md); color: var(--blend-text-secondary);">${rec.description}</p>
                     <div style="display: flex; gap: var(--blend-space-sm);">
-                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Priority: ${rec.priority}</span>
-                        <span class="status-badge" style="background-color: var(--blend-off-white); color: var(--blend-text-secondary);">Impact: ${rec.impact}</span>
+                        <span class="status-badge" style="background-color: var(--blend-bg-secondary); color: var(--blend-text-secondary); border: 1px solid var(--blend-border-color);">Priority: ${rec.priority}</span>
+                        <span class="status-badge" style="background-color: var(--blend-bg-secondary); color: var(--blend-text-secondary); border: 1px solid var(--blend-border-color);">Impact: ${rec.impact}</span>
                     </div>
                 </div>
             </div>
         </div>
     `).join('');
+}
+
+function populateResourceRecommendations() {
+    const container = document.getElementById('resourceRecommendationsContainer');
+    if (!container) return;
+
+    const teamRequirements = window.projectData.team_requirements || {};
+    const recommendations = window.projectData.resource_recommendations || {};
+    const roles = Object.keys(teamRequirements);
+
+    if (!roles.length) {
+        container.innerHTML = '<p style="color: var(--blend-text-secondary);">No team requirements available for resource matching.</p>';
+        return;
+    }
+
+    container.innerHTML = roles.map(role => {
+        const count = teamRequirements[role] || 1;
+        const candidates = recommendations[role] || [];
+        return `
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--blend-space-md); margin-bottom: var(--blend-space-md);">
+                    <div>
+                        <h3 style="margin: 0; color: var(--blend-text-primary); font-size: var(--blend-text-h3); font-weight: 600;">${escapeHtml(role)}</h3>
+                        <p style="margin: var(--blend-space-xs) 0 0; color: var(--blend-text-secondary);">${count} person(s) needed</p>
+                    </div>
+                    <span class="status-badge" style="background-color: var(--blend-accent-soft); color: var(--blend-text-primary);">Best fit</span>
+                </div>
+                ${candidates.length ? `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--blend-space-md);">
+                        ${candidates.map(candidate => `
+                            <div style="padding: var(--blend-space-md); background-color: var(--blend-bg-secondary); border: 1px solid var(--blend-border-color); border-radius: 10px;">
+                                <div style="display: flex; justify-content: space-between; gap: var(--blend-space-md); align-items: flex-start;">
+                                    <div>
+                                        <p style="margin: 0; color: var(--blend-text-primary); font-weight: 600;">${escapeHtml(candidate.name)}</p>
+                                        <p style="margin: var(--blend-space-xs) 0 0; color: var(--blend-text-muted); font-size: var(--blend-text-caption);">${escapeHtml(candidate.primary_role)} · ${escapeHtml(candidate.location)}</p>
+                                    </div>
+                                    <span class="status-badge" style="background-color: var(--blend-bg-card); border: 1px solid var(--blend-border-color); color: var(--blend-text-primary);">${candidate.match_score}%</span>
+                                </div>
+                                <p style="margin: var(--blend-space-sm) 0 0; color: var(--blend-text-secondary); font-size: 0.82rem;">${escapeHtml(candidate.skills)}</p>
+                                <p style="margin: var(--blend-space-sm) 0 0; color: var(--blend-text-muted); font-size: var(--blend-text-caption);">Current: ${escapeHtml(candidate.current_project)} · Ends ${escapeHtml(candidate.project_end_date)}</p>
+                                <p style="margin: var(--blend-space-sm) 0 0; color: var(--blend-text-secondary); font-size: var(--blend-text-caption);">${escapeHtml(candidate.why)}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : '<p style="margin: 0; color: var(--blend-text-secondary);">No matching people found in the sample pool.</p>'}
+            </div>
+        `;
+    }).join('');
+}
+
+function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    }[char]));
 }
 
 function populateRisks() {
@@ -333,9 +399,9 @@ function populateRisks() {
     const risksContainer = document.getElementById('risksContainer');
     if (risksContainer) {
         risksContainer.innerHTML = risks.map(risk => `
-            <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
-                <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">${risk.title}</p>
-                <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">${risk.description}</p>
+            <div style="padding: var(--blend-space-md); background-color: var(--blend-bg-secondary); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 8px; border: 1px solid var(--blend-border-color); border-left-width: 3px;">
+                <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 500;">${risk.title}</p>
+                <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-secondary);">${risk.description}</p>
             </div>
         `).join('');
     }
@@ -343,9 +409,9 @@ function populateRisks() {
     const opportunitiesContainer = document.getElementById('opportunitiesContainer');
     if (opportunitiesContainer) {
         opportunitiesContainer.innerHTML = opportunities.map(opp => `
-            <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 4px;">
-                <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">${opp.title}</p>
-                <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">${opp.description}</p>
+            <div style="padding: var(--blend-space-md); background-color: var(--blend-bg-secondary); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 8px; border: 1px solid var(--blend-border-color); border-left-width: 3px;">
+                <p style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 500;">${opp.title}</p>
+                <p style="margin: 0; font-size: var(--blend-text-caption); color: var(--blend-text-secondary);">${opp.description}</p>
             </div>
         `).join('');
     }

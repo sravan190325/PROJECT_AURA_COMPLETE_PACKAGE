@@ -16,6 +16,7 @@
 <!-- Results Section -->
 <section id="resultsSection" style="display: none;">
     <h2 style="margin-bottom: var(--blend-space-xl);">Analysis Complete</h2>
+    <div id="analysisNote" class="alert alert-info" style="display: none; margin-bottom: var(--blend-space-xl);"></div>
 
     <!-- Project Summary Cards -->
     <div class="grid grid-2" style="margin-bottom: var(--blend-space-3xl);">
@@ -147,9 +148,10 @@ function createProgressStep(text, isActive = false) {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: ${isActive ? 'var(--blend-neon-turquoise)' : 'var(--blend-off-white)'};
+        background-color: ${isActive ? 'var(--blend-neon-turquoise)' : 'var(--blend-bg-secondary)'};
         color: ${isActive ? 'var(--blend-washed-blue)' : 'var(--blend-text-muted)'};
-        font-weight: 400;
+        border: 1px solid ${isActive ? 'var(--blend-neon-turquoise)' : 'var(--blend-border-color)'};
+        font-weight: 500;
         flex-shrink: 0;
     `;
     circle.innerHTML = isActive ? '<i class="fas fa-spinner fa-spin"></i>' : '<i class="fas fa-check"></i>';
@@ -174,14 +176,16 @@ const progressInterval = setInterval(() => {
     if (currentStep < steps.length - 1) {
         const currentCircle = steps[currentStep].querySelector('div');
         currentCircle.innerHTML = '<i class="fas fa-check"></i>';
-        currentCircle.style.backgroundColor = 'var(--blend-off-white)';
+        currentCircle.style.backgroundColor = 'var(--blend-bg-secondary)';
         currentCircle.style.color = 'var(--blend-text-muted)';
+        currentCircle.style.borderColor = 'var(--blend-border-color)';
 
         currentStep++;
         const nextCircle = steps[currentStep].querySelector('div');
         nextCircle.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         nextCircle.style.backgroundColor = 'var(--blend-neon-turquoise)';
         nextCircle.style.color = 'var(--blend-washed-blue)';
+        nextCircle.style.borderColor = 'var(--blend-neon-turquoise)';
     } else {
         clearInterval(progressInterval);
         analyzeDocuments();
@@ -200,7 +204,7 @@ async function analyzeDocuments() {
         if (response.ok) {
             const result = await response.json();
             if (result.success) {
-                window.projectData = result.analysis;
+                window.projectData = result; // Store the entire result response
                 showResults();
             } else {
                 throw new Error(result.error || 'Analysis failed');
@@ -218,48 +222,149 @@ function showResults() {
     document.getElementById('analysisProgress').style.display = 'none';
     document.getElementById('resultsSection').style.display = 'block';
 
-    // Populate data from the page (these would come from Flask template context)
-    const data = window.projectData || {};
+    const result = window.projectData || {};
+    const analysis = result.analysis || {};
+    const validation = result.validation || {};
+    const risks = result.risks || [];
+    const resourceRecommendations = result.resource_recommendations || {};
 
-    document.getElementById('projectName').textContent = data.project_name || 'Sample Project';
-    document.getElementById('clientName').textContent = data.client_name || 'Sample Client';
-    document.getElementById('projectType').textContent = data.project_type || 'Project Type';
-    document.getElementById('duration').textContent = data.duration_weeks ? `${data.duration_weeks} weeks` : 'TBD';
-    document.getElementById('teamSize').textContent = data.team_size || '0';
+    document.getElementById('projectName').textContent = analysis.project_name || 'Project Plan';
+    document.getElementById('clientName').textContent = analysis.client_name || 'Client';
+    document.getElementById('projectType').textContent = analysis.project_type || 'Project Type';
+    document.getElementById('duration').textContent = analysis.duration_weeks ? `${analysis.duration_weeks} weeks` : 'TBD';
+    if (analysis.note) {
+        const note = document.getElementById('analysisNote');
+        note.style.display = 'flex';
+        note.innerHTML = `<i class="fas fa-info-circle"></i><div>${escapeHtml(analysis.note)}</div>`;
+    }
 
-    const deliverables = data.deliverables || [];
+    // Deliverables rendering (supporting both strings and objects)
+    const deliverables = analysis.deliverables || [];
     document.getElementById('deliverableCount').textContent = deliverables.length;
-    document.getElementById('deliverablesList').innerHTML = deliverables.map((d, i) => `
-        <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border: 1px solid var(--blend-border-color); border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <p style="margin: 0; font-weight: 400; color: var(--blend-text-primary);">${d.name || `Deliverable ${i+1}`}</p>
-                ${d.description ? `<p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">${d.description}</p>` : ''}
+    document.getElementById('deliverablesList').innerHTML = deliverables.map((d, i) => {
+        const name = (typeof d === 'object' && d !== null) ? (d.name || d.title) : d;
+        const description = (typeof d === 'object' && d !== null) ? d.description : '';
+        return `
+            <div style="padding: var(--blend-space-lg); background-color: var(--blend-bg-secondary); border: 1px solid var(--blend-border-color); border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <p style="margin: 0; font-weight: 500; color: var(--blend-text-primary);">${name || `Deliverable ${i+1}`}</p>
+                    ${description ? `<p style="margin: var(--blend-space-sm) 0 0; font-size: 0.82rem; color: var(--blend-text-secondary);">${description}</p>` : ''}
+                </div>
+                <span class="status-badge status-planned">Planned</span>
             </div>
-            <span class="status-badge status-planned">Planned</span>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
-    const team = data.team_members || [];
-    document.getElementById('teamList').innerHTML = team.map(t => `
-        <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border: 1px solid var(--blend-border-color); border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <p style="margin: 0; font-weight: 400; color: var(--blend-text-primary);">${t.role || 'Team Member'}</p>
-                <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">${t.count || 1} person(s)</p>
+    // Team requirements rendering (supporting both array and dict)
+    let teamListHtml = '';
+    let teamSizeCount = 0;
+    const renderCandidates = (role) => {
+        const candidates = resourceRecommendations[role] || [];
+        if (!candidates.length) {
+            return '<p style="margin: var(--blend-space-sm) 0 0; font-size: 0.82rem; color: var(--blend-text-muted);">No matching bench recommendations found yet.</p>';
+        }
+
+        return `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--blend-space-md); margin-top: var(--blend-space-md);">
+                ${candidates.map(candidate => `
+                    <div style="padding: var(--blend-space-md); background-color: var(--blend-bg-card); border: 1px solid var(--blend-border-color); border-radius: 10px;">
+                        <div style="display: flex; justify-content: space-between; gap: var(--blend-space-md); align-items: flex-start;">
+                            <div>
+                                <p style="margin: 0; color: var(--blend-text-primary); font-weight: 600;">${escapeHtml(candidate.name)}</p>
+                                <p style="margin: var(--blend-space-xs) 0 0; color: var(--blend-text-muted); font-size: var(--blend-text-caption);">${escapeHtml(candidate.primary_role)} · ${escapeHtml(candidate.location)}</p>
+                            </div>
+                            <span class="status-badge" style="background-color: var(--blend-accent-soft); color: var(--blend-text-primary);">${candidate.match_score}%</span>
+                        </div>
+                        <p style="margin: var(--blend-space-sm) 0 0; color: var(--blend-text-secondary); font-size: 0.82rem;">${escapeHtml(candidate.skills)}</p>
+                        <p style="margin: var(--blend-space-sm) 0 0; color: var(--blend-text-muted); font-size: var(--blend-text-caption);">
+                            Current: ${escapeHtml(candidate.current_project)} · Ends ${escapeHtml(candidate.project_end_date)}
+                        </p>
+                        <p style="margin: var(--blend-space-sm) 0 0; color: var(--blend-text-secondary); font-size: var(--blend-text-caption);">
+                            ${escapeHtml(candidate.why)}
+                        </p>
+                    </div>
+                `).join('')}
             </div>
-        </div>
-    `).join('');
+        `;
+    };
+    
+    if (analysis.team_requirements) {
+        if (Array.isArray(analysis.team_requirements)) {
+            // It is an array of objects
+            teamListHtml = analysis.team_requirements.map(t => {
+                const role = t.role || t.name || 'Team Member';
+                const count = t.count || t.quantity || 1;
+                teamSizeCount += parseInt(count);
+                return `
+                    <div style="padding: var(--blend-space-lg); background-color: var(--blend-bg-secondary); border: 1px solid var(--blend-border-color); border-radius: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--blend-space-md);">
+                            <div>
+                                <p style="margin: 0; font-weight: 500; color: var(--blend-text-primary);">${escapeHtml(role)}</p>
+                                <p style="margin: var(--blend-space-sm) 0 0; font-size: 0.82rem; color: var(--blend-text-secondary);">${count} person(s)</p>
+                            </div>
+                            <span class="status-badge" style="background-color: var(--blend-bg-card); border: 1px solid var(--blend-border-color); color: var(--blend-text-secondary);">Recommended people</span>
+                        </div>
+                        ${renderCandidates(role)}
+                    </div>
+                `;
+            }).join('');
+        } else {
+            // It is a dictionary map: { "Role": count }
+            teamListHtml = Object.entries(analysis.team_requirements).map(([role, count]) => {
+                teamSizeCount += parseInt(count);
+                return `
+                    <div style="padding: var(--blend-space-lg); background-color: var(--blend-bg-secondary); border: 1px solid var(--blend-border-color); border-radius: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--blend-space-md);">
+                            <div>
+                                <p style="margin: 0; font-weight: 500; color: var(--blend-text-primary);">${escapeHtml(role)}</p>
+                                <p style="margin: var(--blend-space-sm) 0 0; font-size: 0.82rem; color: var(--blend-text-secondary);">${count} person(s)</p>
+                            </div>
+                            <span class="status-badge" style="background-color: var(--blend-bg-card); border: 1px solid var(--blend-border-color); color: var(--blend-text-secondary);">Recommended people</span>
+                        </div>
+                        ${renderCandidates(role)}
+                    </div>
+                `;
+            }).join('');
+        }
+    } else if (analysis.team_members) {
+        teamListHtml = analysis.team_members.map(t => {
+            const role = t.role || t.name || 'Team Member';
+            const count = t.count || t.quantity || 1;
+            teamSizeCount += parseInt(count);
+            return `
+                <div style="padding: var(--blend-space-lg); background-color: var(--blend-bg-secondary); border: 1px solid var(--blend-border-color); border-radius: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--blend-space-md);">
+                        <div>
+                            <p style="margin: 0; font-weight: 500; color: var(--blend-text-primary);">${role}</p>
+                            <p style="margin: var(--blend-space-sm) 0 0; font-size: 0.82rem; color: var(--blend-text-secondary);">${count} person(s)</p>
+                        </div>
+                        <span class="status-badge" style="background-color: var(--blend-bg-card); border: 1px solid var(--blend-border-color); color: var(--blend-text-secondary);">Recommended people</span>
+                    </div>
+                    ${renderCandidates(role)}
+                </div>
+            `;
+        }).join('');
+    }
+    
+    document.getElementById('teamSize').textContent = teamSizeCount || '0';
+    document.getElementById('teamList').innerHTML = teamListHtml || '<p style="color: var(--blend-text-secondary);">No team requirements specified.</p>';
 
-    const risks = data.risks || [];
+    // Risks rendering
     document.getElementById('riskCount').textContent = risks.length;
-    document.getElementById('risksList').innerHTML = risks.map((r, i) => `
-        <div style="padding: var(--blend-space-md); background-color: var(--blend-white); border: 1px solid var(--blend-border-color); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 6px;">
-            <p style="margin: 0; font-weight: 400; color: var(--blend-text-primary);">${r.risk_description || `Risk ${i+1}`}</p>
-            <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Mitigation: ${r.mitigation || 'Monitor'}</p>
-        </div>
-    `).join('');
+    document.getElementById('risksList').innerHTML = risks.length > 0 ? risks.map((r, i) => {
+        const desc = (typeof r === 'object' && r !== null) ? (r.risk_description || r.description || r.title || `Risk ${i+1}`) : r;
+        const mitigation = (typeof r === 'object' && r !== null) ? (r.mitigation || r.mitigation_strategy || 'Monitor') : 'Monitor';
+        return `
+            <div style="padding: var(--blend-space-lg); background-color: var(--blend-bg-secondary); border: 1px solid var(--blend-border-color); border-left: 3px solid var(--blend-neon-turquoise); border-radius: 12px; border-left-width: 3px;">
+                <p style="margin: 0; font-weight: 500; color: var(--blend-text-primary);">${desc}</p>
+                <p style="margin: var(--blend-space-sm) 0 0; font-size: 0.82rem; color: var(--blend-text-secondary);">Mitigation: ${mitigation}</p>
+            </div>
+        `;
+    }).join('') : '<p style="color: var(--blend-text-secondary);">No risks identified.</p>';
 
-    document.getElementById('projectScope').textContent = data.scope || 'Project scope details will be populated here.';
-    document.getElementById('depCount').textContent = data.dependencies ? data.dependencies.length : 0;
+    // Scope & Details rendering
+    document.getElementById('projectScope').textContent = analysis.scope || 'Project scope details will be populated here.';
+    document.getElementById('depCount').textContent = analysis.dependencies ? analysis.dependencies.length : 0;
 
     // Show action buttons
     document.getElementById('continueBtn').style.display = 'inline-flex';
@@ -269,6 +374,16 @@ function showResults() {
         document.getElementById('continueBtn').href = `/api/project/clarify`;
     }
     document.getElementById('downloadBtn').style.display = 'inline-flex';
+}
+
+function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    }[char]));
 }
 
 // Tab functionality

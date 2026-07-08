@@ -13,6 +13,13 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('projectAuraTheme') || 'dark';
+            document.documentElement.setAttribute('data-bs-theme', savedTheme === 'light' ? 'light' : 'dark');
+        })();
+    </script>
     
     {% block extra_css %}{% endblock %}
 </head>
@@ -23,9 +30,15 @@
             <span class="navbar-brand mb-0 h1">
                 <i class="fas fa-rocket"></i> Project Aura
             </span>
-            <span class="navbar-text text-muted">
-                AI-Powered Project Planning Assistant
-            </span>
+            <div class="d-flex align-items-center gap-3">
+                <span class="navbar-text text-muted d-none d-md-inline">
+                    AI-Powered Project Planning Assistant
+                </span>
+                <button type="button" class="btn btn-outline-light btn-sm" id="legacyThemeToggle" aria-label="Switch theme">
+                    <i class="fas fa-sun me-1" aria-hidden="true"></i>
+                    <span>Light</span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -50,6 +63,51 @@
     
     <!-- Custom JS -->
     <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+
+    <script>
+        (function () {
+            const toggle = document.getElementById('legacyThemeToggle');
+            if (!toggle) return;
+
+            const icon = toggle.querySelector('i');
+            const text = toggle.querySelector('span');
+
+            function applyTheme(theme) {
+                const normalizedTheme = theme === 'light' ? 'light' : 'dark';
+                const isDark = normalizedTheme === 'dark';
+                const navbar = document.querySelector('.navbar');
+                const footer = document.querySelector('footer');
+
+                document.documentElement.setAttribute('data-bs-theme', normalizedTheme);
+                localStorage.setItem('projectAuraTheme', normalizedTheme);
+                icon.className = isDark ? 'fas fa-sun me-1' : 'fas fa-moon me-1';
+                text.textContent = isDark ? 'Light' : 'Dark';
+                toggle.classList.toggle('btn-outline-light', isDark);
+                toggle.classList.toggle('btn-outline-dark', !isDark);
+                toggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+
+                if (navbar) {
+                    navbar.classList.toggle('navbar-dark', isDark);
+                    navbar.classList.toggle('navbar-light', !isDark);
+                    navbar.classList.toggle('bg-dark', isDark);
+                    navbar.classList.toggle('bg-light', !isDark);
+                    navbar.classList.toggle('border-bottom', !isDark);
+                }
+
+                if (footer) {
+                    footer.classList.toggle('bg-dark', isDark);
+                    footer.classList.toggle('bg-light', !isDark);
+                    footer.classList.toggle('border-top', !isDark);
+                }
+            }
+
+            applyTheme(localStorage.getItem('projectAuraTheme') || 'dark');
+            toggle.addEventListener('click', function () {
+                const currentTheme = document.documentElement.getAttribute('data-bs-theme') || 'dark';
+                applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+            });
+        })();
+    </script>
     
     {% block extra_js %}{% endblock %}
 </body>

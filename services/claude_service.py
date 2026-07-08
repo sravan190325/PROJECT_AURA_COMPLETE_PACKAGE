@@ -6,6 +6,7 @@ Handles all interactions with Anthropic Claude API.
 import logging
 import json
 import os
+import re
 from typing import Dict, Any, Optional
 from anthropic import Anthropic
 
@@ -183,7 +184,16 @@ class ClaudeService:
         for i, doc in enumerate(documents, 1):
             filename = doc.get('filename', 'Unknown')
             doc_type = doc.get('extension', 'unknown').upper()
-            content = doc.get('text', '')[:3000]  # Limit content length
+            
+            # Read from file if text is not in session
+            content = doc.get('text', '')
+            if not content and 'text_path' in doc and os.path.exists(doc['text_path']):
+                try:
+                    with open(doc['text_path'], 'r', encoding='utf-8') as f:
+                        content = f.read()
+                except Exception as e:
+                    logger.error(f"Failed to read text from {doc['text_path']}: {e}")
+            content = content[:3000]  # Limit content length
             
             doc_text.append(f"""
 --- Document {i}: {filename} ({doc_type}) ---
@@ -334,7 +344,20 @@ Return JSON format with recommendations."""
             Mock analysis result
         """
         # Simulate analysis based on document content
-        doc_text = '\n'.join([doc.get('text', '')[:500] for doc in documents])
+        texts = []
+        filenames = []
+        for doc in documents:
+            filenames.append(doc.get('filename', 'Uploaded Document'))
+            content = doc.get('text', '')
+            if not content and 'text_path' in doc and os.path.exists(doc['text_path']):
+                try:
+                    with open(doc['text_path'], 'r', encoding='utf-8') as f:
+                        content = f.read()
+                except Exception as e:
+                    logger.error(f"Failed to read text from {doc['text_path']}: {e}")
+            texts.append(content[:500])
+        doc_text = '\n'.join(texts)
+        cleaned_text = ' '.join(doc_text.split())
 
         # Detect project type based on keywords
         project_types = {
@@ -349,6 +372,7 @@ Return JSON format with recommendations."""
 
         detected_type = 'Application Development'  # Default
         detected_deliverables = ['Application Delivery', 'Documentation', 'Testing']
+        team_requirements = {'Project Manager': 1, 'Developer': 2, 'QA': 1}
 
         text_lower = doc_text.lower()
         for keyword, (ptype, deliverables) in project_types.items():
@@ -357,14 +381,87 @@ Return JSON format with recommendations."""
                 detected_deliverables = deliverables
                 break
 
+        if 'mobile' in text_lower or 'android' in text_lower or 'ios' in text_lower:
+            detected_type = 'Application Development'
+            detected_deliverables = ['Mobile Application', 'Backend APIs', 'QA Test Report', 'Deployment Guide']
+            team_requirements = {'Project Manager': 1, 'Mobile Developer': 2, 'Backend Developer': 1, 'QA': 1}
+        elif detected_type == 'Data Engineering':
+            team_requirements = {'Project Manager': 1, 'Data Engineer': 3, 'Data Architect': 1, 'QA': 1}
+        elif detected_type == 'Data Analytics':
+            team_requirements = {'Project Manager': 1, 'Data Analyst': 2, 'BI Developer': 1, 'QA': 1}
+        elif detected_type == 'Cloud Migration':
+            team_requirements = {'Project Manager': 1, 'Cloud Architect': 1, 'Cloud Engineer': 2, 'Security Engineer': 1, 'QA': 1}
+        elif 'GenAI' in detected_type or detected_type == 'GenAI / AI Implementation':
+            team_requirements = {'Project Manager': 1, 'AI Engineer': 2, 'Data Engineer': 1, 'QA': 1}
+
+        client_name = self._extract_mock_field(
+            cleaned_text,
+            [
+                r'(?:client|customer|company)\s*[:\-]\s*([A-Z][A-Za-z0-9 &,-]{2,60})',
+                r'for\s+([A-Z][A-Za-z0-9 &,-]{2,60})'
+            ],
+            'Client from uploaded document'
+        )
+        project_name = self._extract_mock_field(
+            cleaned_text,
+            [
+                r'(?:project|initiative|program)\s*(?:name)?\s*[:\-]\s*([A-Z][A-Za-z0-9 &,-]{3,80})',
+                r'(?:SOW|Statement of Work)\s*(?:for)?\s*[:\-]?\s*([A-Z][A-Za-z0-9 &,-]{3,80})'
+            ],
+            os.path.splitext(filenames[0])[0] if filenames else f'{detected_type} Project'
+        )
+        scope = self._extract_mock_field(
+            cleaned_text,
+            [
+                r'(?:scope|objective|overview)\s*[:\-]\s*([^.;]{30,260})',
+                r'((?:build|develop|create|migrate|modernize|implement|deliver)\s+[^.;]{30,260})'
+            ],
+            cleaned_text[:260] if cleaned_text else 'Project scope will be refined from the uploaded document.'
+        )
+
         return {
             'project_type': detected_type,
-            'client_name': 'Client Name (To be provided)',
-            'scope': 'Project scope to be clarified by user input',
+            'project_name': project_name,
+            'client_name': client_name,
+            'scope': scope,
             'deliverables': detected_deliverables,
-            'team_requirements': {'Project Manager': 1, 'Developer': 2, 'QA': 1},
+            'team_requirements': team_requirements,
             'confidence': 75,
             'missing_fields': ['Start Date', 'Duration', 'Team Size', 'Delivery Model'],
-            'key_highlights': ['Primary objective to be defined', 'Timeline to be confirmed'],
-            'note': '(MOCK MODE - API quota exhausted until July 1st. Real Claude will replace this on July 1st.)'
+            'key_highlights': [
+                f'Analyzed uploaded file: {filenames[0] if filenames else "document"}',
+                'Timeline and delivery model still need confirmation'
+            ],
+            'note': 'Mock analysis is enabled. Results are inferred from uploaded text without calling Claude.'
         }
+
+    @staticmethod
+    def _extract_mock_field(text: str, patterns: list, fallback: str) -> str:
+        for pattern in patterns:
+            match = re.search(pattern, text, flags=re.IGNORECASE)
+            if match:
+                value = ClaudeService._clean_mock_value(match.group(1))
+                if value:
+                    return value[:140]
+        return fallback
+
+    @staticmethod
+    def _clean_mock_value(value: str) -> str:
+        cleaned = value.strip(' -:.,')
+        labels = [
+            ' Client ',
+            ' Scope ',
+            ' Objective ',
+            ' Overview ',
+            ' Project Manager ',
+            ' Deliverables ',
+            ' Team ',
+            ' Timeline ',
+            ' Duration ',
+            ' Start Date ',
+        ]
+        padded = f' {cleaned} '
+        cut_points = [padded.find(label) for label in labels if padded.find(label) > 0]
+        if cut_points:
+            cleaned = padded[:min(cut_points)].strip()
+        return cleaned.strip(' -:.,')

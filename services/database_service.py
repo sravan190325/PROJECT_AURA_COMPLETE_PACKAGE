@@ -264,6 +264,17 @@ class DatabaseService:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             
+            # Read from file if text is not in doc_data
+            text = doc_data.get('text', '')
+            if not text and 'text_path' in doc_data:
+                import os
+                if os.path.exists(doc_data['text_path']):
+                    try:
+                        with open(doc_data['text_path'], 'r', encoding='utf-8') as f:
+                            text = f.read()
+                    except Exception as e:
+                        logger.error(f"Failed to read extracted text from file for database: {e}")
+
             cursor.execute('''
                 INSERT INTO documents (
                     project_id, filename, file_type, extracted_text, file_size
@@ -272,7 +283,7 @@ class DatabaseService:
                 project_id,
                 doc_data.get('filename'),
                 doc_data.get('extension'),
-                doc_data.get('text'),
+                text,
                 doc_data.get('file_size', 0)
             ))
             

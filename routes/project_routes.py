@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from services.claude_service import ClaudeService
 from services.project_detector import ProjectDetector
 from services.database_service import DatabaseService
+from services.resource_recommender import ResourceRecommender
 from demo_mode import is_demo_mode, get_demo_project, get_demo_analysis
 
 logger = logging.getLogger(__name__)
@@ -42,12 +43,17 @@ def analyze_documents():
             demo_data = get_demo_analysis()
             session['project_analysis'] = demo_data
             session.modified = True
+            resource_recommendations = ResourceRecommender.recommend_for_team(
+                demo_data.get('team_requirements') or demo_data.get('team_members', []),
+                demo_data.get('project_type', '')
+            )
 
             return jsonify({
                 'success': True,
                 'analysis': demo_data,
                 'validation': {'completeness': 95, 'confidence': 92},
                 'risks': demo_data.get('risks', [])[:5],
+                'resource_recommendations': resource_recommendations,
                 'config': {
                     'staffing_template': ['Tech Lead', 'Developers', 'QA', 'DevOps'],
                     'phases': ['Requirements', 'Design', 'Development', 'Testing', 'Deployment']
@@ -77,6 +83,10 @@ def analyze_documents():
             return jsonify(analysis_result), 500
 
         analysis = analysis_result['analysis']
+        resource_recommendations = ResourceRecommender.recommend_for_team(
+            analysis.get('team_requirements', {}),
+            analysis.get('project_type', '')
+        )
         
         # Validate extracted information
         validation = ProjectDetector.validate_project_info(analysis)
@@ -100,6 +110,7 @@ def analyze_documents():
             'analysis': analysis,
             'validation': validation,
             'risks': risks[:5],  # Top 5 risks
+            'resource_recommendations': resource_recommendations,
             'config': {
                 'staffing_template': config.get('staffing'),
                 'phases': config.get('phases')
@@ -363,8 +374,22 @@ def get_project_summary_view(project_id):
         project_data['deliverable_count'] = len(project_summary.get('deliverables', []))
         project_data['team_count'] = sum([t.get('count', 1) for t in project_summary.get('team_members', [])])
         project_data['risk_count'] = len(project_summary.get('risks', []))
+        team_requirements = {
+            member.get('role', 'Team Member'): member.get('count', 1)
+            for member in project_summary.get('team_members', [])
+        }
+        resource_recommendations = ResourceRecommender.recommend_for_team(
+            team_requirements,
+            project_data.get('project_type', '')
+        )
 
-        return render_template('project_summary_blend.html', project=project_data, project_id=project_id), 200
+        return render_template(
+            'project_summary_blend.html',
+            project=project_data,
+            project_id=project_id,
+            team_requirements=team_requirements,
+            resource_recommendations=resource_recommendations
+        ), 200
 
     except Exception as e:
         error_msg = f"Error loading project summary: {str(e)}"

@@ -180,7 +180,7 @@ function handleFiles(files) {
 
 function displayFiles() {
     filesContainer.innerHTML = selectedFiles.map((file, idx) => `
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--blend-space-sm); background-color: var(--blend-white); border-radius: 4px; border: 1px solid var(--blend-border-color); margin-bottom: var(--blend-space-sm);">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--blend-space-md); padding: var(--blend-space-sm); background-color: var(--blend-bg-secondary); border-radius: 8px; border: 1px solid var(--blend-border-color); margin-bottom: var(--blend-space-sm);">
             <div style="display: flex; align-items: center; gap: var(--blend-space-sm);">
                 <i class="fas fa-file-pdf" style="color: var(--blend-neon-turquoise);"></i>
                 <span style="color: var(--blend-text-secondary);">${file.name}</span>

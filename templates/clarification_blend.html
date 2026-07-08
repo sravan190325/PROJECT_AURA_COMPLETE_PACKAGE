@@ -13,34 +13,26 @@
     <div class="card" style="max-width: 700px; margin: 0 auto;">
         <form id="clarificationForm">
             <!-- Project Type Summary -->
-            <div style="padding: var(--blend-space-lg); background-color: var(--blend-off-white); border-radius: 6px; margin-bottom: var(--blend-space-2xl);">
+            <div style="padding: var(--blend-space-lg); background-color: var(--blend-bg-secondary); border: 1px solid var(--blend-border-color); border-radius: 8px; margin-bottom: var(--blend-space-2xl);">
                 <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Detected Information</p>
                 <div style="display: flex; gap: var(--blend-space-2xl);">
                     <div>
                         <p style="margin: 0 0 var(--blend-space-xs); font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Project Type</p>
-                        <h3 style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="projectType">Loading...</h3>
+                        <h3 style="margin: 0; color: var(--blend-text-primary); font-weight: 500;" id="projectType">Loading...</h3>
                     </div>
                     <div>
                         <p style="margin: 0 0 var(--blend-space-xs); font-size: var(--blend-text-caption); color: var(--blend-text-muted);">Client Name</p>
-                        <h3 style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="clientName">Loading...</h3>
+                        <h3 style="margin: 0; color: var(--blend-text-primary); font-weight: 500;" id="clientName">Loading...</h3>
                     </div>
                 </div>
             </div>
 
             <!-- Start Date -->
             <div style="margin-bottom: var(--blend-space-2xl);">
-                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">
+                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 500;">
                     When should the project start?
                 </label>
-                <input type="date" name="start_date" id="startDate" style="
-                    width: 100%;
-                    padding: var(--blend-space-md);
-                    border: 1px solid var(--blend-border-color);
-                    border-radius: 6px;
-                    font-family: var(--blend-font);
-                    font-size: var(--blend-text-body);
-                    color: var(--blend-text-primary);
-                " required>
+                <input type="date" name="start_date" id="startDate" required>
                 <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">
                     Select the intended start date for this project
                 </p>
@@ -48,24 +40,16 @@
 
             <!-- Duration -->
             <div style="margin-bottom: var(--blend-space-2xl);">
-                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">
+                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 500;">
                     How long is the project duration?
                 </label>
                 <div style="display: flex; gap: var(--blend-space-md);">
-                    <input type="number" name="duration" id="duration" min="1" max="120" value="12" style="
-                        flex-grow: 1;
-                        padding: var(--blend-space-md);
-                        border: 1px solid var(--blend-border-color);
-                        border-radius: 6px;
-                        font-family: var(--blend-font);
-                        font-size: var(--blend-text-body);
-                        color: var(--blend-text-primary);
-                    " required>
+                    <input type="number" name="duration" id="duration" min="1" max="120" value="12" style="flex-grow: 1;" required>
                     <span style="
-                        padding: var(--blend-space-md);
-                        background-color: var(--blend-off-white);
+                        padding: var(--blend-space-md) var(--blend-space-xl);
+                        background-color: var(--blend-bg-secondary);
                         border: 1px solid var(--blend-border-color);
-                        border-radius: 6px;
+                        border-radius: 30px;
                         display: flex;
                         align-items: center;
                         color: var(--blend-text-secondary);
@@ -78,24 +62,16 @@
 
             <!-- Team Size -->
             <div style="margin-bottom: var(--blend-space-2xl);">
-                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 400;">
+                <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 500;">
                     What is the planned team size?
                 </label>
                 <div style="display: flex; gap: var(--blend-space-md);">
-                    <input type="number" name="team_size" id="teamSize" min="1" max="100" value="5" style="
-                        flex-grow: 1;
-                        padding: var(--blend-space-md);
-                        border: 1px solid var(--blend-border-color);
-                        border-radius: 6px;
-                        font-family: var(--blend-font);
-                        font-size: var(--blend-text-body);
-                        color: var(--blend-text-primary);
-                    " required>
+                    <input type="number" name="team_size" id="teamSize" min="1" max="100" value="5" style="flex-grow: 1;" required>
                     <span style="
-                        padding: var(--blend-space-md);
-                        background-color: var(--blend-off-white);
+                        padding: var(--blend-space-md) var(--blend-space-xl);
+                        background-color: var(--blend-bg-secondary);
                         border: 1px solid var(--blend-border-color);
-                        border-radius: 6px;
+                        border-radius: 30px;
                         display: flex;
                         align-items: center;
                         color: var(--blend-text-secondary);

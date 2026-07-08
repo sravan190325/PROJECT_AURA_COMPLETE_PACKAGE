@@ -16,7 +16,7 @@
     </div>
 
     <!-- Project Summary Card -->
-    <div class="card" style="background: linear-gradient(135deg, #f0f7ff 0%, #e0f2ff 100%); border-left: 4px solid var(--blend-primary); margin-bottom: var(--blend-space-2xl);">
+    <div class="card" style="background: var(--blend-section-bg); border-left: 4px solid var(--blend-section-border); margin-bottom: var(--blend-space-2xl);">
         <div style="display: flex; gap: var(--blend-space-lg); align-items: flex-start;">
             <div style="flex: 1;">
                 <p style="margin: 0; color: var(--blend-text-muted); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px;">
@@ -44,7 +44,7 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--blend-space-2xl); margin-bottom: var(--blend-space-3xl);">
 
             <!-- Excel Option -->
-            <div class="platform-card" style="cursor: pointer; padding: var(--blend-space-lg); border: 2px solid var(--blend-border-color); border-radius: 8px; transition: all 0.3s ease; background: var(--blend-white);">
+            <div class="platform-card" style="cursor: pointer; padding: var(--blend-space-lg); border: 2px solid var(--blend-border-color); border-radius: 8px; transition: all 0.3s ease; background: var(--blend-bg-card);">
                 <input type="radio" id="excel" name="platform" value="excel" style="display: none;">
                 <label for="excel" style="cursor: pointer; display: block;">
                     <div style="text-align: center; margin-bottom: var(--blend-space-lg);">
@@ -64,7 +64,7 @@
             </div>
 
             <!-- SmartSheet Option -->
-            <div class="platform-card" style="cursor: pointer; padding: var(--blend-space-lg); border: 2px solid var(--blend-border-color); border-radius: 8px; transition: all 0.3s ease; background: var(--blend-white);">
+            <div class="platform-card" style="cursor: pointer; padding: var(--blend-space-lg); border: 2px solid var(--blend-border-color); border-radius: 8px; transition: all 0.3s ease; background: var(--blend-bg-card);">
                 <input type="radio" id="smartsheet" name="platform" value="smartsheet" style="display: none;">
                 <label for="smartsheet" style="cursor: pointer; display: block;">
                     <div style="text-align: center; margin-bottom: var(--blend-space-lg);">
@@ -84,7 +84,7 @@
             </div>
 
             <!-- Jira Option -->
-            <div class="platform-card" style="cursor: pointer; padding: var(--blend-space-lg); border: 2px solid var(--blend-border-color); border-radius: 8px; transition: all 0.3s ease; background: var(--blend-white);">
+            <div class="platform-card" style="cursor: pointer; padding: var(--blend-space-lg); border: 2px solid var(--blend-border-color); border-radius: 8px; transition: all 0.3s ease; background: var(--blend-bg-card);">
                 <input type="radio" id="jira" name="platform" value="jira" style="display: none;">
                 <label for="jira" style="cursor: pointer; display: block;">
                     <div style="text-align: center; margin-bottom: var(--blend-space-lg);">
@@ -106,7 +106,7 @@
         </div>
 
         <!-- Credentials Section (for SmartSheet & Jira) -->
-        <div id="credentialsSection" style="display: none; margin-bottom: var(--blend-space-3xl); padding: var(--blend-space-2xl); background-color: var(--blend-off-white); border-radius: 8px; border: 1px solid var(--blend-border-color);">
+        <div id="credentialsSection" style="display: none; margin-bottom: var(--blend-space-3xl); padding: var(--blend-space-2xl); background-color: var(--blend-bg-secondary); border-radius: 8px; border: 1px solid var(--blend-border-color);">
 
             <h3 style="color: var(--blend-primary-dark); margin-top: 0;">🔐 Platform Authentication</h3>
 
@@ -198,7 +198,7 @@
 
     .platform-card input:checked + label {
         border-color: var(--blend-primary);
-        background-color: #f0f7ff;
+        background-color: var(--blend-accent-soft);
     }
 
     .progress-bar {
@@ -206,14 +206,14 @@
     }
 
     .status-success {
-        background-color: #d1fae5;
-        color: #065f46;
+        background-color: rgba(16, 185, 129, 0.12);
+        color: var(--blend-text-primary);
         border: 1px solid #a7f3d0;
     }
 
     .status-error {
-        background-color: #fee2e2;
-        color: #991b1b;
+        background-color: rgba(197, 80, 79, 0.12);
+        color: var(--blend-text-primary);
         border: 1px solid #fecaca;
     }
 </style>

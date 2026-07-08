@@ -92,12 +92,20 @@ def upload_files():
                     if 'processed_documents' not in session:
                         session['processed_documents'] = []
                     
-                    # Prepare document data for session storage
+                    # Save extracted text to a companion file on disk to avoid cookie size overflow
+                    text_filepath = filepath + ".txt"
+                    try:
+                        with open(text_filepath, 'w', encoding='utf-8') as f:
+                            f.write(result.get('text', ''))
+                    except Exception as e:
+                        logger.error(f"Failed to write extracted text file {text_filepath}: {str(e)}")
+
+                    # Prepare document data for session storage (exclude heavy 'text' content)
                     doc_data = {
                         'filename': result['filename'],
                         'extension': result['extension'],
                         'metadata': result.get('metadata', {}),
-                        'text': result.get('text', ''),
+                        'text_path': text_filepath,
                         'page_count': result.get('page_count', 'N/A'),
                         'has_tables': result.get('has_tables', False),
                         'temp_path': filepath
@@ -163,10 +171,25 @@ def get_documents():
     try:
         documents = session.get('processed_documents', [])
         
+        # Dynamically load text from files for the API response
+        loaded_documents = []
+        for doc in documents:
+            doc_copy = dict(doc)
+            if 'text_path' in doc_copy and os.path.exists(doc_copy['text_path']):
+                try:
+                    with open(doc_copy['text_path'], 'r', encoding='utf-8') as f:
+                        doc_copy['text'] = f.read()
+                except Exception as e:
+                    logger.error(f"Failed to read text from {doc_copy['text_path']}: {e}")
+                    doc_copy['text'] = ''
+            else:
+                doc_copy['text'] = doc_copy.get('text', '')
+            loaded_documents.append(doc_copy)
+            
         return jsonify({
             'success': True,
-            'count': len(documents),
-            'documents': documents
+            'count': len(loaded_documents),
+            'documents': loaded_documents
         }), 200
 
     except Exception as e:
@@ -199,6 +222,15 @@ def clear_session():
                     logger.info(f"Deleted temporary file: {temp_path}")
                 except Exception as e:
                     logger.warning(f"Failed to delete {temp_path}: {str(e)}")
+            
+            # Clean up the companion text file too
+            text_path = doc.get('text_path')
+            if text_path and os.path.exists(text_path):
+                try:
+                    os.remove(text_path)
+                    logger.info(f"Deleted temporary text file: {text_path}")
+                except Exception as e:
+                    logger.warning(f"Failed to delete text file {text_path}: {str(e)}")
         
         # Clear session
         if 'processed_documents' in session:
@@ -235,7 +267,22 @@ def results():
             return render_template('index_blend.html',
                                  error='No documents to display. Please upload documents first.')
 
-        return render_template('results_blend.html', documents=documents)
+        # Dynamically load text from files for the templates
+        loaded_documents = []
+        for doc in documents:
+            doc_copy = dict(doc)
+            if 'text_path' in doc_copy and os.path.exists(doc_copy['text_path']):
+                try:
+                    with open(doc_copy['text_path'], 'r', encoding='utf-8') as f:
+                        doc_copy['text'] = f.read()
+                except Exception as e:
+                    logger.error(f"Failed to read text from {doc_copy['text_path']}: {e}")
+                    doc_copy['text'] = ''
+            else:
+                doc_copy['text'] = doc_copy.get('text', '')
+            loaded_documents.append(doc_copy)
+
+        return render_template('results_blend.html', documents=loaded_documents)
 
     except Exception as e:
         error_msg = f"Error loading results: {str(e)}"

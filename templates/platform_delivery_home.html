@@ -19,14 +19,14 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: var(--blend-space-3xl); max-width: 900px; margin: 0 auto;">
 
         <!-- Option 1: Try Demo -->
-        <div class="card" style="background: linear-gradient(135deg, #f0f7ff 0%, #e0f2ff 100%); border-left: 4px solid var(--blend-primary);">
+        <div class="card" style="background: var(--blend-section-bg); border-left: 4px solid var(--blend-section-border);">
             <div style="font-size: 2rem; margin-bottom: var(--blend-space-lg);">🎬</div>
             <h2 style="color: var(--blend-primary-dark); margin-top: 0;">Try Demo Now</h2>
             <p style="color: var(--blend-text-secondary); margin-bottom: var(--blend-space-lg);">
                 See how platform delivery works with a sample project. No credentials needed!
             </p>
 
-            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: white; border-radius: 8px; border: 1px solid var(--blend-border-color);">
+            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: var(--blend-bg-card); border-radius: 8px; border: 1px solid var(--blend-border-color);">
                 <p style="margin: 0 0 var(--blend-space-sm); font-size: 0.875rem; color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
                     ✨ What You'll See
                 </p>
@@ -38,9 +38,9 @@
                 </ul>
             </div>
 
-            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: #fffacd; border-radius: 8px; border-left: 3px solid #ffc107;">
+            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: var(--blend-accent-soft); border-radius: 8px; border-left: 3px solid var(--blend-accent-color);">
                 <p style="margin: 0; font-size: 0.875rem; color: var(--blend-text-primary);">
-                    <strong>💡 Demo Token:</strong> Use <code style="background: white; padding: 2px 6px; border-radius: 4px; font-family: monospace;">demo</code> for SmartSheet & Jira
+                    <strong>💡 Demo Token:</strong> Use <code style="background: var(--blend-bg-card); padding: 2px 6px; border-radius: 4px; font-family: monospace;">demo</code> for SmartSheet & Jira
                 </p>
             </div>
 
@@ -50,14 +50,14 @@
         </div>
 
         <!-- Option 2: Your Projects -->
-        <div class="card" style="background: linear-gradient(135deg, #f5f5f5 0%, #efefef 100%); border-left: 4px solid var(--blend-primary-dark);">
+        <div class="card" style="background: var(--blend-bg-card); border-left: 4px solid var(--blend-primary-dark);">
             <div style="font-size: 2rem; margin-bottom: var(--blend-space-lg);">📊</div>
             <h2 style="color: var(--blend-primary-dark); margin-top: 0;">Your Projects</h2>
             <p style="color: var(--blend-text-secondary); margin-bottom: var(--blend-space-lg);">
                 Deploy any of your existing Project Aura analyses to a platform of your choice.
             </p>
 
-            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: white; border-radius: 8px; border: 1px solid var(--blend-border-color);">
+            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: var(--blend-bg-secondary); border-radius: 8px; border: 1px solid var(--blend-border-color);">
                 <p style="margin: 0 0 var(--blend-space-sm); font-size: 0.875rem; color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
                     📝 Steps
                 </p>
@@ -69,7 +69,7 @@
                 </ol>
             </div>
 
-            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: #e8f5e9; border-radius: 8px; border-left: 3px solid #4caf50;">
+            <div style="margin-bottom: var(--blend-space-lg); padding: var(--blend-space-md); background: rgba(16, 185, 129, 0.12); border-radius: 8px; border-left: 3px solid #10B981;">
                 <p style="margin: 0; font-size: 0.875rem; color: var(--blend-text-primary);">
                     <strong>✓ Ready:</strong> All platforms (Excel, SmartSheet, Jira)
                 </p>
@@ -83,7 +83,7 @@
     </div>
 
     <!-- Features Section -->
-    <div style="margin-top: var(--blend-space-3xl); padding: var(--blend-space-3xl); background: var(--blend-off-white); border-radius: 12px;">
+    <div style="margin-top: var(--blend-space-3xl); padding: var(--blend-space-3xl); background: var(--blend-bg-secondary); border-radius: 12px;">
         <h2 style="text-align: center; color: var(--blend-primary-dark); margin-top: 0;">Platform Capabilities</h2>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--blend-space-2xl); margin-top: var(--blend-space-2xl);">
@@ -183,7 +183,7 @@
     </div>
 
     <!-- FAQ Section -->
-    <div style="margin-top: var(--blend-space-3xl); padding: var(--blend-space-3xl); background: var(--blend-off-white); border-radius: 12px;">
+    <div style="margin-top: var(--blend-space-3xl); padding: var(--blend-space-3xl); background: var(--blend-bg-secondary); border-radius: 12px;">
         <h2 style="text-align: center; color: var(--blend-primary-dark); margin-top: 0;">Frequently Asked Questions</h2>
 
         <div style="max-width: 700px; margin: var(--blend-space-2xl) auto 0;">
@@ -193,7 +193,7 @@
                     Do I need API credentials to try the demo?
                 </summary>
                 <p style="margin-top: var(--blend-space-md); color: var(--blend-text-secondary);">
-                    No! The demo uses a special token (<code style="background: white; padding: 2px 6px; border-radius: 3px;">demo</code>) that works without any account setup. Perfect for exploring the feature.
+                    No! The demo uses a special token (<code style="background: var(--blend-bg-card); padding: 2px 6px; border-radius: 3px;">demo</code>) that works without any account setup. Perfect for exploring the feature.
                 </p>
             </details>
 
