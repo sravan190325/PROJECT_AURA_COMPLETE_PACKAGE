@@ -226,11 +226,14 @@ class ProjectPlanEngine:
         """Generate task dependencies."""
         dependencies = []
         
-        # Create sequential dependencies between phases
+        # Create sequential dependencies between phases. This method can receive
+        # either phase definitions with `name` or generated timeline rows with `phase`.
         for i in range(len(phases) - 1):
+            current_phase = phases[i].get('phase') or phases[i].get('name')
+            next_phase = phases[i + 1].get('phase') or phases[i + 1].get('name')
             dependencies.append({
-                'task': phases[i + 1]['phase'],
-                'depends_on': phases[i]['phase'],
+                'task': next_phase,
+                'depends_on': current_phase,
                 'dependency_type': 'Finish to Start',
                 'lead_lag': 0
             })

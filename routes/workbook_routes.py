@@ -10,6 +10,7 @@ import logging
 from flask import Blueprint, request, render_template, jsonify, send_file, session
 from services.pmo_workbook_generator import PMOWorkbookGenerator, PMOWorkbookFactory
 from services.workbook_generator_enhanced import EnhancedWorkbookGenerator, WorkbookGeneratorFactory
+from services.sample_format_workbook_generator import SampleFormatWorkbookFactory
 from services.database_service import DatabaseService
 
 logger = logging.getLogger(__name__)
@@ -70,16 +71,17 @@ def generate_workbook(project_id):
         filename = f"{project_info['client_name'].replace(' ', '_')}_{project_id}_ProjectPlan.xlsx"
         output_path = os.path.join(output_dir, filename)
         
-        # Generate PMO-grade workbook with consolidated, executive-ready sheets
-        # Uses PMOWorkbookGenerator by default for professional consulting deliverables
-        # Set ?generator=enhanced for legacy enhanced workbook or ?generator=standard for original
-        generator_type = request.args.get('generator', 'pmo').lower()
+        # Generate workbook in the approved sample format by default.
+        # Set ?generator=pmo, ?generator=enhanced, or ?generator=standard for legacy formats.
+        generator_type = request.args.get('generator', 'sample').lower()
 
-        if generator_type == 'enhanced':
+        if generator_type in ('sample', 'improved', 'abc'):
+            generator = SampleFormatWorkbookFactory.create_sample_format_generator(project_info, project_summary)
+        elif generator_type == 'enhanced':
             generator = WorkbookGeneratorFactory.create_enhanced_generator(project_info, project_summary)
         elif generator_type == 'standard':
             generator = WorkbookGeneratorFactory.create_standard_generator(project_info, project_summary)
-        else:  # Default: PMO-grade
+        else:  # Legacy PMO-grade
             generator = PMOWorkbookFactory.create_pmo_generator(project_info, project_summary)
 
         success = generator.generate(output_path)
@@ -134,8 +136,11 @@ def download_workbook(project_id):
         filename = f"{client_name}_{project_id}_ProjectPlan.xlsx"
         filepath = os.path.join('workbooks', filename)
         
-        # Check if file exists
-        if not os.path.exists(filepath):
+        # Regenerate sample-format downloads so existing older files are not served accidentally.
+        generator_type = request.args.get('generator', 'sample').lower()
+        should_regenerate = generator_type in ('sample', 'improved', 'abc') or not os.path.exists(filepath)
+
+        if should_regenerate:
             # Try to regenerate
             logger.info(f"Workbook not found, regenerating: {filename}")
             
@@ -152,10 +157,10 @@ def download_workbook(project_id):
             }
             
             os.makedirs('workbooks', exist_ok=True)
-            # Regenerate using PMO generator (can be overridden with query param)
-            generator_type = request.args.get('generator', 'pmo').lower()
-
-            if generator_type == 'enhanced':
+            # Regenerate using the approved sample format by default.
+            if generator_type in ('sample', 'improved', 'abc'):
+                generator = SampleFormatWorkbookFactory.create_sample_format_generator(project_info, project_summary)
+            elif generator_type == 'enhanced':
                 generator = WorkbookGeneratorFactory.create_enhanced_generator(project_info, project_summary)
             elif generator_type == 'standard':
                 generator = WorkbookGeneratorFactory.create_standard_generator(project_info, project_summary)
@@ -211,22 +216,17 @@ def preview_workbook(project_id):
         # Get project summary
         project_summary = db_service.get_project_summary(project_id)
         
-        # Preview sheets
+        # Preview sheets for the approved ABC_Retail_Project_Plan_Improved format
         sheets = [
-            '01_Project_Details',
-            '02_Project_Charter',
-            '03_Assumptions',
-            '04_Staffing_Plan',
-            '05_Project_Plan',
-            '06_WBS',
-            '07_Milestones',
-            '08_Dependencies',
-            '09_Risk_Register',
-            '10_RACI_Matrix',
-            '11_Leave_Planner',
-            '12_Project_Tracker',
-            '13_Holiday_Calendar',
-            '14_Dashboard'
+            '00_Home',
+            'Executive_Dashboard',
+            'Detailed_Task_Plan',
+            'Budget_Tracker',
+            'Milestone_Tracker',
+            'Resource_Plan',
+            'RAID_Register',
+            'RACI_Matrix',
+            'Change_Log'
         ]
         
         return jsonify({
