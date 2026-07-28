@@ -6,6 +6,7 @@ Supports backward compatibility with enhanced and standard generators.
 """
 
 import os
+import re
 import logging
 from flask import Blueprint, request, render_template, jsonify, send_file, session
 from services.pmo_workbook_generator import PMOWorkbookGenerator, PMOWorkbookFactory
@@ -20,6 +21,17 @@ workbook_bp = Blueprint('workbook', __name__, url_prefix='/api/workbook')
 # Initialize database service
 db_service = DatabaseService()
 
+
+def _safe_workbook_filename(project: dict, project_id: int) -> str:
+    raw_name = project.get('client_name') or project.get('project_name') or 'Project'
+    safe_name = re.sub(r'[^A-Za-z0-9._-]+', '_', str(raw_name)).strip('._-')
+    if not safe_name:
+        safe_name = 'Project'
+    return f'{safe_name[:80]}_{project_id}_ProjectPlan.xlsx'
+
+
+def _workbook_path(filename: str) -> str:
+    return os.path.abspath(os.path.join('workbooks', filename))
 
 @workbook_bp.route('/generate/<int:project_id>', methods=['POST'])
 def generate_workbook(project_id):
@@ -68,8 +80,8 @@ def generate_workbook(project_id):
         os.makedirs(output_dir, exist_ok=True)
         
         # Generate filename
-        filename = f"{project_info['client_name'].replace(' ', '_')}_{project_id}_ProjectPlan.xlsx"
-        output_path = os.path.join(output_dir, filename)
+        filename = _safe_workbook_filename(project, project_id)
+        output_path = _workbook_path(filename)
         
         # Generate workbook in the approved sample format by default.
         # Set ?generator=pmo, ?generator=enhanced, or ?generator=standard for legacy formats.
@@ -94,16 +106,20 @@ def generate_workbook(project_id):
 
         logger.info(f"Workbook generated successfully: {output_path}")
         
+        download_url = f'/api/workbook/download/{project_id}'
+        if generator_type not in ('sample', 'improved', 'abc'):
+            download_url = f'{download_url}?generator={generator_type}'
+
         return jsonify({
             'success': True,
             'filename': filename,
-            'download_url': f'/api/workbook/download/{project_id}',
+            'download_url': download_url,
             'message': 'Workbook generated successfully!'
         }), 200
 
     except Exception as e:
         error_msg = f"Error generating workbook: {str(e)}"
-        logger.error(error_msg)
+        logger.error(error_msg, exc_info=True)
         return jsonify({
             'success': False,
             'error': error_msg
@@ -132,9 +148,8 @@ def download_workbook(project_id):
             }), 404
 
         # Build filename
-        client_name = project.get('client_name', 'Project').replace(' ', '_')
-        filename = f"{client_name}_{project_id}_ProjectPlan.xlsx"
-        filepath = os.path.join('workbooks', filename)
+        filename = _safe_workbook_filename(project, project_id)
+        filepath = _workbook_path(filename)
         
         # Regenerate sample-format downloads so existing older files are not served accidentally.
         generator_type = request.args.get('generator', 'sample').lower()
@@ -142,7 +157,7 @@ def download_workbook(project_id):
 
         if should_regenerate:
             # Try to regenerate
-            logger.info(f"Workbook not found, regenerating: {filename}")
+            logger.info(f"Workbook not found or refresh required, regenerating: {filename}")
             
             project_summary = db_service.get_project_summary(project_id)
             project_info = {
@@ -185,7 +200,7 @@ def download_workbook(project_id):
 
     except Exception as e:
         error_msg = f"Error downloading workbook: {str(e)}"
-        logger.error(error_msg)
+        logger.error(error_msg, exc_info=True)
         return jsonify({
             'success': False,
             'error': error_msg
@@ -245,7 +260,7 @@ def preview_workbook(project_id):
 
     except Exception as e:
         error_msg = f"Error previewing workbook: {str(e)}"
-        logger.error(error_msg)
+        logger.error(error_msg, exc_info=True)
         return jsonify({
             'success': False,
             'error': error_msg

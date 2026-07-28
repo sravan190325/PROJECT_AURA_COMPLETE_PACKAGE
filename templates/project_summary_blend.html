@@ -438,15 +438,41 @@ let selectedPlatform = null;
 const projectId = {{ project_id }};
 
 function deployToExcel() {
-    const modal = document.getElementById('credentialsModal');
-    modal.style.display = 'flex';
-    selectedPlatform = 'excel';
-    document.getElementById('smartsheetFields').style.display = 'none';
-    document.getElementById('jiraFields').style.display = 'none';
-    document.getElementById('modalTitle').textContent = 'Deploy to Excel';
+    const excelButton = document.querySelector('#excelCard button');
+    const originalText = excelButton ? excelButton.textContent : '';
 
-    // For Excel, deploy immediately
-    deployWithCredentials();
+    if (excelButton) {
+        excelButton.disabled = true;
+        excelButton.textContent = 'Generating...';
+    }
+
+    fetch(`/api/workbook/generate/${projectId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(async response => {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'Failed to generate Excel workbook');
+        }
+        return data;
+    })
+    .then(data => {
+        window.location.href = data.download_url || `/api/workbook/download/${projectId}`;
+        setTimeout(() => {
+            if (excelButton) {
+                excelButton.disabled = false;
+                excelButton.textContent = originalText || 'Select';
+            }
+        }, 1500);
+    })
+    .catch(error => {
+        alert(`Error downloading Excel: ${error.message}`);
+        if (excelButton) {
+            excelButton.disabled = false;
+            excelButton.textContent = originalText || 'Select';
+        }
+    });
 }
 
 function showCredentialsModal(platform) {

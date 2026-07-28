@@ -234,18 +234,15 @@ def create_project_in_platform():
 
         # ====== EXCEL CREATION ======
         if platform == 'excel':
-            logger.info(f"Creating Excel workbook for project {project_id}")
-            creator = ExcelCreator(project_data)
-            result = creator.create(deliverables, team_members, risks)
-
-            if result['success']:
-                return jsonify({
-                    'success': True,
-                    'platform': 'excel',
-                    'project_id': project_id,
-                    'file_path': result.get('file_path'),
-                    'redirect_url': f'/api/project/{project_id}/summary'
-                })
+            logger.info(f"Preparing Excel workbook download for project {project_id}")
+            download_url = f'/api/workbook/download/{project_id}'
+            return jsonify({
+                'success': True,
+                'platform': 'excel',
+                'project_id': project_id,
+                'download_url': download_url,
+                'redirect_url': download_url
+            })
 
         # ====== SMARTSHEET CREATION ======
         elif platform == 'smartsheet':
