@@ -503,7 +503,7 @@ class WorkbookGenerator:
         """Create Holiday Calendar sheet."""
         ws = self._create_sheet('13_Holiday_Calendar', '9B59B6')
         
-        ExcelFormatter.format_title(ws, 1, 1, 'Holiday Calendar 2025')
+        ExcelFormatter.format_title(ws, 1, 1, 'Holiday Calendar 2026')
         ExcelFormatter.merge_cells(ws, 'A1', 'C1')
         
         row = 3
@@ -514,13 +514,13 @@ class WorkbookGenerator:
         
         row += 1
         holidays = [
-            ('2025-01-01', 'New Year Day', 'No work'),
-            ('2025-03-17', "St. Patrick's Day", 'Optional'),
-            ('2025-05-26', 'Memorial Day', 'No work'),
-            ('2025-07-04', 'Independence Day', 'No work'),
-            ('2025-09-01', 'Labor Day', 'No work'),
-            ('2025-11-27', 'Thanksgiving', 'No work'),
-            ('2025-12-25', 'Christmas', 'No work'),
+            ('2026-01-01', 'New Year Day', 'No work'),
+            ('2026-03-17', "St. Patrick's Day", 'Optional'),
+            ('2026-05-25', 'Memorial Day', 'No work'),
+            ('2026-07-04', 'Independence Day', 'No work'),
+            ('2026-09-07', 'Labor Day', 'No work'),
+            ('2026-11-26', 'Thanksgiving', 'No work'),
+            ('2026-12-25', 'Christmas', 'No work'),
         ]
         
         for date, holiday, impact in holidays:

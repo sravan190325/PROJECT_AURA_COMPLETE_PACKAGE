@@ -46,12 +46,9 @@ class GanttGenerator:
         title.alignment = Alignment(horizontal='center', vertical='center')
 
         # Parse dates
-        try:
-            start_date = datetime.strptime(project_info.get('start_date', '2025-01-01'), '%Y-%m-%d')
-        except:
-            start_date = datetime(2025, 1, 1)
-
-        duration_weeks = int(project_info.get('duration_weeks', 16))
+        from services.date_utils import parse_datetime
+        start_date = parse_datetime(project_info.get('start_date')) or datetime.now()
+        duration_weeks = int(project_info.get('duration_weeks', 12))
         project_duration_days = duration_weeks * 7
 
         # Create header row with week numbers

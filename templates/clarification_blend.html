@@ -32,7 +32,7 @@
                 <label style="display: block; margin-bottom: var(--blend-space-sm); color: var(--blend-text-primary); font-weight: 500;">
                     When should the project start?
                 </label>
-                <input type="date" name="start_date" id="startDate" required>
+                <input type="date" name="start_date" id="startDate" value="{{ analysis.get('start_date', '') }}" required>
                 <p style="margin: var(--blend-space-sm) 0 0; font-size: var(--blend-text-caption); color: var(--blend-text-muted);">
                     Select the intended start date for this project
                 </p>
@@ -44,7 +44,7 @@
                     How long is the project duration?
                 </label>
                 <div style="display: flex; gap: var(--blend-space-md);">
-                    <input type="number" name="duration" id="duration" min="1" max="120" value="12" style="flex-grow: 1;" required>
+                    <input type="number" name="duration" id="duration" min="1" max="520" value="{{ analysis.get('duration_weeks') or analysis.get('duration') or 12 }}" style="flex-grow: 1;" required>
                     <span style="
                         padding: var(--blend-space-md) var(--blend-space-xl);
                         background-color: var(--blend-bg-secondary);
@@ -153,9 +153,18 @@ function initializePage() {
     document.getElementById('projectType').textContent = projectType;
     document.getElementById('clientName').textContent = clientName;
 
-    // Set today's date as default start date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('startDate').value = today;
+    // Set start date from analysis if available, otherwise default to today
+    if (!document.getElementById('startDate').value) {
+        if (analysis.start_date) {
+            document.getElementById('startDate').value = analysis.start_date;
+        } else {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+        }
+    }
+    if (analysis.duration_weeks || analysis.duration) {
+        document.getElementById('duration').value = analysis.duration_weeks || analysis.duration;
+    }
 }
 
 initializePage();

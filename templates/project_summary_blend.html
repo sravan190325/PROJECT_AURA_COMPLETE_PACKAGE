@@ -51,15 +51,15 @@
             <div style="display: flex; flex-direction: column; gap: var(--blend-space-md);">
                 <div>
                     <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Start Date</p>
-                    <p style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="startDate">January 15, 2025</p>
+                    <p style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="startDate">{{ project.get('start_date_display', project.get('start_date', 'TBD')) }}</p>
                 </div>
                 <div>
                     <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">End Date</p>
-                    <p style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="endDate">June 30, 2025</p>
+                    <p style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="endDate">{{ project.get('end_date_display', project.get('end_date', 'TBD')) }}</p>
                 </div>
                 <div>
                     <p style="margin: 0 0 var(--blend-space-sm); font-size: var(--blend-text-caption); color: var(--blend-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Duration</p>
-                    <p style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="duration">6 Months</p>
+                    <p style="margin: 0; color: var(--blend-text-primary); font-weight: 400;" id="duration">{{ project.get('duration_text', (project.get('duration_weeks', 'TBD') ~ ' Weeks' if project.get('duration_weeks') else 'TBD')) }}</p>
                 </div>
             </div>
         </div>
@@ -162,7 +162,7 @@
                  onmouseout="this.style.borderColor='var(--blend-border-color)'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
                 <div style="font-size: 2rem; margin-bottom: var(--blend-space-md);">📊</div>
                 <h3 style="margin: 0 0 var(--blend-space-sm); color: var(--blend-text-primary);">Excel</h3>
-                <p style="font-size: 0.82rem; color: var(--blend-text-muted); margin: 0;">PMO workbooks with dashboards & Gantt</p>
+                <p style="font-size: 0.82rem; color: var(--blend-text-muted); margin: 0;">PMO workbooks with dashboards</p>
                 <button onclick="deployToExcel()" class="btn btn-primary" style="margin-top: var(--blend-space-md); padding: var(--blend-space-sm) var(--blend-space-lg); font-size: 0.75rem;">
                     Select
                 </button>
@@ -235,10 +235,10 @@
 // Set project data from Flask template context
 {% if project %}
 window.projectData = {
-    start_date: "{{ project.get('start_date_display', project.get('start_date', 'January 15, 2025')) }}",
-    end_date: "{{ project.get('end_date_display', project.get('end_date', 'June 30, 2025')) }}",
-    duration_text: "{{ project.get('duration_weeks', 26) }} weeks",
-    duration_weeks: {{ project.get('duration_weeks', 26) }},
+    start_date: "{{ project.get('start_date_display', project.get('start_date', 'TBD')) }}",
+    end_date: "{{ project.get('end_date_display', project.get('end_date', 'TBD')) }}",
+    duration_text: "{{ project.get('duration_text', (project.get('duration_weeks', 'TBD') ~ ' Weeks' if project.get('duration_weeks') else 'TBD')) }}",
+    duration_weeks: {{ project.get('duration_weeks', 12) }},
     budget: {{ project.get('budget', 500) }},
     team_size: {{ project.get('team_size', 12) }},
     deliverable_count: {{ project.get('deliverable_count', 0) }},
@@ -421,13 +421,19 @@ function populateRisks() {
 function initializePage() {
     const data = window.projectData || {};
 
-    document.getElementById('startDate').textContent = data.start_date || 'January 15, 2025';
-    document.getElementById('endDate').textContent = data.end_date || 'June 30, 2025';
-    document.getElementById('duration').textContent = data.duration_text || '6 Months';
+    if (data.start_date && data.start_date !== 'None') {
+        document.getElementById('startDate').textContent = data.start_date;
+    }
+    if (data.end_date && data.end_date !== 'None') {
+        document.getElementById('endDate').textContent = data.end_date;
+    }
+    if (data.duration_text && data.duration_text !== 'None') {
+        document.getElementById('duration').textContent = data.duration_text;
+    }
     document.getElementById('budget').textContent = data.budget ? `$${data.budget}K` : '$500K';
     document.getElementById('teamSize').textContent = data.team_size || '12';
     document.getElementById('deliverables').textContent = data.deliverable_count || '24';
-    document.getElementById('completion').textContent = data.completion_percentage || '45%';
+    document.getElementById('completion').textContent = data.completion_percentage || '0%';
     document.getElementById('healthScore').textContent = (data.health_score || 85) + '%';
 }
 

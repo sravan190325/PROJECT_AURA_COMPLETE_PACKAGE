@@ -15,15 +15,15 @@ class ProjectPlanEngine:
     Engine for generating detailed project plans.
     """
 
-    # Holidays in 2024-2025 (expand as needed)
+    # Holidays in 2026 (expand as needed)
     HOLIDAYS = [
-        datetime(2025, 1, 1),   # New Year
-        datetime(2025, 3, 17),  # St. Patrick's Day
-        datetime(2025, 5, 26),  # Memorial Day
-        datetime(2025, 7, 4),   # Independence Day
-        datetime(2025, 9, 1),   # Labor Day
-        datetime(2025, 11, 27), # Thanksgiving
-        datetime(2025, 12, 25), # Christmas
+        datetime(2026, 1, 1),   # New Year
+        datetime(2026, 3, 17),  # St. Patrick's Day
+        datetime(2026, 5, 25),  # Memorial Day
+        datetime(2026, 7, 4),   # Independence Day
+        datetime(2026, 9, 7),   # Labor Day
+        datetime(2026, 11, 26), # Thanksgiving
+        datetime(2026, 12, 25), # Christmas
     ]
 
     @staticmethod
@@ -61,7 +61,8 @@ class ProjectPlanEngine:
         """
         try:
             project_type = project_info.get('project_type', 'Application Development')
-            start_date = datetime.strptime(project_info.get('start_date'), '%Y-%m-%d')
+            from services.date_utils import parse_datetime
+            start_date = parse_datetime(project_info.get('start_date')) or datetime.now()
             duration_weeks = int(project_info.get('duration_weeks', 12))
             team_size = int(project_info.get('team_size', 1))
             

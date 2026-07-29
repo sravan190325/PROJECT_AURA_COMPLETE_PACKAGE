@@ -167,7 +167,8 @@ class WorkbookEnhancements:
         # Generate phases
         row += 1
         plan_data = ProjectPlanEngine.generate_project_plan(project_info)
-        start_date = datetime.strptime(project_info.get('start_date', '2025-01-01'), '%Y-%m-%d') if isinstance(project_info.get('start_date'), str) else project_info.get('start_date')
+        from services.date_utils import parse_datetime
+        start_date = parse_datetime(project_info.get('start_date')) or datetime.now()
 
         for phase in plan_data.get('phases', []):
             ExcelFormatter.format_data_row(ws, row, list(range(1, 7)))
@@ -495,10 +496,9 @@ class WorkbookEnhancements:
     def _calculate_end_date(project_info: Dict) -> str:
         """Calculate project end date."""
         try:
-            start = datetime.strptime(project_info.get('start_date', '2025-01-01'), '%Y-%m-%d')
-            weeks = int(project_info.get('duration_weeks', 0))
-            end = start + timedelta(weeks=weeks)
-            return end.strftime('%Y-%m-%d')
+            from services.date_utils import calculate_timeline
+            timeline = calculate_timeline(project_info.get('start_date'), project_info.get('duration_weeks'))
+            return timeline.get('end_date') if timeline.get('end_date') != 'TBD' else 'TBD'
         except:
             return 'TBD'
 

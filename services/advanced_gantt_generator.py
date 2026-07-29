@@ -108,20 +108,9 @@ class AdvancedGanttGenerator:
     def _initialize_timeline(self):
         """Initialize project timeline in weeks."""
         try:
-            start_str = str(self.project_info.get('start_date', '2025-01-01'))
-
-            # Parse date format (handle MM-DD-YYYY or YYYY-MM-DD)
-            if '-' in start_str:
-                parts = start_str.split('-')
-                if len(parts) == 3:
-                    if len(parts[0]) == 4:  # YYYY-MM-DD
-                        self.start_date = datetime.strptime(start_str, '%Y-%m-%d')
-                    else:  # MM-DD-YYYY
-                        self.start_date = datetime.strptime(start_str, '%m-%d-%Y')
-            else:
-                self.start_date = datetime.now()
-
-            duration_weeks = int(self.project_info.get('duration_weeks', 26))
+            from services.date_utils import parse_datetime
+            self.start_date = parse_datetime(self.project_info.get('start_date')) or datetime.now()
+            duration_weeks = int(self.project_info.get('duration_weeks', 12))
             self.end_date = self.start_date + timedelta(weeks=duration_weeks)
             self.num_weeks = duration_weeks
 

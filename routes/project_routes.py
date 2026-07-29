@@ -357,18 +357,14 @@ def get_project_summary_view(project_id):
         # Extract the actual project data from nested structure
         project_data = project_summary.get('project', {})
 
-        # Calculate end date from start date and duration
-        from datetime import datetime, timedelta
-        if project_data.get('start_date') and project_data.get('duration_weeks'):
-            try:
-                start = datetime.strptime(project_data['start_date'], '%m-%d-%Y')
-                end = start + timedelta(weeks=project_data['duration_weeks'])
-                project_data['end_date'] = end.strftime('%m-%d-%Y')
-                # Format for display
-                project_data['start_date_display'] = start.strftime('%B %d, %Y')
-                project_data['end_date_display'] = end.strftime('%B %d, %Y')
-            except:
-                pass
+        # Calculate end date and timeline display from start date and duration
+        from services.date_utils import calculate_timeline
+        timeline = calculate_timeline(
+            project_data.get('start_date'),
+            project_data.get('duration_weeks')
+        )
+        project_data.update(timeline)
+
 
         # Add additional summary fields
         project_data['deliverable_count'] = len(project_summary.get('deliverables', []))

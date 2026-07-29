@@ -91,16 +91,11 @@ class PMOWorkbookOptimizer:
     def _calculate_end_date(project_info: Dict) -> str:
         """Calculate end date from start date and duration."""
         try:
-            start_date = project_info.get('start_date', '')
-            duration = project_info.get('duration_weeks', 0)
-            if start_date and duration:
-                from datetime import datetime, timedelta
-                start = datetime.strptime(str(start_date), '%Y-%m-%d')
-                end = start + timedelta(weeks=int(duration))
-                return end.strftime('%Y-%m-%d')
+            from services.date_utils import calculate_timeline
+            timeline = calculate_timeline(project_info.get('start_date'), project_info.get('duration_weeks'))
+            return timeline.get('end_date') if timeline.get('end_date') != 'TBD' else 'TBD'
         except:
-            pass
-        return 'TBD'
+            return 'TBD'
 
     @staticmethod
     def _calculate_project_health(db_summary: Dict) -> Tuple[str, str]:
@@ -597,10 +592,8 @@ Key characteristics:
         duration_weeks = project_info.get('duration_weeks', 16)
         weeks_per_phase = max(1, duration_weeks // len(phases))
 
-        try:
-            current_start = datetime.strptime(str(start_date), '%Y-%m-%d')
-        except:
-            current_start = datetime.now()
+        from services.date_utils import parse_datetime
+        current_start = parse_datetime(start_date) or datetime.now()
 
         row = 4
         for phase in phases:
@@ -669,11 +662,13 @@ Key characteristics:
             ('8.0', 'Hypercare', 'Support phase', 'Hypercare report', 'PM', 14, 16, 'Medium'),
         ]
 
+        from services.date_utils import parse_datetime
+        base_start = parse_datetime(project_info.get('start_date'))
         for wbs, phase, task, deliverable, owner, start_week, end_week, priority in tasks:
-            try:
-                start_date = datetime.strptime(str(project_info.get('start_date', '')), '%Y-%m-%d') + timedelta(weeks=start_week)
-                end_date = datetime.strptime(str(project_info.get('start_date', '')), '%Y-%m-%d') + timedelta(weeks=end_week)
-            except:
+            if base_start:
+                start_date = base_start + timedelta(weeks=start_week)
+                end_date = base_start + timedelta(weeks=end_week)
+            else:
                 start_date = 'TBD'
                 end_date = 'TBD'
 
@@ -751,8 +746,9 @@ Key characteristics:
                               end_color=COLORS['primary'], fill_type='solid')
 
         # Month headers
-        start_date = datetime.strptime(str(project_info.get('start_date', '2025-01-01')), '%Y-%m-%d')
-        duration_weeks = project_info.get('duration_weeks', 16)
+        from services.date_utils import parse_datetime
+        start_date = parse_datetime(project_info.get('start_date')) or datetime.now()
+        duration_weeks = project_info.get('duration_weeks', 12)
         months = max(1, (duration_weeks // 4) + 1)
 
         for month_idx in range(months):
@@ -829,11 +825,13 @@ Key characteristics:
         ]
 
         row = 4
+        from services.date_utils import parse_datetime
+        base_start = parse_datetime(project_info.get('start_date'))
         for milestone_id, description, owner, week in milestones:
-            try:
-                milestone_date = datetime.strptime(str(project_info.get('start_date', '')), '%Y-%m-%d') + timedelta(weeks=week)
+            if base_start:
+                milestone_date = base_start + timedelta(weeks=week)
                 milestone_date_str = milestone_date.strftime('%Y-%m-%d')
-            except:
+            else:
                 milestone_date_str = 'TBD'
 
             PMOWorkbookOptimizer._format_value(ws, row, 1, milestone_id)
@@ -1150,8 +1148,9 @@ Key characteristics:
 
         # Weekly data
         row = 4
-        duration = project_info.get('duration_weeks', 16)
-        start_date = datetime.strptime(str(project_info.get('start_date', '2025-01-01')), '%Y-%m-%d')
+        duration = project_info.get('duration_weeks', 12)
+        from services.date_utils import parse_datetime
+        start_date = parse_datetime(project_info.get('start_date')) or datetime.now()
 
         for week in range(1, min(duration + 1, 25)):
             week_start = start_date + timedelta(weeks=week - 1)
